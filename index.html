@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,15 +21,15 @@
   
     <link rel="icon" href="/favicon.png">
   
-  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
   <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <link href="//fonts.useso.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
   
-
 </head>
 <body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
+<div id="container">
+  <div id="wrap">
+    <header id="header">
   <div id="banner"></div>
   <div id="header-outer" class="outer">
     <div id="header-title" class="inner">
@@ -53,50 +54,20 @@
         <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://wufangyu.cn"></form>
+        <form action="http://www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="wufangyu.cn">
+        </form>
       </div>
     </div>
   </div>
 </header>
-      <div class="outer">
-        <section id="main">
-  
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/10/29/hello-world/" class="article-date">
-  <time datetime="2015-10-29T04:15:50.731Z" itemprop="datePublished">2015-10-29</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/10/29/hello-world/">博客开篇</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>欢迎来到 <a href="http://wufangyu.cn/">Fangyu Blog</a> ，这里博主会给大家分享些软件开发、测试以及算法方面的小知识与心得，还望各路大神多多指教！</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://wufangyu.cn/2015/10/29/hello-world/" data-id="cigbpanl90008bsdvnwe1tfo5" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
+    <div class="outer">
+      <section id="main">
   
     <article id="post-数据结构——跳表" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
@@ -121,152 +92,25 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h2 id="背景">背景</h2><p>上次听田欧同学介绍咱们搜狗浏览器新用到的LevelDB数据库时，了解到这里用到了一种很牛的数据结构——跳表，于是便着手了解了下。 </p>
-<h2 id="简介">简介</h2><p> 跳表是一种随机化数据结构，基于并联的链表，其效率可比拟于二叉查找树（对于大多数操作需要O(log n)平均时间）。基本上，跳跃列表是对有序的链表增加上附加的前进链接，增加是以随机化的方式进行的，所以在列表中的查找可以快速的跳过部分列表，因此得名。所有操作都以对数随机化的时间进行。——<a href="http://zh.wikipedia.org/wiki/%E8%B7%B3%E8%B7%83%E5%88%97%E8%A1%A8" target="_blank" rel="external">维基百科</a></p>
-<h2 id="基本实现方法">基本实现方法</h2><p>首先我们先定义一个概念，叫层(level) ,为了方便理解，大家可以直接对应到平衡有序二叉树里面的树的高度。</p>
-<p>每一层在逻辑上都是一个链表，既然是链表，那么自然也就只能从头部遍历或从尾部遍历咯。<br>一个标准的skiplist在内存中可能是这样的：</p>
-<blockquote>
-<p><strong>示例解释</strong><br><strong>Level2:</strong> 0,4<br><strong>Level1:</strong> 0,2,4,6,9<br><strong>Level0:</strong> 0,1,2,3,4,5,6,7,8,9</p>
+<h2 id="简介">简介</h2><blockquote>
+<p>跳表是一种随机化数据结构，基于并联的链表，其效率可比拟于二叉查找树（对于大多数操作需要O(log n)平均时间）。基本上，跳跃列表是对有序的链表增加上附加的前进链接，增加是以随机化的方式进行的，所以在列表中的查找可以快速的跳过部分列表，因此得名。所有操作都以对数随机化的时间进行。 ————<a href="http://zh.wikipedia.org/wiki/%E8%B7%B3%E8%B7%83%E5%88%97%E8%A1%A8">维基百科</a></p>
 </blockquote>
-<p>可以看到，层级越高，数据量越小，并且，高层级的元素都有一个到低层级元素的指针，这样他可以很容易的通过指针跳转到更底层的元素上面。</p>
-<p>下面让我们来看看读取的逻辑，比如如果要读取6，那么从最高层级的链表的头部（从左向右）依次读取数据，发现6&gt;4，于是在通过Level2 的4 这个元素到level1的4这个元素的指针，跳跃到Level1，然后从Level1的4这个元素继续往右面找发现下一个元素就是6，于是将整个6所对应的元素返回。<br>那么要找3的话应该怎么操作呢？</p>
-<p>仍然是从最高层级level2的头部开始遍历，发现0&lt;3&lt;4 . 于是利用level2的0这个元素到level1的0这个元素的指针，跳跃到level1的0元素，继续向右遍历，发现2&lt;3&lt;4。于是利用Level1的2这个元素到level0的2这个元素的指针，跳跃到level0的2这个元素上，继续向右遍历找到元素3，于是将整个3所对应的元素返回。</p>
-<p>可以看到，利用这种结构如果我们能够比较准确的在链表里将数据排好序，并且level0中每两个元素中拿出一个元素推送到更高的层级level1中，然后在level1中也按照每两个元素拿出一个元素推送到更高层级的level2中…依此类推，就可以构建出一个查询时间复杂度为O(log2n)的查找数据结构了。</p>
-<p>但这里有个关键的难在于：如何能够知道，当前写入的元素是否应该被推送到更高的层级呢？这也就对应了原来avl,红黑里面为什么要做如此复杂的旋转的原因。而在william的解决方案里，他选择了一条完全不相同的路来做到这一点。</p>
-<p>这也是skiplist里面一个最大的创新点，就是引入了一个新条件：概率。与传统的根据临近元素的来决定是否上推的avl或红黑树相比。Skiplist则使用概率这个完全不需要依托集合内其他元素的因素来决定这个元素是否要上推。这种方式的最大好处，就是可以让每一次的插入都变得更“独立”，而不需要依托于其他元素插入的结果。 这样就能够让冲突只发生在数据真正写入的那一步操作上，而我们已经在前面的文章里面知道了，对于链表来说，数据的写入是能够做到无锁的写入新数据的，于是，利用skiplist,就能成功的做到无锁的有序平衡“树”（多层级）结构。</p>
-<p>下面我们就来看看如何利用概率来决定某个元素是否需要上推的。<br>让我们先用一个简单的模式来说明解决问题的思路，然后再探讨如何进行优化。<br>我们可以把skiplist的写入分为两个步骤，第一个步骤是找到元素在整个顺序列表中要写入的位置，这个步骤与我们上面讲到的读取过程是一致的。<br>然后下一个步骤是决定这个数据是否需要从当前层级上推到上一个层级，具体的做法是从最低层级level0开始,写入用户需要写入的值，并计算一个随机数，如果是0，则不上推到高一层，而如果是1，则上推到高一个层，然后指针跳跃到高一个层级，重复进行随机数计算来决定是否需要推到更高的层级，如果最高层中只有自己这个元素的时候，则也停止计算随机数（因为不需要再推到更高层了）。<br>最后，还有个问题就是如何解决并发写入的问题，为了阐述清楚如何能够做到并发写，我们需要先对什么叫”一致性的写”，进行一下说明。<br>一般的人理解数据的一致性写的定义可能是：如果写成功了你就让我看到，而如果没写成功，你就不让我看到呗。<br>但实际上这个定义在计算机里面是无法操作的，因为我们之前也提到过，计算机其实就是个打字机，一次只能进行一个操作，针对复杂的操作，只能通过加锁来实现一致性。但加锁本身的代价又很大，这就形成了个悖论，如何能够既保证性能，又能够实现一致性呢？<br>这时候就需要我们对一致性的定义针对多线程环境进行一下完善：在之前的定义，我们是把写入的过程分为两个时间点的，一个时间点是调用写入接口前，另一个时间点是调用写入接口后。但其实在多线程环境下，应该分为三个时间点，第一个是调用写入接口前，第二个是调用写入接口，但还未返回结果的那段时间，第三个是调用写入接口，返回结果后。<br>然后我们来看看，针对这三个时间点应该如何选择，才能保证数据的一致性：<br>对于第一个时间点，因为还没有调用写入接口，所以所有线程（包含调用写入的线程）都不应该能够从这个映射中读取到待写入的数据。<br>第二个时间点，也就是写入操作过程中，我们需要能够保证：如果数据已经被其他线程看到过了，那么再这个时间点之后的所有时间点，数据应该都能够被其他线程看到，也就是说不能出现先被看到但又被删掉的情况。<br>第三个时间点，这个写入的操作应该能够被所有人看到。</p>
-<p>已经定义好了一致性的规范，下面就来看看这个无锁并发的skiplist是如何处理好并发一致性的。<br>首先我们需要先了解一下链表是如何能够做到无锁写入的：<br>对于链表类的数据结构来说，如果想做到无锁，主要就是解决以下的问题，如何能够让当前线程知道，目前要插入新元素的位置，是否有其他人正在插入？ 如果有的话，那么就自旋等待，如果没有，那么就插入。利用这个原理，把原来的多步指针变更操作利用compare and set的方式转换为一个伪原子操作。这样就可以有效的减少锁导致的上下文切换开销，在争用不频繁的情况下，极大的提升性能。（这只是思路，关于linkedlist的无锁编程细节，可以参照A pragmatic implementation of non-blocking linked lists，这篇文章）<br>利用上面链表的无锁写入，我们就能够保证，数据在每一个level内的写是保证无锁写入的。并且，因为每一次有新的数据写入的时候其他尝试写入的线程也都能感知的到，所以这些并行写入的数据可以通过不断相互比较的方式来了解到，自己这个要写入的数据与其他并行写入的数据之间的大小关系，从而可以动态的进行调整以保证在每一层内，数据都是绝对有序的。<br>同一个level的一致性解决了，那么不同level之间的一致性是如何得到解决的呢？这就与我们刚才定义的一致性规范紧密相关了。因为数据的写入是从低层级开始，一层一层的往更高的层级推送的。而数据读取的时候，则是从最高层级往下读取的。又因为数据是绝对有序的，那么我们就一定可以认为，只要最低层级（level0）内存在了的数据，那么他就一定能够被所有线程看到。而如果在上推的过程中出现了任何异常，其实都是没关系的，因为上推的唯一目的在于加快检索速度，所以就算因为异常没有上推，也只是降低了查询的效率，对数据的可见性完全没有影响。<br>这个设计确实是非常的巧妙~</p>
-<p>这样，虽然每个元素的具体能够到达哪个层级是随机的，但从宏观上来看，低层元素的个数基本上是高层元素个数的一倍。从宏观上来看，如果按照我们上面定义的自最高层级依次往下遍历的读取模式，那么整个查询的时间复杂度就是O(log2n)。</p>
-<p>下面来介绍一些优化的思路，因为进行随机数的运算本身也是个很消耗cpu的操作，所以，一种最常见的优化就是，如果在插入的时候就能直接算出这个数据应该往高层推的总次数，那么就不需要算那么多次随机数了，每次写入只需要算一次就行了。<br>第二个优化的思路是如何能够实现一个高性能的随机数算法，这个各位可以自行搜索。</p>
-<p>虽然才开始接触Skiplist，但是已经被其深深地吸引了。因为其实现足够简单，性能又好，除了运气非常差的时候效率很低，其他时候都能做到很好的查询效率，赌博什么的最喜欢了~~~最重要的是，它还足够简单和容易理解！</p>
-<h2 id="代码实现">代码实现</h2><p>首先要的就是定义每个节点的数据类型</p>
-<pre><code><span class="comment">//每个节点有自己的level和forward指针</span>
-<span class="keyword">typedef</span> <span class="keyword">struct</span> snode
-{
-    <span class="keyword">int</span> key;
-    <span class="keyword">int</span> level;
-    <span class="keyword">int</span> value;
-    <span class="keyword">struct</span> snode* forward[maxlevel];
-}Node;
-</code></pre><p>然后定义skiplist的结构并初始化</p>
-<pre><code><span class="keyword">typedef</span> <span class="keyword">struct</span> slist
-{
-    <span class="keyword">struct</span> snode* head;
-    <span class="keyword">int</span> level;
-}skiplist;
-
-<span class="comment">//初始化skiplist</span>
-<span class="function"><span class="keyword">void</span> <span class="title">Init</span><span class="params">(skiplist * <span class="built_in">list</span>)</span>
-</span>{
-    <span class="built_in">list</span> -&gt; head = (Node*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(Node));
-    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span> ; i &lt; maxlevel ; i++)
-        <span class="built_in">list</span> -&gt; head -&gt; forward[i] = <span class="literal">NULL</span>;
-    <span class="built_in">list</span> -&gt; level = <span class="number">0</span>;
-}
-</code></pre><p>再然后是一些基本的构造节点makeNode , 生成层数的随机函数randomLevel等</p>
-<pre><code><span class="function">Node* <span class="title">makeNode</span><span class="params">(<span class="keyword">int</span> newLevel , <span class="keyword">int</span> key , <span class="keyword">int</span> value)</span>
-</span>{
-    Node* tmp = (Node *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(Node));
-    tmp -&gt; key = key;
-    tmp -&gt; value = value;
-    tmp -&gt; level = newLevel;
-    <span class="keyword">return</span> tmp;
-}
-
-<span class="function"><span class="keyword">int</span> <span class="title">randomLevel</span><span class="params">()</span>
-</span>{
-    <span class="keyword">int</span> newLevel = <span class="number">1</span>;
-    <span class="keyword">while</span>((rand()&amp;<span class="number">0xFFFF</span>) &lt; (<span class="number">0.4</span> * <span class="number">0xFFFF</span>))
-        newLevel ++;
-    <span class="keyword">return</span> newLevel &lt; maxlevel ? newLevel : maxlevel;
-}
-</code></pre><p>最后就是增删查的一些常用操作</p>
-<pre><code><span class="comment">/*一维链表的插入，删除我们都懂，其实这个和那个一样的原理。对于插入就是先找到位置，就是key处于左右两边数字的中间的时候。然后新建节点，将前面的forward指向他，他的forward指向前面的forward。关键就是用一个update数组来记录x前面指向 它的节点(lasted)，也就是x得前面节点。因为有多个forward，所以记录每个forward。Delete同理。*/</span>
-<span class="function"><span class="keyword">void</span> <span class="title">Insert</span><span class="params">(skiplist* <span class="built_in">list</span> , <span class="keyword">int</span> key , <span class="keyword">int</span> value)</span><span class="comment">//插入操作</span>
-</span>{
-    Node* update[maxlevel];
-    Node* x = <span class="built_in">list</span> -&gt; head;
-    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="built_in">list</span> -&gt; level - <span class="number">1</span> ; i &gt;= <span class="number">0</span> ; i--)
-    {
-        <span class="keyword">while</span>(x -&gt; forward[i] != <span class="literal">NULL</span> &amp;&amp; x -&gt; forward[i]-&gt;key &lt; key)
-            x = x -&gt; forward[i];
-        update[i] = x;
-    }
-    x = x -&gt; forward[<span class="number">0</span>];
-    <span class="keyword">if</span>(x != <span class="literal">NULL</span> &amp;&amp; x -&gt; key == key) x -&gt; value = value;
-    <span class="keyword">else</span>{
-        <span class="keyword">int</span> newLevel = randomLevel();
-        <span class="comment">//   cout&lt;&lt; "level = " &lt;&lt;newLevel&lt;&lt;endl;</span>
-        <span class="keyword">if</span> (newLevel &gt; <span class="built_in">list</span> -&gt; level)
-        {
-            <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="built_in">list</span> -&gt; level ; i &lt; newLevel ; i++)
-                update[i] = <span class="built_in">list</span> -&gt; head;
-            <span class="built_in">list</span> -&gt; level = newLevel;
-        }
-        x = makeNode(newLevel , key , value);
-        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span> ; i &lt; newLevel ; i++)
-        {
-            x -&gt; forward[i] = update[i] -&gt; forward[i];
-            update[i] -&gt; forward[i] = x;
-        }
-    }
-}
-
-
-
-
-
-<span class="function"><span class="keyword">void</span> <span class="title">Delete</span><span class="params">(skiplist* <span class="built_in">list</span> , <span class="keyword">int</span> key)</span><span class="comment">//删除操作</span>
-</span>{
-    Node* update[maxlevel];
-    Node* x = <span class="built_in">list</span> -&gt; head;
-    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="built_in">list</span> -&gt; level - <span class="number">1</span> ; i &gt;=<span class="number">0</span> ; i--)
-    {
-        <span class="keyword">while</span>(x -&gt; forward[i] != <span class="literal">NULL</span> &amp;&amp; x -&gt; forward[i] -&gt; key &lt; key)
-            x = x -&gt; forward[i];
-        update[i] = x;
-    }
-    x = x -&gt; forward[<span class="number">0</span>];
-    <span class="keyword">if</span>(x != <span class="literal">NULL</span> &amp;&amp; x -&gt; key == key)
-    {
-        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span> ; i &lt; x -&gt; level ; i++)
-            <span class="keyword">if</span>(update[i] -&gt; forward[i] != x) <span class="keyword">break</span>;
-            <span class="keyword">else</span> update[i] -&gt; forward[i] = x -&gt; forward[i];
-        <span class="built_in">free</span>(x);
-        <span class="keyword">while</span>(<span class="built_in">list</span> -&gt; level &gt; <span class="number">0</span> &amp;&amp; <span class="built_in">list</span> -&gt; head -&gt; forward[<span class="built_in">list</span> -&gt; level - <span class="number">1</span>] == <span class="literal">NULL</span> )
-            <span class="built_in">list</span> -&gt; level --;
-    }
-}
-
-<span class="function"><span class="keyword">int</span> <span class="title">Search</span><span class="params">(skiplist* <span class="built_in">list</span> , <span class="keyword">int</span> key)</span><span class="comment">//查找操作</span>
-</span>{
-    Node* x = <span class="built_in">list</span> -&gt; head;
-    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="built_in">list</span> -&gt; level - <span class="number">1</span> ; i &gt;=<span class="number">0</span> ; i--)
-    {
-        <span class="keyword">while</span>(x -&gt; forward[i] != <span class="literal">NULL</span> &amp;&amp;  x -&gt; forward[i]-&gt; key &lt; key)
-            x = x -&gt; forward[i];
-    }
-    <span class="keyword">if</span>(x -&gt; forward[<span class="number">0</span>] != <span class="literal">NULL</span> &amp;&amp; x -&gt; forward[<span class="number">0</span>] -&gt; key == key)
-    {
-        <span class="built_in">printf</span>(<span class="string">"0\n"</span>);
-        <span class="keyword">return</span> x -&gt; value;
-    }<span class="keyword">else</span>{
-        <span class="comment">//right</span>
-        <span class="keyword">int</span> right , left;
-        <span class="keyword">if</span>(x -&gt; forward[<span class="number">0</span>] == <span class="literal">NULL</span>)
-            right = n ; <span class="keyword">else</span> right = x -&gt; forward[<span class="number">0</span>] -&gt; key - <span class="number">1</span>;
-        <span class="keyword">if</span>(x == <span class="built_in">list</span>-&gt;head) left = <span class="number">1</span> ; <span class="keyword">else</span>  left = x -&gt; key + <span class="number">1</span>;
-        <span class="comment">//printf("left = %d , right = %d \n" , left , right);</span>
-        <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,right - left + <span class="number">1</span>);
-        <span class="keyword">return</span> -<span class="number">1</span>;
-    }
-}
-</code></pre><h2 id="总结">总结</h2><p>看看维基百科就知道其实跳表的实现还有好多复杂的功能，但是由于个人能力有限有些功能功能没调好，这里只实现了最基本的数据结构以及最简单的增删改等功能。</p>
-
+        
+          <p class="article-more-link">
+            <a href="/2015/10/29/数据结构——跳表/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://wufangyu.cn/2015/10/29/数据结构——跳表/" data-id="cigbpankz0005bsdvonp2krc6" class="article-share-link">Share</a>
       
+        <a data-url="http://wufangyu.cn/2015/10/29/数据结构——跳表/" data-id="cigcg56dn0006bsdv73ddrzwi" class="article-share-link" data-share="baidu" data-title="数据结构之跳表">分享到</a>
+      
+
+      
+        <a href="http://wufangyu.cn/2015/10/29/数据结构——跳表/#ds-thread" class="article-comment-link">评论</a>
+      
+
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数据结构/">数据结构</a></li></ul>
 
@@ -300,48 +144,22 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h2 id="背景简介">背景简介</h2><p>在写一个自动化脚本时，要模拟发送网络请求，其中网络请求包含hid、md5、机器是64位还是32位等众多情况，而且这些因子还是不确定的，产品和开始可能会随时更改，这里我们就想通过自动化脚本根据这些因子全排列地自动去生成Case。</p>
-<p>这里就怎么写个扩展性较好的生成全排列Case的代码，做下简单分享，具体前因后果请关注另外一篇文章（待发）。</p>
-<h2 id="问题分析">问题分析</h2><p>现在假设就下面这三个case</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:left">hid</th>
-<th style="text-align:right">md5</th>
-<th style="text-align:center">64位/32位</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">123</td>
-<td style="text-align:right">abc</td>
-<td style="text-align:center">32</td>
-</tr>
-<tr>
-<td style="text-align:left">456</td>
-<td style="text-align:right">cde</td>
-<td style="text-align:center">64</td>
-</tr>
-</tbody>
-</table>
-<p>现在又三个因子，每个因子2种情况，全排列就是8种，我们最容易想到的就是for循环，伪码如下：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(hid)</span><br><span class="line">   <span class="keyword">for</span>(md5)</span><br><span class="line">      <span class="keyword">for</span>(<span class="number">64</span>位/<span class="number">32</span>位)</span><br></pre></td></tr></table></figure></p>
-<p>这样写起来简单，但是如果我们现在又加了一个因子，比如是否安装搜狗浏览器，这个带代码我们就需要去改了，得加一层循环。这样到最后代码不仅维护起来特别麻烦，而且不美观。</p>
-<p>怎么办？</p>
-<p>我想到的有两种解决办法：</p>
-<h3 id="递归解法">递归解法</h3><p>第一次在第一个数组去一个因子，递归调用去第二个数组取因子，直到取到最后一个数组，这时候就是一条完整的Case。然后每个数组遍历取元素，就可以得到所有路径了。</p>
-<p>伪码如下（我们把所有因子以及对应的情况维护在一个文档，函数自己去文档按顺序读出所有因子，这部比较简单我就不多说了）：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//dep表示当前是第几个因子</span></span><br><span class="line"><span class="comment">//line代表一共有多少个因子</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">GetFullAz</span><span class="params">(<span class="keyword">int</span> dep, <span class="keyword">int</span> Line)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="comment">//最后一个因子了</span></span><br><span class="line">	<span class="keyword">if</span>(dep &gt;= Line) </span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	<span class="comment">//遍历第dep个因子</span></span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= len(dep); i++) </span><br><span class="line">		GetFullAz(dep + <span class="number">1</span>,Line);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这里涉及一些路径记录的技巧，就不一一说说了，统一看附录代码</p>
-<h3 id="类似于状态压缩的解法">类似于状态压缩的解法</h3><p>其实这里就是一个全状态为的枚举，我们用一位数记录一个因子的状态，最后将这些数合起来，从下到大枚举，得到的就是全状态。</p>
-<p>示例：对于上面个例子，由于每个因子只有两种状态，我们就可以用三个二进制数来表示，那么合起来后就是一个三位的二进制数，最小值为0，最大值为7，我们从0枚举到7，就可以得到全状态。</p>
-<p>伪码如下：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//将一个数字解码到各个位</span></span><br><span class="line"><span class="comment">//以形成case,比如上面枚举0到7枚举到5时</span></span><br><span class="line"><span class="comment">//先把5解码成101，让后去看101对应的情况</span></span><br><span class="line"><span class="comment">//既：hid = 456  md5 = abc system = 64位</span></span><br><span class="line"><span class="comment">//state当前状态位、line因子个数</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Decode</span><span class="params">(<span class="keyword">int</span> state, <span class="keyword">int</span> Line)</span> </span><br><span class="line"></span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"Case:%-4d  "</span>,CaseNum++);</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = Line - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--)</span><br><span class="line">	&#123;</span><br><span class="line">	    <span class="comment">//FactorNum[i]第i个因子有多少种情况</span></span><br><span class="line">		<span class="keyword">int</span> Temp = state % FactorNum[i]; </span><br><span class="line">		state /= FactorNum[i];</span><br><span class="line">		<span class="built_in">cout</span>&lt;&lt;CaseArr[i][<span class="number">0</span>]&lt;&lt;<span class="string">" = "</span>;</span><br><span class="line">		<span class="built_in">cout</span>&lt;&lt;CaseArr[i][Temp+<span class="number">1</span>]&lt;&lt;<span class="string">"  "</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//枚举状态位</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; State; i++)</span><br><span class="line">&#123;</span><br><span class="line">		Decode(i, Line);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h2 id="总结">总结</h2><p>相信在做测试时我们遇到的一些有多因子的情况还是非常之多的，而且因子会改变也会经常发生，手工的话我们可以用一些工具生成正交试验或者就是全排列的用例，但是用自动化我们必须要去自己实现一遍对应的算法。这里给大家做下简单的分享，还望批评指正。</p>
-<h2 id="代码附录">代码附录</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span><br><span class="line"> * main.cpp</span><br><span class="line"> *</span><br><span class="line"> *  Created on: 2014-12-9</span><br><span class="line"> *      Author: fangyu</span><br><span class="line"> */</span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;functional&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;sstream&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;iomanip&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;numeric&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;cassert&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;bitset&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;queue&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;stack&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;ctime&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;list&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;set&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;map&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="comment">//#pragma comment(linker,"/STACK:102400000,102400000")</span></span><br><span class="line"><span class="built_in">string</span> CaseArr[<span class="number">1000</span>][<span class="number">100</span>];</span><br><span class="line"><span class="keyword">int</span> FactorNum[<span class="number">1000</span>], CaseNum;</span><br><span class="line"></span><br><span class="line"><span class="comment">//递归解法</span></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; CasePath;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">OutPut</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> Len = CasePath.size();</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"Case:%-4d  "</span>,CaseNum++);</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; Len; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">cout</span>&lt;&lt;CaseArr[i][<span class="number">0</span>]&lt;&lt;<span class="string">" = "</span>&lt;&lt;CaseArr[i][CasePath[i]]&lt;&lt;<span class="string">"  "</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">GetFullAz</span><span class="params">(<span class="keyword">int</span> dep, <span class="keyword">int</span> Line)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(dep &gt;= Line)</span><br><span class="line">	&#123;</span><br><span class="line">		OutPut();</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= FactorNum[dep]; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">//cout&lt;&lt;CaseArr[Line][0]&lt;&lt;" = "&lt;&lt;CaseArr[Line][i]&lt;&lt;"  ";</span></span><br><span class="line">		<span class="comment">//if(Line == 1) cout&lt;&lt;endl;</span></span><br><span class="line">		CasePath.push_back(i);</span><br><span class="line">		GetFullAz(dep + <span class="number">1</span>,Line);</span><br><span class="line">		CasePath.pop_back();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//状态压缩解法</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Decode</span><span class="params">(<span class="keyword">int</span> state, <span class="keyword">int</span> Line)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"Case:%-4d  "</span>,CaseNum++);</span><br><span class="line">	<span class="comment">//cout&lt;&lt;"Case:"&lt;&lt;CaseNum++&lt;&lt;" ";</span></span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = Line - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">int</span> Temp = state % FactorNum[i];</span><br><span class="line">		state /= FactorNum[i];</span><br><span class="line">		<span class="built_in">cout</span>&lt;&lt;CaseArr[i][<span class="number">0</span>]&lt;&lt;<span class="string">" = "</span>&lt;&lt;CaseArr[i][Temp+<span class="number">1</span>]&lt;&lt;<span class="string">"  "</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">	freopen(<span class="string">"testin.txt"</span>,<span class="string">"r"</span>,<span class="built_in">stdin</span>);</span><br><span class="line">	<span class="built_in">string</span> FactorName;</span><br><span class="line">	<span class="keyword">int</span> Line = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">int</span> State = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">while</span>(<span class="built_in">cin</span>&gt;&gt;FactorName)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">cin</span>&gt;&gt;FactorNum[Line];</span><br><span class="line">		State *= FactorNum[Line];</span><br><span class="line">		CaseArr[Line][<span class="number">0</span>] = FactorName;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= FactorNum[Line]; i++)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">cin</span>&gt;&gt;CaseArr[Line][i];</span><br><span class="line">		&#125;</span><br><span class="line">		Line++;</span><br><span class="line">		<span class="comment">//getchar();</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//递归</span></span><br><span class="line">	CasePath.clear();</span><br><span class="line">	CaseNum = <span class="number">1</span>;</span><br><span class="line">	GetFullAz(<span class="number">0</span>, Line);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//状态压缩</span></span><br><span class="line"><span class="comment">//	CaseNum = 1;</span></span><br><span class="line"><span class="comment">//	for(int i = 0; i &lt; State; i++)</span></span><br><span class="line"><span class="comment">//	&#123;</span></span><br><span class="line"><span class="comment">//		Decode(i, Line);</span></span><br><span class="line"><span class="comment">//	&#125;</span></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*testin.txt*/</span></span><br><span class="line">Hid <span class="number">3</span> <span class="number">11</span> <span class="number">22</span> <span class="number">33</span></span><br><span class="line">Md5 <span class="number">3</span> qw as zx</span><br><span class="line">SE  <span class="number">2</span> 有 无</span><br></pre></td></tr></table></figure>
-
+        
+          <p class="article-more-link">
+            <a href="/2015/10/29/自动化脚本中运到的一些简单算法/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://wufangyu.cn/2015/10/29/自动化脚本中运到的一些简单算法/" data-id="cigbpanjz0000bsdvevt5132v" class="article-share-link">Share</a>
       
+        <a data-url="http://wufangyu.cn/2015/10/29/自动化脚本中运到的一些简单算法/" data-id="cigcg56dd0001bsdvyyev2vdl" class="article-share-link" data-share="baidu" data-title="自动化脚本中用到的一些简单算法">分享到</a>
+      
+
+      
+        <a href="http://wufangyu.cn/2015/10/29/自动化脚本中运到的一些简单算法/#ds-thread" class="article-comment-link">评论</a>
+      
+
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/自动化/">自动化</a></li></ul>
 
@@ -352,16 +170,59 @@
 
 
   
+    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/10/28/hello-world/" class="article-date">
+  <time datetime="2015-10-28T03:43:26.000Z" itemprop="datePublished">2015-10-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/10/28/hello-world/">博客开篇</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>欢迎来到 <a href="http://wufangyu.cn/">Fangyu Blog</a> ，这里博主会给大家分享些软件开发、测试以及算法方面的小知识与心得，还望各路大神多多指教！</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://wufangyu.cn/2015/10/28/hello-world/" data-id="cigcg56dq0009bsdvof85wpmu" class="article-share-link" data-share="baidu" data-title="博客开篇">分享到</a>
+      
+
+      
+        <a href="http://wufangyu.cn/2015/10/28/hello-world/#ds-thread" class="article-comment-link">评论</a>
+      
+
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
   
 </section>
-        
-          <aside id="sidebar">
+      
+      <aside id="sidebar">
   
     
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
+    <h3 class="widget-title">标签</h3>
     <div class="widget">
       <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据结构/">数据结构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自动化/">自动化</a><span class="tag-list-count">1</span></li></ul>
     </div>
@@ -370,7 +231,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
+    <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
       <a href="/tags/数据结构/" style="font-size: 10px;">数据结构</a> <a href="/tags/算法/" style="font-size: 10px;">算法</a> <a href="/tags/自动化/" style="font-size: 10px;">自动化</a>
     </div>
@@ -379,7 +240,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
+    <h3 class="widget-title">归档</h3>
     <div class="widget">
       <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">3</span></li></ul>
     </div>
@@ -388,13 +249,9 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Recents</h3>
+    <h3 class="widget-title">近期文章</h3>
     <div class="widget">
       <ul>
-        
-          <li>
-            <a href="/2015/10/29/hello-world/">博客开篇</a>
-          </li>
         
           <li>
             <a href="/2015/10/29/数据结构——跳表/">数据结构之跳表</a>
@@ -404,42 +261,113 @@
             <a href="/2015/10/29/自动化脚本中运到的一些简单算法/">自动化脚本中用到的一些简单算法</a>
           </li>
         
+          <li>
+            <a href="/2015/10/28/hello-world/">博客开篇</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">友情链接</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="http://xiguabaobao.com" target="_blank">主题作者</a>
+          </li>
+        
+          <li>
+            <a href="http://reqianduan.com" target="_blank">热前端</a>
+          </li>
+        
       </ul>
     </div>
   </div>
 
   
 </aside>
-        
-      </div>
-      <footer id="footer">
+      
+    </div>
+    <footer id="footer">
   
   <div class="outer">
     <div id="footer-info" class="inner">
       &copy; 2015 Fangyu Wu<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
     </div>
   </div>
 </footer>
-    </div>
-    <nav id="mobile-nav">
+  </div>
+  <nav id="mobile-nav">
   
     <a href="/" class="mobile-nav-link">Home</a>
   
     <a href="/archives" class="mobile-nav-link">Archives</a>
   
 </nav>
-    
+  <!-- totop start -->
+<div id="totop">
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+</div>
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<!-- totop end -->
+
+<!-- 多说公共js代码 start -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"14081808"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+<!-- 多说公共js代码 end -->
 
 
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
-  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+<!-- 百度分享 start -->
+
+<div id="article-share-box" class="article-share-box">
+  <div id="bdshare" class="bdsharebuttonbox article-share-links">
+    <a class="article-share-weibo" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a class="article-share-weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a class="article-share-qq" data-cmd="sqq" title="分享到QQ"></a>
+    <a class="article-share-renren" data-cmd="renren" title="分享到人人网"></a>
+    <a class="article-share-more" data-cmd="more" title="更多"></a>
+  </div>
+</div>
+<script>
+  function SetShareData(cmd, config) {
+    if (shareDataTitle && shareDataUrl) {
+      config.bdText = shareDataTitle;
+      config.bdUrl = shareDataUrl;
+    }
+    return config;
+  }
+  window._bd_share_config={
+    "common":{onBeforeClick: SetShareData},
+    "share":{"bdCustomStyle":"/css/bdshare.css"}
+  };
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+<!-- 百度分享 end -->
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+
 
 
 <script src="/js/script.js" type="text/javascript"></script>
 
-  </div>
+</div>
 </body>
 </html>
