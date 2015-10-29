@@ -3,17 +3,39 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Fangyu Blog</title>
+  <title>自动化脚本中用到的一些简单算法 | Fangyu Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Fangyu Blog">
-<meta property="og:url" content="http://wufangyu.cn/index.html">
+  <meta name="description" content="背景简介在写一个自动化脚本时，要模拟发送网络请求，其中网络请求包含hid、md5、机器是64位还是32位等众多情况，而且这些因子还是不确定的，产品和开始可能会随时更改，这里我们就想通过自动化脚本根据这些因子全排列地自动去生成Case。
+这里就怎么写个扩展性较好的生成全排列Case的代码，做下简单分享，具体前因后果请关注另外一篇文章（待发）。
+问题分析现在假设就下面这三个case
+
+
+
+hid
+md">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自动化脚本中用到的一些简单算法">
+<meta property="og:url" content="http://wufangyu.cn/2015/10/29/自动化脚本中运到的一些简单算法/index.html">
 <meta property="og:site_name" content="Fangyu Blog">
-<meta property="og:description">
+<meta property="og:description" content="背景简介在写一个自动化脚本时，要模拟发送网络请求，其中网络请求包含hid、md5、机器是64位还是32位等众多情况，而且这些因子还是不确定的，产品和开始可能会随时更改，这里我们就想通过自动化脚本根据这些因子全排列地自动去生成Case。
+这里就怎么写个扩展性较好的生成全排列Case的代码，做下简单分享，具体前因后果请关注另外一篇文章（待发）。
+问题分析现在假设就下面这三个case
+
+
+
+hid
+md">
+<meta property="og:updated_time" content="2015-10-29T04:13:02.658Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Fangyu Blog">
-<meta name="twitter:description">
+<meta name="twitter:title" content="自动化脚本中用到的一些简单算法">
+<meta name="twitter:description" content="背景简介在写一个自动化脚本时，要模拟发送网络请求，其中网络请求包含hid、md5、机器是64位还是32位等众多情况，而且这些因子还是不确定的，产品和开始可能会随时更改，这里我们就想通过自动化脚本根据这些因子全排列地自动去生成Case。
+这里就怎么写个扩展性较好的生成全排列Case的代码，做下简单分享，具体前因后果请关注另外一篇文章（待发）。
+问题分析现在假设就下面这三个case
+
+
+
+hid
+md">
   
     <link rel="alternative" href="/atom.xml" title="Fangyu Blog" type="application/atom+xml">
   
@@ -59,225 +81,7 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/10/29/hello-world/" class="article-date">
-  <time datetime="2015-10-29T04:15:50.731Z" itemprop="datePublished">2015-10-29</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/10/29/hello-world/">博客开篇</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>欢迎来到 <a href="http://wufangyu.cn/">Fangyu Blog</a> ，这里博主会给大家分享些软件开发、测试以及算法方面的小知识与心得，还望各路大神多多指教！</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://wufangyu.cn/2015/10/29/hello-world/" data-id="cigbpanl90008bsdvnwe1tfo5" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-数据结构——跳表" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/10/29/数据结构——跳表/" class="article-date">
-  <time datetime="2015-10-29T03:56:18.000Z" itemprop="datePublished">2015-10-29</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/10/29/数据结构——跳表/">数据结构之跳表</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="背景">背景</h2><p>上次听田欧同学介绍咱们搜狗浏览器新用到的LevelDB数据库时，了解到这里用到了一种很牛的数据结构——跳表，于是便着手了解了下。 </p>
-<h2 id="简介">简介</h2><p> 跳表是一种随机化数据结构，基于并联的链表，其效率可比拟于二叉查找树（对于大多数操作需要O(log n)平均时间）。基本上，跳跃列表是对有序的链表增加上附加的前进链接，增加是以随机化的方式进行的，所以在列表中的查找可以快速的跳过部分列表，因此得名。所有操作都以对数随机化的时间进行。——<a href="http://zh.wikipedia.org/wiki/%E8%B7%B3%E8%B7%83%E5%88%97%E8%A1%A8" target="_blank" rel="external">维基百科</a></p>
-<h2 id="基本实现方法">基本实现方法</h2><p>首先我们先定义一个概念，叫层(level) ,为了方便理解，大家可以直接对应到平衡有序二叉树里面的树的高度。</p>
-<p>每一层在逻辑上都是一个链表，既然是链表，那么自然也就只能从头部遍历或从尾部遍历咯。<br>一个标准的skiplist在内存中可能是这样的：</p>
-<blockquote>
-<p><strong>示例解释</strong><br><strong>Level2:</strong> 0,4<br><strong>Level1:</strong> 0,2,4,6,9<br><strong>Level0:</strong> 0,1,2,3,4,5,6,7,8,9</p>
-</blockquote>
-<p>可以看到，层级越高，数据量越小，并且，高层级的元素都有一个到低层级元素的指针，这样他可以很容易的通过指针跳转到更底层的元素上面。</p>
-<p>下面让我们来看看读取的逻辑，比如如果要读取6，那么从最高层级的链表的头部（从左向右）依次读取数据，发现6&gt;4，于是在通过Level2 的4 这个元素到level1的4这个元素的指针，跳跃到Level1，然后从Level1的4这个元素继续往右面找发现下一个元素就是6，于是将整个6所对应的元素返回。<br>那么要找3的话应该怎么操作呢？</p>
-<p>仍然是从最高层级level2的头部开始遍历，发现0&lt;3&lt;4 . 于是利用level2的0这个元素到level1的0这个元素的指针，跳跃到level1的0元素，继续向右遍历，发现2&lt;3&lt;4。于是利用Level1的2这个元素到level0的2这个元素的指针，跳跃到level0的2这个元素上，继续向右遍历找到元素3，于是将整个3所对应的元素返回。</p>
-<p>可以看到，利用这种结构如果我们能够比较准确的在链表里将数据排好序，并且level0中每两个元素中拿出一个元素推送到更高的层级level1中，然后在level1中也按照每两个元素拿出一个元素推送到更高层级的level2中…依此类推，就可以构建出一个查询时间复杂度为O(log2n)的查找数据结构了。</p>
-<p>但这里有个关键的难在于：如何能够知道，当前写入的元素是否应该被推送到更高的层级呢？这也就对应了原来avl,红黑里面为什么要做如此复杂的旋转的原因。而在william的解决方案里，他选择了一条完全不相同的路来做到这一点。</p>
-<p>这也是skiplist里面一个最大的创新点，就是引入了一个新条件：概率。与传统的根据临近元素的来决定是否上推的avl或红黑树相比。Skiplist则使用概率这个完全不需要依托集合内其他元素的因素来决定这个元素是否要上推。这种方式的最大好处，就是可以让每一次的插入都变得更“独立”，而不需要依托于其他元素插入的结果。 这样就能够让冲突只发生在数据真正写入的那一步操作上，而我们已经在前面的文章里面知道了，对于链表来说，数据的写入是能够做到无锁的写入新数据的，于是，利用skiplist,就能成功的做到无锁的有序平衡“树”（多层级）结构。</p>
-<p>下面我们就来看看如何利用概率来决定某个元素是否需要上推的。<br>让我们先用一个简单的模式来说明解决问题的思路，然后再探讨如何进行优化。<br>我们可以把skiplist的写入分为两个步骤，第一个步骤是找到元素在整个顺序列表中要写入的位置，这个步骤与我们上面讲到的读取过程是一致的。<br>然后下一个步骤是决定这个数据是否需要从当前层级上推到上一个层级，具体的做法是从最低层级level0开始,写入用户需要写入的值，并计算一个随机数，如果是0，则不上推到高一层，而如果是1，则上推到高一个层，然后指针跳跃到高一个层级，重复进行随机数计算来决定是否需要推到更高的层级，如果最高层中只有自己这个元素的时候，则也停止计算随机数（因为不需要再推到更高层了）。<br>最后，还有个问题就是如何解决并发写入的问题，为了阐述清楚如何能够做到并发写，我们需要先对什么叫”一致性的写”，进行一下说明。<br>一般的人理解数据的一致性写的定义可能是：如果写成功了你就让我看到，而如果没写成功，你就不让我看到呗。<br>但实际上这个定义在计算机里面是无法操作的，因为我们之前也提到过，计算机其实就是个打字机，一次只能进行一个操作，针对复杂的操作，只能通过加锁来实现一致性。但加锁本身的代价又很大，这就形成了个悖论，如何能够既保证性能，又能够实现一致性呢？<br>这时候就需要我们对一致性的定义针对多线程环境进行一下完善：在之前的定义，我们是把写入的过程分为两个时间点的，一个时间点是调用写入接口前，另一个时间点是调用写入接口后。但其实在多线程环境下，应该分为三个时间点，第一个是调用写入接口前，第二个是调用写入接口，但还未返回结果的那段时间，第三个是调用写入接口，返回结果后。<br>然后我们来看看，针对这三个时间点应该如何选择，才能保证数据的一致性：<br>对于第一个时间点，因为还没有调用写入接口，所以所有线程（包含调用写入的线程）都不应该能够从这个映射中读取到待写入的数据。<br>第二个时间点，也就是写入操作过程中，我们需要能够保证：如果数据已经被其他线程看到过了，那么再这个时间点之后的所有时间点，数据应该都能够被其他线程看到，也就是说不能出现先被看到但又被删掉的情况。<br>第三个时间点，这个写入的操作应该能够被所有人看到。</p>
-<p>已经定义好了一致性的规范，下面就来看看这个无锁并发的skiplist是如何处理好并发一致性的。<br>首先我们需要先了解一下链表是如何能够做到无锁写入的：<br>对于链表类的数据结构来说，如果想做到无锁，主要就是解决以下的问题，如何能够让当前线程知道，目前要插入新元素的位置，是否有其他人正在插入？ 如果有的话，那么就自旋等待，如果没有，那么就插入。利用这个原理，把原来的多步指针变更操作利用compare and set的方式转换为一个伪原子操作。这样就可以有效的减少锁导致的上下文切换开销，在争用不频繁的情况下，极大的提升性能。（这只是思路，关于linkedlist的无锁编程细节，可以参照A pragmatic implementation of non-blocking linked lists，这篇文章）<br>利用上面链表的无锁写入，我们就能够保证，数据在每一个level内的写是保证无锁写入的。并且，因为每一次有新的数据写入的时候其他尝试写入的线程也都能感知的到，所以这些并行写入的数据可以通过不断相互比较的方式来了解到，自己这个要写入的数据与其他并行写入的数据之间的大小关系，从而可以动态的进行调整以保证在每一层内，数据都是绝对有序的。<br>同一个level的一致性解决了，那么不同level之间的一致性是如何得到解决的呢？这就与我们刚才定义的一致性规范紧密相关了。因为数据的写入是从低层级开始，一层一层的往更高的层级推送的。而数据读取的时候，则是从最高层级往下读取的。又因为数据是绝对有序的，那么我们就一定可以认为，只要最低层级（level0）内存在了的数据，那么他就一定能够被所有线程看到。而如果在上推的过程中出现了任何异常，其实都是没关系的，因为上推的唯一目的在于加快检索速度，所以就算因为异常没有上推，也只是降低了查询的效率，对数据的可见性完全没有影响。<br>这个设计确实是非常的巧妙~</p>
-<p>这样，虽然每个元素的具体能够到达哪个层级是随机的，但从宏观上来看，低层元素的个数基本上是高层元素个数的一倍。从宏观上来看，如果按照我们上面定义的自最高层级依次往下遍历的读取模式，那么整个查询的时间复杂度就是O(log2n)。</p>
-<p>下面来介绍一些优化的思路，因为进行随机数的运算本身也是个很消耗cpu的操作，所以，一种最常见的优化就是，如果在插入的时候就能直接算出这个数据应该往高层推的总次数，那么就不需要算那么多次随机数了，每次写入只需要算一次就行了。<br>第二个优化的思路是如何能够实现一个高性能的随机数算法，这个各位可以自行搜索。</p>
-<p>虽然才开始接触Skiplist，但是已经被其深深地吸引了。因为其实现足够简单，性能又好，除了运气非常差的时候效率很低，其他时候都能做到很好的查询效率，赌博什么的最喜欢了~~~最重要的是，它还足够简单和容易理解！</p>
-<h2 id="代码实现">代码实现</h2><p>首先要的就是定义每个节点的数据类型</p>
-<pre><code><span class="comment">//每个节点有自己的level和forward指针</span>
-<span class="keyword">typedef</span> <span class="keyword">struct</span> snode
-{
-    <span class="keyword">int</span> key;
-    <span class="keyword">int</span> level;
-    <span class="keyword">int</span> value;
-    <span class="keyword">struct</span> snode* forward[maxlevel];
-}Node;
-</code></pre><p>然后定义skiplist的结构并初始化</p>
-<pre><code><span class="keyword">typedef</span> <span class="keyword">struct</span> slist
-{
-    <span class="keyword">struct</span> snode* head;
-    <span class="keyword">int</span> level;
-}skiplist;
-
-<span class="comment">//初始化skiplist</span>
-<span class="function"><span class="keyword">void</span> <span class="title">Init</span><span class="params">(skiplist * <span class="built_in">list</span>)</span>
-</span>{
-    <span class="built_in">list</span> -&gt; head = (Node*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(Node));
-    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span> ; i &lt; maxlevel ; i++)
-        <span class="built_in">list</span> -&gt; head -&gt; forward[i] = <span class="literal">NULL</span>;
-    <span class="built_in">list</span> -&gt; level = <span class="number">0</span>;
-}
-</code></pre><p>再然后是一些基本的构造节点makeNode , 生成层数的随机函数randomLevel等</p>
-<pre><code><span class="function">Node* <span class="title">makeNode</span><span class="params">(<span class="keyword">int</span> newLevel , <span class="keyword">int</span> key , <span class="keyword">int</span> value)</span>
-</span>{
-    Node* tmp = (Node *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(Node));
-    tmp -&gt; key = key;
-    tmp -&gt; value = value;
-    tmp -&gt; level = newLevel;
-    <span class="keyword">return</span> tmp;
-}
-
-<span class="function"><span class="keyword">int</span> <span class="title">randomLevel</span><span class="params">()</span>
-</span>{
-    <span class="keyword">int</span> newLevel = <span class="number">1</span>;
-    <span class="keyword">while</span>((rand()&amp;<span class="number">0xFFFF</span>) &lt; (<span class="number">0.4</span> * <span class="number">0xFFFF</span>))
-        newLevel ++;
-    <span class="keyword">return</span> newLevel &lt; maxlevel ? newLevel : maxlevel;
-}
-</code></pre><p>最后就是增删查的一些常用操作</p>
-<pre><code><span class="comment">/*一维链表的插入，删除我们都懂，其实这个和那个一样的原理。对于插入就是先找到位置，就是key处于左右两边数字的中间的时候。然后新建节点，将前面的forward指向他，他的forward指向前面的forward。关键就是用一个update数组来记录x前面指向 它的节点(lasted)，也就是x得前面节点。因为有多个forward，所以记录每个forward。Delete同理。*/</span>
-<span class="function"><span class="keyword">void</span> <span class="title">Insert</span><span class="params">(skiplist* <span class="built_in">list</span> , <span class="keyword">int</span> key , <span class="keyword">int</span> value)</span><span class="comment">//插入操作</span>
-</span>{
-    Node* update[maxlevel];
-    Node* x = <span class="built_in">list</span> -&gt; head;
-    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="built_in">list</span> -&gt; level - <span class="number">1</span> ; i &gt;= <span class="number">0</span> ; i--)
-    {
-        <span class="keyword">while</span>(x -&gt; forward[i] != <span class="literal">NULL</span> &amp;&amp; x -&gt; forward[i]-&gt;key &lt; key)
-            x = x -&gt; forward[i];
-        update[i] = x;
-    }
-    x = x -&gt; forward[<span class="number">0</span>];
-    <span class="keyword">if</span>(x != <span class="literal">NULL</span> &amp;&amp; x -&gt; key == key) x -&gt; value = value;
-    <span class="keyword">else</span>{
-        <span class="keyword">int</span> newLevel = randomLevel();
-        <span class="comment">//   cout&lt;&lt; "level = " &lt;&lt;newLevel&lt;&lt;endl;</span>
-        <span class="keyword">if</span> (newLevel &gt; <span class="built_in">list</span> -&gt; level)
-        {
-            <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="built_in">list</span> -&gt; level ; i &lt; newLevel ; i++)
-                update[i] = <span class="built_in">list</span> -&gt; head;
-            <span class="built_in">list</span> -&gt; level = newLevel;
-        }
-        x = makeNode(newLevel , key , value);
-        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span> ; i &lt; newLevel ; i++)
-        {
-            x -&gt; forward[i] = update[i] -&gt; forward[i];
-            update[i] -&gt; forward[i] = x;
-        }
-    }
-}
-
-
-
-
-
-<span class="function"><span class="keyword">void</span> <span class="title">Delete</span><span class="params">(skiplist* <span class="built_in">list</span> , <span class="keyword">int</span> key)</span><span class="comment">//删除操作</span>
-</span>{
-    Node* update[maxlevel];
-    Node* x = <span class="built_in">list</span> -&gt; head;
-    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="built_in">list</span> -&gt; level - <span class="number">1</span> ; i &gt;=<span class="number">0</span> ; i--)
-    {
-        <span class="keyword">while</span>(x -&gt; forward[i] != <span class="literal">NULL</span> &amp;&amp; x -&gt; forward[i] -&gt; key &lt; key)
-            x = x -&gt; forward[i];
-        update[i] = x;
-    }
-    x = x -&gt; forward[<span class="number">0</span>];
-    <span class="keyword">if</span>(x != <span class="literal">NULL</span> &amp;&amp; x -&gt; key == key)
-    {
-        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span> ; i &lt; x -&gt; level ; i++)
-            <span class="keyword">if</span>(update[i] -&gt; forward[i] != x) <span class="keyword">break</span>;
-            <span class="keyword">else</span> update[i] -&gt; forward[i] = x -&gt; forward[i];
-        <span class="built_in">free</span>(x);
-        <span class="keyword">while</span>(<span class="built_in">list</span> -&gt; level &gt; <span class="number">0</span> &amp;&amp; <span class="built_in">list</span> -&gt; head -&gt; forward[<span class="built_in">list</span> -&gt; level - <span class="number">1</span>] == <span class="literal">NULL</span> )
-            <span class="built_in">list</span> -&gt; level --;
-    }
-}
-
-<span class="function"><span class="keyword">int</span> <span class="title">Search</span><span class="params">(skiplist* <span class="built_in">list</span> , <span class="keyword">int</span> key)</span><span class="comment">//查找操作</span>
-</span>{
-    Node* x = <span class="built_in">list</span> -&gt; head;
-    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="built_in">list</span> -&gt; level - <span class="number">1</span> ; i &gt;=<span class="number">0</span> ; i--)
-    {
-        <span class="keyword">while</span>(x -&gt; forward[i] != <span class="literal">NULL</span> &amp;&amp;  x -&gt; forward[i]-&gt; key &lt; key)
-            x = x -&gt; forward[i];
-    }
-    <span class="keyword">if</span>(x -&gt; forward[<span class="number">0</span>] != <span class="literal">NULL</span> &amp;&amp; x -&gt; forward[<span class="number">0</span>] -&gt; key == key)
-    {
-        <span class="built_in">printf</span>(<span class="string">"0\n"</span>);
-        <span class="keyword">return</span> x -&gt; value;
-    }<span class="keyword">else</span>{
-        <span class="comment">//right</span>
-        <span class="keyword">int</span> right , left;
-        <span class="keyword">if</span>(x -&gt; forward[<span class="number">0</span>] == <span class="literal">NULL</span>)
-            right = n ; <span class="keyword">else</span> right = x -&gt; forward[<span class="number">0</span>] -&gt; key - <span class="number">1</span>;
-        <span class="keyword">if</span>(x == <span class="built_in">list</span>-&gt;head) left = <span class="number">1</span> ; <span class="keyword">else</span>  left = x -&gt; key + <span class="number">1</span>;
-        <span class="comment">//printf("left = %d , right = %d \n" , left , right);</span>
-        <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,right - left + <span class="number">1</span>);
-        <span class="keyword">return</span> -<span class="number">1</span>;
-    }
-}
-</code></pre><h2 id="总结">总结</h2><p>看看维基百科就知道其实跳表的实现还有好多复杂的功能，但是由于个人能力有限有些功能功能没调好，这里只实现了最基本的数据结构以及最简单的增删改等功能。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://wufangyu.cn/2015/10/29/数据结构——跳表/" data-id="cigbpankz0005bsdvonp2krc6" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数据结构/">数据结构</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-自动化脚本中运到的一些简单算法" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-自动化脚本中运到的一些简单算法" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2015/10/29/自动化脚本中运到的一些简单算法/" class="article-date">
   <time datetime="2015-10-29T03:43:26.000Z" itemprop="datePublished">2015-10-29</time>
@@ -290,8 +94,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/10/29/自动化脚本中运到的一些简单算法/">自动化脚本中用到的一些简单算法</a>
+    <h1 class="article-title" itemprop="name">
+      自动化脚本中用到的一些简单算法
     </h1>
   
 
@@ -348,11 +152,24 @@
     </footer>
   </div>
   
+    
+<nav id="article-nav">
+  
+    <a href="/2015/10/29/数据结构——跳表/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          数据结构之跳表
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
 </article>
 
-
-  
-  
 </section>
         
           <aside id="sidebar">
