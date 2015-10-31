@@ -1,49 +1,25 @@
 
-
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   
-  <title>关于我 | Fangyu Blog</title>
+  <title>爬山算法和模拟退火算法简介 | Fangyu Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="吴芳昱搜狗桌面事业部测试开发工程师
-关注Windows C++、创新性测试工具的研发、代码覆盖率的统计、持续集成等等热衷于一些简单算法的探索(仅限入门级)、移动端App的研发(还在学习中…)、Web端的研发（还在计划学习中…)
-联系我
-关注我的新浪微博并发送私信
-在本网站感兴趣的页面下留言
-通过QQ号119822310与我交流，加好友请写附言
-
-通信地址
-北京市海淀区清华科技园搜狐网络大厦
-邮编:">
-<meta property="og:type" content="website">
-<meta property="og:title" content="关于我">
-<meta property="og:url" content="http://wufangyu.cn/about/index.html">
+  <meta name="description" content="爬山算法爬山算法是一种简单的贪心搜索算法，该算法每次从当前解的临近解空间中选择一个最优解作为当前解，直到达到一个局部最优解。
+爬山算法实现很简单，其主要缺点是会陷入局部最优解，而不一定能搜索到全局最优解。如图1所示：假设C点为当前解，爬山算法搜索到A点这个局部最优解就会停止搜索，因为在A点无论向那个方向小幅度移动都不能得到更优的解。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="爬山算法和模拟退火算法简介">
+<meta property="og:url" content="http://wufangyu.cn/2015/03/11/爬山算法和模拟退火算法简介/index.html">
 <meta property="og:site_name" content="Fangyu Blog">
-<meta property="og:description" content="吴芳昱搜狗桌面事业部测试开发工程师
-关注Windows C++、创新性测试工具的研发、代码覆盖率的统计、持续集成等等热衷于一些简单算法的探索(仅限入门级)、移动端App的研发(还在学习中…)、Web端的研发（还在计划学习中…)
-联系我
-关注我的新浪微博并发送私信
-在本网站感兴趣的页面下留言
-通过QQ号119822310与我交流，加好友请写附言
-
-通信地址
-北京市海淀区清华科技园搜狐网络大厦
-邮编:">
-<meta property="og:updated_time" content="2015-10-31T11:21:08.267Z">
+<meta property="og:description" content="爬山算法爬山算法是一种简单的贪心搜索算法，该算法每次从当前解的临近解空间中选择一个最优解作为当前解，直到达到一个局部最优解。
+爬山算法实现很简单，其主要缺点是会陷入局部最优解，而不一定能搜索到全局最优解。如图1所示：假设C点为当前解，爬山算法搜索到A点这个局部最优解就会停止搜索，因为在A点无论向那个方向小幅度移动都不能得到更优的解。">
+<meta property="og:image" content="http://pic002.cnblogs.com/images/2010/63234/2010122016525713.png">
+<meta property="og:updated_time" content="2015-10-31T16:46:34.378Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="关于我">
-<meta name="twitter:description" content="吴芳昱搜狗桌面事业部测试开发工程师
-关注Windows C++、创新性测试工具的研发、代码覆盖率的统计、持续集成等等热衷于一些简单算法的探索(仅限入门级)、移动端App的研发(还在学习中…)、Web端的研发（还在计划学习中…)
-联系我
-关注我的新浪微博并发送私信
-在本网站感兴趣的页面下留言
-通过QQ号119822310与我交流，加好友请写附言
-
-通信地址
-北京市海淀区清华科技园搜狐网络大厦
-邮编:">
+<meta name="twitter:title" content="爬山算法和模拟退火算法简介">
+<meta name="twitter:description" content="爬山算法爬山算法是一种简单的贪心搜索算法，该算法每次从当前解的临近解空间中选择一个最优解作为当前解，直到达到一个局部最优解。
+爬山算法实现很简单，其主要缺点是会陷入局部最优解，而不一定能搜索到全局最优解。如图1所示：假设C点为当前解，爬山算法搜索到A点这个局部最优解就会停止搜索，因为在A点无论向那个方向小幅度移动都不能得到更优的解。">
   
     <link rel="alternative" href="/atom.xml" title="Fangyu Blog" type="application/atom+xml">
   
@@ -109,10 +85,10 @@ var _hmt = _hmt || [];
   </div>
 </header>
     <div class="outer">
-      <section id="main"><article id="page-undefined" class="article article-type-page" itemscope itemprop="blogPost">
+      <section id="main"><article id="post-爬山算法和模拟退火算法简介" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/about/index.html" class="article-date">
-  <time datetime="2015-10-29T06:59:47.000Z" itemprop="datePublished">2015-10-29</time>
+    <a href="/2015/03/11/爬山算法和模拟退火算法简介/" class="article-date">
+  <time datetime="2015-03-11T04:56:18.000Z" itemprop="datePublished">2015-03-11</time>
 </a>
     
   </div>
@@ -123,7 +99,7 @@ var _hmt = _hmt || [];
         
   
     <h1 class="article-title" itemprop="name">
-      关于我
+      爬山算法和模拟退火算法简介
     </h1>
   
 
@@ -131,40 +107,58 @@ var _hmt = _hmt || [];
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="吴芳昱">吴芳昱</h2><p>搜狗桌面事业部测试开发工程师</p>
-<p>关注Windows C++、创新性测试工具的研发、代码覆盖率的统计、持续集成等等<br>热衷于一些简单算法的探索(仅限入门级)、移动端App的研发(还在学习中…)、Web端的研发（还在计划学习中…)</p>
-<h2 id="联系我">联系我</h2><ul>
-<li>关注我的<a href="http://weibo.com/fangyuwu" target="_blank" rel="external">新浪微博</a>并发送私信</li>
-<li>在本网站感兴趣的页面下留言</li>
-<li>通过QQ号119822310与我交流，加好友请写附言</li>
-</ul>
-<h2 id="通信地址">通信地址</h2><ul>
-<li>北京市海淀区清华科技园搜狐网络大厦</li>
-<li>邮编: 100084</li>
-</ul>
+        <h2 id="爬山算法">爬山算法</h2><p>爬山算法是一种简单的贪心搜索算法，该算法每次从当前解的临近解空间中选择一个最优解作为当前解，直到达到一个局部最优解。</p>
+<p>爬山算法实现很简单，其主要缺点是会陷入局部最优解，而不一定能搜索到全局最优解。如图1所示：假设C点为当前解，爬山算法搜索到A点这个局部最优解就会停止搜索，因为在A点无论向那个方向小幅度移动都不能得到更优的解。 </p>
+<a id="more"></a>
+<p><img src="http://pic002.cnblogs.com/images/2010/63234/2010122016525713.png" alt="图一"></p>
+<h2 id="模拟退火(SA,Simulated_Annealing)思想">模拟退火(SA,Simulated Annealing)思想</h2><p>爬山法是完完全全的贪心法，每次都鼠目寸光的选择一个当前最优解，因此只能搜索到局部的最优值。模拟退火其实也是一种贪心算法，但是它的搜索过程引入了随机因素。模拟退火算法以<strong>一定的概率</strong>来接受一个比当前解要<strong>差</strong>的解，因此<strong>有可能</strong>会跳出这个局部的最优解，达到全局的最优解。以图1为例，模拟退火算法在搜索到局部最优解A后，会以一定的概率接受到E的移动。也许经过几次这样的不是局部最优的移动后会到达D点，于是就跳出了局部最大值A。</p>
+<p>模拟退火算法描述：<br>若<code>J( Y(i+1) )&gt;= J( Y(i) )</code> (即移动后得到更优解)，则总是接受该移动<br>若<code>J( Y(i+1) )&lt; J( Y(i) )</code>(即移动后的解比当前解要差)，则以<strong>一定的概率接受移动，而且这个概率随着时间推移逐渐降低（逐渐降低才能趋向稳定）</strong><br>　　这里的“一定的概率”的计算参考了金属冶炼的退火过程，这也是模拟退火算法名称的由来。<br>　　根据热力学的原理，在温度为T时，出现能量差为<code>dE</code>的降温的概率为<code>P(dE)</code>，表示为：<br>　　　　<code>P(dE) = exp( dE/(kT) )</code><br>　　其中k是一个常数，<code>exp</code>表示自然指数，且<code>dE&lt;0</code>。这条公式说白了就是：温度越高，出现一次能量差为dE的降温的概率就越大；温度越低，则出现降温的概率就越小。又由于<code>dE</code>总是小于<code>0</code>（否则就不叫退火了），因此<code>dE/kT &lt; 0</code> ，所以<code>P(dE)</code>的函数取值范围是<code>(0,1)</code>。<br>　　随着温度T的降低，<code>P(dE)</code>会逐渐降低。<br>　　我们将一次向较差解的移动看做一次温度跳变过程，我们以概率<code>P(dE)</code>来接受这样的移动。<br>　　关于爬山算法与模拟退火，有一个有趣的比喻：<br>　　<strong>爬山算法：</strong>兔子朝着比现在高的地方跳去。它找到了不远处的最高山峰。但是这座山不一定是珠穆朗玛峰。这就是爬山算法，它不能保证局部最优值就是全局最优值。<br>　　<strong>模拟退火：</strong>兔子喝醉了。它随机地跳了很长时间。这期间，它可能走向高处，也可能踏入平地。但是，它渐渐清醒了并朝最高方向跳去。这就是模拟退火。</p>
+<h2 id="模拟退火算法伪代码">模拟退火算法伪代码</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>( T &gt; T_min )</span><br><span class="line">&#123;</span><br><span class="line">　　dE = J( Y(i+<span class="number">1</span>) ) - J( Y(i) ) ; </span><br><span class="line"></span><br><span class="line">　　<span class="keyword">if</span> ( dE &gt;= <span class="number">0</span> )  <span class="comment">//表达移动后得到更优解，则总是接受移动</span></span><br><span class="line">        Y(i+<span class="number">1</span>) = Y(i) ;  <span class="comment">//接受从Y(i)到Y(i+1)的移动</span></span><br><span class="line">　　<span class="keyword">else</span></span><br><span class="line">　　&#123;</span><br><span class="line">    <span class="comment">// 函数exp( dE/T )的取值范围是(0,1) ，dE/T越大，则exp( dE/T )也越大</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">exp</span>(dE/T) &gt; random(<span class="number">0</span>,<span class="number">1</span>))%以一定的随机值接受是否移动</span><br><span class="line">            Y(i+<span class="number">1</span>) = Y(i) ;  <span class="comment">//接受从Y(i)到Y(i+1)的移动</span></span><br><span class="line">　　&#125;</span><br><span class="line">　　T = r * T ;  <span class="comment">//降温退火 ，0</span></span><br><span class="line">　　</span><br><span class="line">　　i ++ ;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="总结">总结</h2><p>爬山算法只是局部最优求解。而模拟退火算法是一种随机算法，所以也不一定能找到全局的最优解，但可以比较快的找到问题的近似最优解。 如果参数设置得当，模拟退火算法搜索效率比穷举法要高的多。</p>
 
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://wufangyu.cn/about/index.html" data-id="cigfbc4ue0000b4dvimnf1o6j" class="article-share-link" data-share="baidu" data-title="关于我">分享到</a>
+        <a data-url="http://wufangyu.cn/2015/03/11/爬山算法和模拟退火算法简介/" data-id="cigfbl3hy0000wodvrs8xm1qm" class="article-share-link" data-share="baidu" data-title="爬山算法和模拟退火算法简介">分享到</a>
       
 
       
-        <a href="http://wufangyu.cn/about/index.html#ds-thread" class="article-comment-link">评论</a>
+        <a href="http://wufangyu.cn/2015/03/11/爬山算法和模拟退火算法简介/#ds-thread" class="article-comment-link">评论</a>
       
 
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/人工智能/">人工智能</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
+
     </footer>
   </div>
   
     
+<nav id="article-nav">
+  
+    <a href="/2015/03/29/Hash算法简介/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">
+        
+          Hash算法简介
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/03/11/遗传算法简介/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">遗传算法简介</div>
+    </a>
+  
+</nav>
+
   
 </article>
 
 
   <section id="comments">
-    <div id="ds-thread" class="ds-thread" data-thread-key="about/index.html" data-title="关于我" data-url="http://wufangyu.cn/about/index.html"></div>
+    <div id="ds-thread" class="ds-thread" data-thread-key="2015/03/11/爬山算法和模拟退火算法简介/" data-title="爬山算法和模拟退火算法简介" data-url="http://wufangyu.cn/2015/03/11/爬山算法和模拟退火算法简介/"></div>
   </section>
 </section>
       
@@ -375,4 +369,3 @@ MathJax.Hub.Queue(function() {
 </div>
 </body>
 </html>
-

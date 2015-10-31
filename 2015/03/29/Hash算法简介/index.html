@@ -4,17 +4,21 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Fangyu Blog</title>
+  <title>Hash算法简介 | Fangyu Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Fangyu Blog">
-<meta property="og:url" content="http://wufangyu.cn/index.html">
+  <meta name="description" content="简介Hash，一般翻译做“散列”，也有直接音译为“哈希”的，就是把任意长度的输入（又叫做预映射， pre-image），通过散列算法，变换成固定长度的输出，该输出就是散列值。这种转换是一种压缩映射，也就是，散列值的空间通常远小于输入的空间，不同的输入可能会散列成相同的输出，而不可能从散列值来唯一的确定输入值。简单的说就是一种将任意长度的消息压缩到某一固定长度的消息摘要的函数。
+HASH主要用于信息">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hash算法简介">
+<meta property="og:url" content="http://wufangyu.cn/2015/03/29/Hash算法简介/index.html">
 <meta property="og:site_name" content="Fangyu Blog">
-<meta property="og:description">
+<meta property="og:description" content="简介Hash，一般翻译做“散列”，也有直接音译为“哈希”的，就是把任意长度的输入（又叫做预映射， pre-image），通过散列算法，变换成固定长度的输出，该输出就是散列值。这种转换是一种压缩映射，也就是，散列值的空间通常远小于输入的空间，不同的输入可能会散列成相同的输出，而不可能从散列值来唯一的确定输入值。简单的说就是一种将任意长度的消息压缩到某一固定长度的消息摘要的函数。
+HASH主要用于信息">
+<meta property="og:updated_time" content="2015-10-31T16:53:58.763Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Fangyu Blog">
-<meta name="twitter:description">
+<meta name="twitter:title" content="Hash算法简介">
+<meta name="twitter:description" content="简介Hash，一般翻译做“散列”，也有直接音译为“哈希”的，就是把任意长度的输入（又叫做预映射， pre-image），通过散列算法，变换成固定长度的输出，该输出就是散列值。这种转换是一种压缩映射，也就是，散列值的空间通常远小于输入的空间，不同的输入可能会散列成相同的输出，而不可能从散列值来唯一的确定输入值。简单的说就是一种将任意长度的消息压缩到某一固定长度的消息摘要的函数。
+HASH主要用于信息">
   
     <link rel="alternative" href="/atom.xml" title="Fangyu Blog" type="application/atom+xml">
   
@@ -80,101 +84,7 @@ var _hmt = _hmt || [];
   </div>
 </header>
     <div class="outer">
-      <section id="main">
-  
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/10/28/hello-world/" class="article-date">
-  <time datetime="2015-10-28T03:43:26.000Z" itemprop="datePublished">2015-10-28</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/10/28/hello-world/">博客开篇</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>欢迎来到 <a href="http://wufangyu.cn/">Fangyu Blog</a> ，这里博主会给大家分享些软件开发、测试以及算法方面的小知识与心得，还望各路大神多多指教！</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://wufangyu.cn/2015/10/28/hello-world/" data-id="cigfbc4vo000bb4dv9pff81rk" class="article-share-link" data-share="baidu" data-title="博客开篇">分享到</a>
-      
-
-      
-        <a href="http://wufangyu.cn/2015/10/28/hello-world/#ds-thread" class="article-comment-link">评论</a>
-      
-
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-通过测试替代提高单测效率" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/06/10/通过测试替代提高单测效率/" class="article-date">
-  <time datetime="2015-06-10T04:12:18.000Z" itemprop="datePublished">2015-06-10</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/06/10/通过测试替代提高单测效率/">通过测试替代提高单测效率</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="简介">简介</h2><p>测试技术在现代软件工程中变得愈来愈重要，<strong>单元测试</strong>是软件质量的第一关。开发者通过单元测试可以快速反思自己的设计，提高软件质量，降低开发成本。编写单元测试代码要求<code>高效、快速、隔离</code>等。本文主要探讨了使用<code>测试替代技术</code>隔离单元测试中对<code>网络系统、数据库系统和文件系统</code>的访问以提高<code>单元测试效率</code>。</p>
-        
-          <p class="article-more-link">
-            <a href="/2015/06/10/通过测试替代提高单测效率/#more">阅读全文</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://wufangyu.cn/2015/06/10/通过测试替代提高单测效率/" data-id="cigfch4370000y8dv30b7zw26" class="article-share-link" data-share="baidu" data-title="通过测试替代提高单测效率">分享到</a>
-      
-
-      
-        <a href="http://wufangyu.cn/2015/06/10/通过测试替代提高单测效率/#ds-thread" class="article-comment-link">评论</a>
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/白盒测试/">白盒测试</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Hash算法简介" class="article article-type-post" itemscope itemprop="blogPost">
+      <section id="main"><article id="post-Hash算法简介" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2015/03/29/Hash算法简介/" class="article-date">
   <time datetime="2015-03-29T02:56:18.000Z" itemprop="datePublished">2015-03-29</time>
@@ -187,8 +97,8 @@ var _hmt = _hmt || [];
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/29/Hash算法简介/">Hash算法简介</a>
+    <h1 class="article-title" itemprop="name">
+      Hash算法简介
     </h1>
   
 
@@ -198,11 +108,69 @@ var _hmt = _hmt || [];
       
         <h2 id="简介">简介</h2><p>Hash，一般翻译做“散列”，也有直接音译为“哈希”的，就是把任意长度的输入（又叫做预映射， pre-image），通过散列算法，变换成固定长度的输出，该输出就是散列值。这种转换是一种压缩映射，也就是，散列值的空间通常远小于输入的空间，不同的输入可能会散列成相同的输出，而不可能从散列值来唯一的确定输入值。简单的说就是一种将任意长度的消息压缩到某一固定长度的消息摘要的函数。</p>
 <p>HASH主要用于信息安全领域中加密算法，它把一些不同长度的信息转化成杂乱的128位的编码,这些编码值叫做HASH值. 也可以说，hash就是找到一种数据内容和数据存放地址之间的映射关系</p>
-        
-          <p class="article-more-link">
-            <a href="/2015/03/29/Hash算法简介/#more">阅读全文</a>
-          </p>
-        
+<a id="more"></a>
+<h2 id="基本概念">基本概念</h2><p>若结构中存在和关键字K相等的记录，则必定在f(K)的存储位置上。由此，不需比较便可直接取得所查记录。称这个对应关系f为散列函数(Hash function)，按这个思想建立的表为散列表。</p>
+<p>对不同的关键字可能得到同一散列地址，即key1≠key2，而f(key1)=f(key2)，这种现象称冲突。具有相同函数值的关键字对该散列函数来说称做同义词。综上所述，根据散列函数H(key)和处理冲突的方法将一组关键字映象到一个有限的连续的地址集（区间）上，并以关键字在地址集中的“象” 作为记录在表中的存储位置，这种表便称为散列表，这一映象过程称为散列造表或散列，所得的存储位置称散列地址。</p>
+<p> 若对于关键字集合中的任一个关键字，经散列函数映象到地址集合中任何一个地址的概率是相等的，则称此类散列函数为均匀散列函数(Uniform Hash function)，这就是使关键字经过散列函数得到一个“随机的地址”，从而减少冲突。</p>
+<h2 id="常用的构造散列函数的方法">常用的构造散列函数的方法</h2><p>散列函数能使对一个数据序列的访问过程更加迅速有效，通过散列函数，数据元素将被更快地定位ǐ</p>
+<ul>
+<li>直接寻址法：取关键字或关键字的某个线性函数值为散列地址。即H(key)=key或H(key) = a·key + b，其中a和b为常数（这种散列函数叫做自身函数）</li>
+<li>数字分析法</li>
+<li>平方取中法</li>
+<li>折叠法</li>
+<li>随机数法</li>
+<li>除留余数法：取关键字被某个不大于散列表表长m的数p除后所得的余数为散列地址。即 H(key) = key MOD p, p&lt;=m。不仅可以对关键字直接取模，也可在折叠、平方取中等运算之后取模。对p的选择很重要，一般取素数或m，若p选的不好，容易产生同义词。</li>
+</ul>
+<h2 id="处理冲突的方法">处理冲突的方法</h2><ul>
+<li><p>开放寻址法；Hi=(H(key) + di) MOD m, i=1,2,…, k(k&lt;=m-1)，其中H(key)为散列函数，m为散列表长，di为增量序列，可有下列三种取法：<br>　　1. di=1,2,3,…, m-1，称线性探测再散列；<br>　　2. di=1^2, (-1)^2, 2^2,(-2)^2, (3)^2, …, ±(k)^2,(k&lt;=m/2)称二次探测再散列;<br>　　3. di=伪随机数序列，称伪随机探测再散列。 ==</p>
+</li>
+<li><p>再散列法：Hi=RHi(key), i=1,2,…,k RHi均是不同的散列函数，即在同义词产生地址冲突时计算另一个散列函数地址，直到冲突不再发生，这种方法不易产生“聚集”，但增加了计算时间。</p>
+</li>
+<li><p>链地址法(拉链法)</p>
+</li>
+<li><p>建立一个公共溢出区</p>
+</li>
+</ul>
+<h2 id="查找的性能分析">查找的性能分析</h2><p>散列表的查找过程基本上和造表过程相同。一些关键码可通过散列函数转换的地址直接找到，另一些关键码在散列函数得到的地址上产生了冲突，需要按处理冲突的方法进行查找。在介绍的三种处理冲突的方法中，产生冲突后的查找仍然是给定值与关键码进行比较的过程。所以，对散列表查找效率的量度，依然用平均查找长度来衡量。</p>
+<p>查找过程中，关键码的比较次数，取决于产生冲突的多少，产生的冲突少，查找效率就高，产生的冲突多，查找效率就低。因此，影响产生冲突多少的因素，也就是影响查找效率的因素。影响产生冲突多少有以下三个因素：</p>
+<ul>
+<li>散列函数是否均匀；</li>
+<li>处理冲突的方法；</li>
+<li>散列表的装填因子。</li>
+</ul>
+<p>散列表的装填因子定义为：α= 填入表中的元素个数 / 散列表的长度</p>
+<p>α是散列表装满程度的标志因子。由于表长是定值，α与“填入表中的元素个数”成正比，所以，α越大，填入表中的元素较多，产生冲突的可能性就越大；α越小，填入表中的元素较少，产生冲突的可能性就越小。</p>
+<p>实际上，散列表的平均查找长度是装填因子α的函数，只是不同处理冲突的方法有不同的函数。</p>
+<h2 id="一些著名的Hash算法简介">一些著名的Hash算法简介</h2><p>了解了hash基本定义，就不能不提到一些著名的hash算法，MD5 和 SHA-1 可以说是目前应用最广泛的Hash算法，而它们都是以 MD4 为基础设计的。那么他们都是什么意思呢?</p>
+<p>这里简单说一下：</p>
+<ul>
+<li><p><strong>MD4：</strong></p>
+<blockquote>
+<p>MD4(RFC 1320)是 MIT 的 Ronald L. Rivest 在 1990 年设计的，MD 是 Message Digest 的缩写。它适用在32位字长的处理器上用高速软件实现–它是基于 32 位操作数的位操作来实现的。</p>
+</blockquote>
+</li>
+<li><p>MD5</p>
+<blockquote>
+<p>MD5(RFC 1321)是 Rivest 于1991年对MD4的改进版本。它对输入仍以512位分组，其输出是4个32位字的级联，与 MD4 相同。MD5比MD4来得复杂，并且速度较之要慢一点，但更安全，在抗分析和抗差分方面表现更好</p>
+</blockquote>
+</li>
+<li><p>SHA-1及其他</p>
+<blockquote>
+<p>SHA1是由NIST NSA设计为同DSA一起使用的，它对长度小于264的输入，产生长度为160bit的散列值，因此抗穷举(brute-force)性更好。SHA-1 设计时基于和MD4相同原理,并且模仿了该算法。</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="Hash算法的运用">Hash算法的运用</h2><p><strong>Hash算法在信息安全方面的应用主要体现在以下的3个方面：</strong></p>
+<p>(1) 文件校验</p>
+<p>我们比较熟悉的校验算法有奇偶校验和CRC校验，这2种校验并没有抗数据篡改的能力，它们一定程度上能检测并纠正数据传输中的信道误码，但却不能防止对数据的恶意破坏。</p>
+<p>MD5 Hash算法的”数字指纹”特性，使它成为目前应用最广泛的一种文件完整性校验和(Checksum)算法，不少Unix系统有提供计算md5 checksum的命令。</p>
+<p>(2) 数字签名</p>
+<p>Hash 算法也是现代密码体系中的一个重要组成部分。由于非对称算法的运算速度较慢，所以在数字签名协议中，单向散列函数扮演了一个重要的角色。 对 Hash 值，又称”数字摘要”进行数字签名，在统计上可以认为与对文件本身进行数字签名是等效的。而且这样的协议还有其他的优点。</p>
+<p>(3) 鉴权协议</p>
+<p>如下的鉴权协议又被称作挑战–认证模式：在传输信道是可被侦听，但不可被篡改的情况下，这是一种简单而安全的方法。以上就是一些关于hash以及其相关的一些基本预备知识。那么在emule里面他具体起到什么作用呢?</p>
+<p><strong>MD5、SHA1的破解</strong></p>
+<p>2004年8月17日，在美国加州圣芭芭拉召开的国际密码大会上，山东大学王小云教授在国际会议上首次宣布了她及她的研究小组近年来的研究成果——对MD5、HAVAL－128、MD4和RIPEMD等四个著名密码算法的破译结果。 次年二月宣布破解SHA-1密码。</p>
+
       
     </div>
     <footer class="article-footer">
@@ -220,114 +188,33 @@ var _hmt = _hmt || [];
     </footer>
   </div>
   
-</article>
-
-
+    
+<nav id="article-nav">
   
-    <article id="post-爬山算法和模拟退火算法简介" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/03/11/爬山算法和模拟退火算法简介/" class="article-date">
-  <time datetime="2015-03-11T04:56:18.000Z" itemprop="datePublished">2015-03-11</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
+    <a href="/2015/06/10/通过测试替代提高单测效率/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">
         
+          通过测试替代提高单测效率
+        
+      </div>
+    </a>
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/11/爬山算法和模拟退火算法简介/">爬山算法和模拟退火算法简介</a>
-    </h1>
   
+    <a href="/2015/03/11/爬山算法和模拟退火算法简介/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">爬山算法和模拟退火算法简介</div>
+    </a>
+  
+</nav>
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="爬山算法">爬山算法</h2><p>爬山算法是一种简单的贪心搜索算法，该算法每次从当前解的临近解空间中选择一个最优解作为当前解，直到达到一个局部最优解。</p>
-<p>爬山算法实现很简单，其主要缺点是会陷入局部最优解，而不一定能搜索到全局最优解。如图1所示：假设C点为当前解，爬山算法搜索到A点这个局部最优解就会停止搜索，因为在A点无论向那个方向小幅度移动都不能得到更优的解。 </p>
-        
-          <p class="article-more-link">
-            <a href="/2015/03/11/爬山算法和模拟退火算法简介/#more">阅读全文</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://wufangyu.cn/2015/03/11/爬山算法和模拟退火算法简介/" data-id="cigfbl3hy0000wodvrs8xm1qm" class="article-share-link" data-share="baidu" data-title="爬山算法和模拟退火算法简介">分享到</a>
-      
-
-      
-        <a href="http://wufangyu.cn/2015/03/11/爬山算法和模拟退火算法简介/#ds-thread" class="article-comment-link">评论</a>
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/人工智能/">人工智能</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
-
-    </footer>
-  </div>
   
 </article>
 
 
-  
-    <article id="post-遗传算法简介" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/03/11/遗传算法简介/" class="article-date">
-  <time datetime="2015-03-11T03:56:18.000Z" itemprop="datePublished">2015-03-11</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/11/遗传算法简介/">遗传算法简介</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="简介">简介</h2><p>遗传算法是计算机科学人工智能领域中用于解决最优化的一种<strong>搜索启发式算法</strong>，是<strong>进化算法</strong>的一种。这种启发式通常用来生成有用的解决方案来优化和搜索问题。进化算法最初是借鉴了进化生物学中的一些现象而发展起来的，这些现象包括<strong>遗传、突变、自然选择以及杂交等</strong>——维基百科</p>
-        
-          <p class="article-more-link">
-            <a href="/2015/03/11/遗传算法简介/#more">阅读全文</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://wufangyu.cn/2015/03/11/遗传算法简介/" data-id="cigfbc4v90001b4dvbj285a43" class="article-share-link" data-share="baidu" data-title="遗传算法简介">分享到</a>
-      
-
-      
-        <a href="http://wufangyu.cn/2015/03/11/遗传算法简介/#ds-thread" class="article-comment-link">评论</a>
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/人工智能/">人工智能</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-  
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
-    </nav>
-  
+  <section id="comments">
+    <div id="ds-thread" class="ds-thread" data-thread-key="2015/03/29/Hash算法简介/" data-title="Hash算法简介" data-url="http://wufangyu.cn/2015/03/29/Hash算法简介/"></div>
+  </section>
 </section>
       
       <aside id="sidebar">
