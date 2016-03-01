@@ -1,0 +1,629 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>大话C++指针与引用 | Fangyu Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Fangyu Wu">
+    
+
+    
+    <meta name="description" content="在我们C++的项目中，查崩溃原因时，经常会听开发说这个地方有个空指针。那么指针到底是什么，在我们的代码里都是怎么用的（此文针对入门级小白，各路大神请绕行）。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="大话C++指针与引用">
+<meta property="og:url" content="http://wufangyu.cn/2016/02/02/大话C++指针与引用/index.html">
+<meta property="og:site_name" content="Fangyu Blog">
+<meta property="og:description" content="在我们C++的项目中，查崩溃原因时，经常会听开发说这个地方有个空指针。那么指针到底是什么，在我们的代码里都是怎么用的（此文针对入门级小白，各路大神请绕行）。">
+<meta property="og:updated_time" content="2016-03-01T08:02:17.356Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="大话C++指针与引用">
+<meta name="twitter:description" content="在我们C++的项目中，查崩溃原因时，经常会听开发说这个地方有个空指针。那么指针到底是什么，在我们的代码里都是怎么用的（此文针对入门级小白，各路大神请绕行）。">
+
+    
+    
+    <link rel="icon" href="/img/favicon.png">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="Fangyu Blog" title="Fangyu Blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Fangyu Blog">Fangyu Blog</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">目录</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:wufangyu.cn">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/02/02/大话C++指针与引用/" title="大话C++指针与引用" itemprop="url">大话C++指针与引用</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Fangyu Wu" target="_blank" itemprop="author">Fangyu Wu</a>
+		
+  <p class="article-time">
+    <time datetime="2016-02-02T02:00:26.000Z" itemprop="datePublished"> 发表于 2016-02-02</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#指针与引用"><span class="toc-number">1.</span> <span class="toc-text">指针与引用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#函数传参"><span class="toc-number">2.</span> <span class="toc-text">函数传参</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#附录"><span class="toc-number">3.</span> <span class="toc-text">附录</span></a></li></ol>
+		
+		</div>
+		
+		<p>在我们C++的项目中，查崩溃原因时，经常会听开发说这个地方有个空指针。那么指针到底是什么，在我们的代码里都是怎么用的（此文针对入门级小白，各路大神请绕行）。</p>
+<a id="more"></a>
+<h2 id="指针与引用">指针与引用</h2><p>说到指针，当然不可避免就要提到引用。从基本概念上说：</p>
+<blockquote>
+<p>指针指向一块内存，它的内容是所指内存的<strong>地址</strong>，而引用是某块内存的<strong>别名</strong>。</p>
+</blockquote>
+<p>举个通俗的例子，现在有书柜，我们在<code>01号</code>格里放了一些资料。现在你想分别定义一个指针和引用指向01号格：</p>
+<ul>
+<li>指针的话，就是你在<code>02号</code>柜子里放一张<code>纸条</code>，上面<code>写着01</code>，你每次查看02号，都会首先拿纸条取到01，然后再被指向01；</li>
+<li>引用的话，就是你定义一个<code>03</code>，这个03相当于01的别名，你每次查看03号都会被<code>直接指向01</code>。</li>
+</ul>
+<p>二者的区别主要如下：</p>
+<ol>
+<li>指针是一个实体，而引用仅是个别名；</li>
+<li><p>引用使用时无需解引用（*），指针需要解引用；看下面这段代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">int</span> *p = &amp;a; <span class="comment">// 不能直接用a</span></span><br><span class="line"><span class="keyword">int</span> &amp;b = a; <span class="comment">// 直接用a</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>引用只能在定义时被初始化一次，之后不可变；指针可变， 引用“从一而终” ^_^，看下面这段代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">int</span> *p = &amp;a; <span class="comment">// 不能直接用a</span></span><br><span class="line"><span class="keyword">int</span> &amp;b = a; <span class="comment">// 直接用a</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> c = <span class="number">2</span>;</span><br><span class="line">p = &amp;c; <span class="comment">// a的值不会变，p以后就直接和c关联了</span></span><br><span class="line">b = c; <span class="comment">// a 和 b都变成2，b以后还是和c关联</span></span><br><span class="line"><span class="comment">// 上面这两个意义不一样，后面再说</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>引用没有 const，指针有 const，const 的指针不可变；</p>
+</li>
+<li><p>引用不能为空，指针可以为空；</p>
+</li>
+<li><p>“sizeof 引用”得到的是所指向的变量（对象）的大小，而“sizeof 指针”得到的是指针本身（所指向的变量或对象的地址）的大小；</p>
+</li>
+<li><p>指针和引用的自增（++）运算意义不一样，看下面这段代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> arr[<span class="number">2</span>] = &#123; <span class="number">1</span>, <span class="number">3</span> &#125;;</span><br><span class="line"><span class="keyword">int</span> *p = arr;</span><br><span class="line"><span class="keyword">int</span> &amp;b = arr[<span class="number">0</span>];</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%d %d\n"</span>, *p, b);</span><br><span class="line">p++;</span><br><span class="line">b++;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%d %d\n"</span>, *p, b);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 输出结果为：</span></span><br><span class="line"><span class="number">1</span> <span class="number">1</span></span><br><span class="line"><span class="number">3</span> <span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 所以说，指针++改变的是地址，引用是值得本身</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>总而言之，引用可以看作操作受限了的指针。</p>
+<h2 id="函数传参">函数传参</h2><p>将指针与引用这个也必不可少。C++语言中，函数的参数和返回值的传递方式有三种：<code>值传递</code>、<code>指针传递</code>和<code>引用传递</code>。下面就分别来讲讲。</p>
+<p><strong>值传递</strong><br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Func1</span><span class="params">(<span class="keyword">int</span> x)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">   x = x + <span class="number">10</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> n = <span class="number">0</span>;</span><br><span class="line">Func1(n);</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; “n = ” &lt;&lt; n &lt;&lt; endl;<span class="comment">// n = 0</span></span><br></pre></td></tr></table></figure></p>
+<p>由于Func1 函数体内的x是外部变量n 的一份拷贝，改变x 的值不会影响n， 所以n 的值仍然是0。</p>
+<p><strong>指针传递</strong><br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Func2</span><span class="params">(<span class="keyword">int</span> *x)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">   (* x) = (* x) + <span class="number">10</span>;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">int</span> n = <span class="number">0</span>;</span><br><span class="line">Func2(&amp;n);</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; “n = ” &lt;&lt; n &lt;&lt; endl; <span class="comment">// n = 10</span></span><br></pre></td></tr></table></figure></p>
+<p>由于Func2 函数体内的x 是指向外部变量n 的指针，改变该指针的内容将导致n 的值改变，所以n 的值成为10。</p>
+<p><strong>引用传递</strong><br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Func3</span><span class="params">(<span class="keyword">int</span> &amp;x)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">  x = x + <span class="number">10</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> n = <span class="number">0</span>;</span><br><span class="line">Func3(n);</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; “n = ” &lt;&lt; n &lt;&lt; endl; <span class="comment">// n = 10</span></span><br></pre></td></tr></table></figure></p>
+<p>由于Func3 函数体内的x 是外部变量n 的引用，x和n 是同一个东西，改变x 等于改变n，所以n 的值成为10。</p>
+<p>这里看来，<code>引用传递</code>的性质象<code>指针传递</code>，而书写方式象<code>值传递</code>。实际上<code>引用</code>可以做的任何事情<code>指针</code>也都能够做，为什么还要<code>引用</code>。</p>
+<p>答案就是<code>用适当的工具做恰如其分的工作</code>。</p>
+<p>指针能够毫无约束地操作内存中的如何东西，尽管指针功能强大，但是非常危险。就象一把刀，它可以用来砍树、裁纸、修指甲、理发等等，谁敢这样用？</p>
+<h2 id="附录">附录</h2><p>在<code>MoreEffective C++</code>中，就有一段详细讲述了指针与引用，下面就贴过来：</p>
+<p> 指针与引用看上去完全不同（指针用操作符<code>*</code>和<code>-&gt;</code>，引用使用操作符<code>&amp;</code>），但是它们似乎有相同的功能。指针与引用<strong>都是让你间接引用其他对象</strong>。你如何决定在什么时候使用指针，在什么时候使用引用呢？</p>
+<p>首先，要认识到在任何情况下都<strong>不能用指向空值的引用</strong>。一个引用必须总是指向某些对象。因此如果你使用一个变量并让它指向一个对象，但是该变量在某些时候也可能不指向任何对象，这时你应该把变量声明为指针，因为这样你可以赋空值给该变量。相反，如果变量肯定指向一个对象，例如你的设计不允许变量为空，这时你就可以把变量声明为引用。</p>
+<p>“但是，请等一下”，你怀疑地问，“这样的代码会产生什么样的后果？”<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> *pc = <span class="number">0</span>；<span class="comment">// 设置指针为空值</span></span><br><span class="line"><span class="keyword">char</span>&amp; rc = *pc；<span class="comment">// 让引用指向空值</span></span><br></pre></td></tr></table></figure></p>
+<p>这是非常有害的，毫无疑问。结果将是不确定的（编译器能产生一些输出，导致任何事情都有可能发生），应该躲开写出这样代码的人除非他们同意改正错误。如果你担心这样的代码会出现在你的软件里，那么你最好完全避免使用引用，要不然就去让更优秀的程序员去做。我们以后将忽略一个引用指向空值的可能性。</p>
+<p>因为引用肯定会指向一个对象，在C里，引用应被初始化。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span>&amp; rs；<span class="comment">// 错误，引用必须被初始化</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">string</span> s（<span class="string">"xyzzy"</span>）；</span><br><span class="line"><span class="built_in">string</span>&amp; rs = s；<span class="comment">// 正确，rs指向s</span></span><br></pre></td></tr></table></figure></p>
+<p>指针没有这样的限制。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> *ps；<span class="comment">// 未初始化的指针</span></span><br><span class="line"><span class="comment">// 合法但危险</span></span><br></pre></td></tr></table></figure></p>
+<p>不存在指向空值的引用这个事实意味着使用引用的代码效率比使用指针的要高。因为在使用引用之前不需要测试它的合法性。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">printDouble</span><span class="params">(<span class="keyword">const</span> <span class="keyword">double</span>&amp; rd)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">     <span class="built_in">cout</span> &lt;&lt; rd; <span class="comment">// 不需要测试rd,它</span></span><br><span class="line">&#125; <span class="comment">// 肯定指向一个double值</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 相反，指针则应该总是被测试，防止其为空：</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">printDouble</span><span class="params">(<span class="keyword">const</span> <span class="keyword">double</span> *pd)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">     <span class="keyword">if</span> (pd)</span><br><span class="line"></span><br><span class="line">     &#123; <span class="comment">// 检查是否为NULL</span></span><br><span class="line">           <span class="built_in">cout</span> &lt;&lt; *pd;</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>指针与引用的另一个重要的不同是指针可以被重新赋值以指向另一个不同的对象。但是引用则总是指向在初始化时被指定的对象，以后不能改变。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">s1</span><span class="params">(<span class="string">"Nancy"</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">s2</span><span class="params">(<span class="string">"Clancy"</span>)</span></span>;</span><br><span class="line"><span class="built_in">string</span>&amp; rs = s1; <span class="comment">// rs 引用 s1</span></span><br><span class="line"><span class="built_in">string</span> *ps = &amp;s1; <span class="comment">// ps 指向 s1</span></span><br><span class="line">rs = s2; <span class="comment">// rs 仍旧引用s1,</span></span><br><span class="line"><span class="comment">// 但是 s1的值现在是</span></span><br><span class="line"><span class="comment">// "Clancy"</span></span><br><span class="line">ps = &amp;s2; <span class="comment">// ps 现在指向 s2;</span></span><br><span class="line"><span class="comment">// s1 没有改变</span></span><br></pre></td></tr></table></figure></p>
+<p>总的来说，在以下情况下你应该使用指针，一是你考虑到存在不指向任何对象的可能（在这种情况下，你能够设置指针为空），二是你需要能够在不同的时刻指向不同的对象（在这种情况下，你能改变指针的指向）。如果总是指向一个对象并且一旦指向一个对象后就不会改变指向，那么你应该使用引用。</p>
+<p>还有一种情况，就是当你重载某个操作符时，你应该使用引用。最普通的例子是操作符<code>[]</code>。这个操作符典型的用法是返回一个目标对象，其能被赋值。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v(<span class="number">10</span>); <span class="comment">// 建立整形向量（vector），大小为10;</span></span><br><span class="line">v[<span class="number">5</span>] = <span class="number">10</span>; <span class="comment">// 这个被赋值的目标对象就是操作符[]返回的值</span></span><br><span class="line"><span class="comment">// 如果操作符[]返回一个指针，那么后一个语句就得这样写：</span></span><br><span class="line">*v[<span class="number">5</span>] = <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+<p> 但是这样会使得v看上去象是一个向量指针。因此你会选择让操作符返回一个引用。（这有一个有趣的例外，参见条款30）</p>
+<p>当你知道你必须指向一个对象并且不想改变其指向时，或者在重载操作符并为防止不必要的语义误解时，你不应该使用指针。而在除此之外的其他情况下，则应使用指针假设你有<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(<span class="keyword">int</span>* p, <span class="keyword">int</span>&amp;r)</span></span>;</span><br><span class="line"><span class="keyword">int</span> a = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">int</span> b = <span class="number">1</span>;</span><br><span class="line">func(&amp;a,b);</span><br></pre></td></tr></table></figure></p>
+<p>指针本身的值（地址值）是以passby value进行的，你能改变地址值，但这并不会改变指针所指向的变量的值，<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">p</span> = someotherpointer；<span class="comment">//a is still 1</span></span><br></pre></td></tr></table></figure></p>
+<p>但能用指针来改变指针所指向的变量的值，<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*<span class="tag">p</span> = <span class="number">123131</span>； <span class="comment">// a now is 123131</span></span><br></pre></td></tr></table></figure></p>
+<p>但引用本身是以pass byreference进行的，改变其值即改变引用所对应的变量的值<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">r = <span class="number">1231</span>；<span class="comment">// b now is 1231</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>尽可能使用引用，不得已时使用指针。</strong></p>
+<p>当你不需要“重新指向”时，引用一般优先于指针被选用。这通常意味着引用用于类的公有接口时更有用。引用出现的典型场合是对象的表面，而指针用于对象内部。</p>
+<p>上述的例外情况是函数的参数或返回值需要一个“临界”的引用时。这时通常最好返回/获取一个指针，并使用 NULL 指针来完成这个特殊的使命。（引用应该总是对象的别名，而不是被解除引用的NULL 指针）。</p>
+<p>注意：由于在调用者的代码处，无法提供清晰的的引用语义，所以传统的 C 程序员有时并不喜欢引用。然而，当有了一些 C++ 经验后，你会很快认识到这是信息隐藏的一种形式，它是有益的而不是有害的。就如同，程序员应该针对要解决的问题写代码，而不是机器本身。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/C/">C++</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://wufangyu.cn/2016/02/02/大话C++指针与引用/" data-title="大话C++指针与引用 | Fangyu Blog" data-tsina="1393602611" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2016/02/02/C++内联函数inline简介/" title="C++内联函数inline简介">
+  <strong>上一篇：</strong><br/>
+  <span>
+  C++内联函数inline简介</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2015/11/24/我与林大——ACM不说再见/"  title="我与林大——ACM不说再见">
+ <strong>下一篇：</strong><br/> 
+ <span>我与林大——ACM不说再见
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2016/02/02/大话C++指针与引用/" data-title="大话C++指针与引用" data-url="http://wufangyu.cn/2016/02/02/大话C++指针与引用/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#指针与引用"><span class="toc-number">1.</span> <span class="toc-text">指针与引用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#函数传参"><span class="toc-number">2.</span> <span class="toc-text">函数传参</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#附录"><span class="toc-number">3.</span> <span class="toc-text">附录</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github 名片</p>
+<div class="github-card" data-github="wufy1992" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/C/" title="C++">C++<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/白盒测试/" title="白盒测试">白盒测试<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/人工智能/" title="人工智能">人工智能<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/C-11/" title="C++11">C++11<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/单元测试/" title="单元测试">单元测试<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/自动化/" title="自动化">自动化<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/数据结构/" title="数据结构">数据结构<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ACM/" title="ACM">ACM<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Windows开发/" title="Windows开发">Windows开发<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/内存泄露/" title="内存泄露">内存泄露<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/架构设计/" title="架构设计">架构设计<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  
+  <div class="tagcloudlist">
+    <p class="asidetitle">标签云</p>
+    <div class="tagcloudlist clearfix">
+       <a href="/tags/ACM/" style="font-size: 10px;">ACM</a> <a href="/tags/C/" style="font-size: 20px;">C++</a> <a href="/tags/C-11/" style="font-size: 13.33px;">C++11</a> <a href="/tags/Windows开发/" style="font-size: 10px;">Windows开发</a> <a href="/tags/人工智能/" style="font-size: 13.33px;">人工智能</a> <a href="/tags/内存泄露/" style="font-size: 10px;">内存泄露</a> <a href="/tags/单元测试/" style="font-size: 13.33px;">单元测试</a> <a href="/tags/数据结构/" style="font-size: 10px;">数据结构</a> <a href="/tags/架构设计/" style="font-size: 10px;">架构设计</a> <a href="/tags/白盒测试/" style="font-size: 16.67px;">白盒测试</a> <a href="/tags/算法/" style="font-size: 20px;">算法</a> <a href="/tags/自动化/" style="font-size: 10px;">自动化</a>
+    </div>
+  </div>
+
+
+  
+  <div class="archiveslist">
+    <p class="asidetitle"><a href="/archives">归档</a></p>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">二月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">六月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">一月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">八月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">十月 2013</a><span class="archive-list-count">1</span></li></ul>
+  </div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://www.sogouqa.com/" target="_blank" title="搜狗测试博客">搜狗测试博客</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://fszxwfy.blog.163.com/" target="_blank" title="旧博客地址">旧博客地址</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+     <iframe width="100%" height="350" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=350&fansRow=1&ptype=1&speed=0&skin=2&isTitle=1&noborder=1&isWeibo=1&isFans=1&uid=1393602611&verifier=1c853142&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Fangyu form Sogou. <br/>
+			This is my blog, believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/fangyuwu" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/wufy1992" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="http://www.zhihu.com/people/fy-wu" target="_blank" class="icon-zhihu" title="知乎"></a>
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		
+		<a href="/about" target="_blank" title="Fangyu Wu">Fangyu Wu</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"fangyu"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script type="text/javascript">
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?686983c6240d0e8c15795b48bc1ce62a";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

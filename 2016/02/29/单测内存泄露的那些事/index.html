@@ -1,0 +1,581 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>单测内存泄露的那些事 | Fangyu Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Fangyu Wu">
+    
+
+    
+    <meta name="description" content="浏览器代码里单测的Bad Case有不少都是测试框架的问题，有些模块报的多了以至于后来都没人关注了，前几天和开发商量准备把这个改善了，然后发现有很多都是报的内存泄露。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="单测内存泄露的那些事">
+<meta property="og:url" content="http://wufangyu.cn/2016/02/29/单测内存泄露的那些事/index.html">
+<meta property="og:site_name" content="Fangyu Blog">
+<meta property="og:description" content="浏览器代码里单测的Bad Case有不少都是测试框架的问题，有些模块报的多了以至于后来都没人关注了，前几天和开发商量准备把这个改善了，然后发现有很多都是报的内存泄露。">
+<meta property="og:updated_time" content="2016-03-01T08:40:36.994Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="单测内存泄露的那些事">
+<meta name="twitter:description" content="浏览器代码里单测的Bad Case有不少都是测试框架的问题，有些模块报的多了以至于后来都没人关注了，前几天和开发商量准备把这个改善了，然后发现有很多都是报的内存泄露。">
+
+    
+    
+    <link rel="icon" href="/img/favicon.png">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="Fangyu Blog" title="Fangyu Blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Fangyu Blog">Fangyu Blog</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">目录</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:wufangyu.cn">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/02/29/单测内存泄露的那些事/" title="单测内存泄露的那些事" itemprop="url">单测内存泄露的那些事</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Fangyu Wu" target="_blank" itemprop="author">Fangyu Wu</a>
+		
+  <p class="article-time">
+    <time datetime="2016-02-29T08:10:00.000Z" itemprop="datePublished"> 发表于 2016-02-29</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#单测检查内存泄露"><span class="toc-number">1.</span> <span class="toc-text">单测检查内存泄露</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#出现内存泄露的常见原因"><span class="toc-number">2.</span> <span class="toc-text">出现内存泄露的常见原因</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#产品代码的确会有内存泄露"><span class="toc-number">2.1.</span> <span class="toc-text">产品代码的确会有内存泄露</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#产品代码再第一次使用会增加内存的使用"><span class="toc-number">2.2.</span> <span class="toc-text">产品代码再第一次使用会增加内存的使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#测试框架自己的问题"><span class="toc-number">2.3.</span> <span class="toc-text">测试框架自己的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#诡异的内存泄露"><span class="toc-number">2.4.</span> <span class="toc-text">诡异的内存泄露</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#内存泄露问题该怎么查"><span class="toc-number">3.</span> <span class="toc-text">内存泄露问题该怎么查</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li></ol>
+		
+		</div>
+		
+		<p>浏览器代码里单测的<code>Bad Case</code>有不少都是<strong>测试框架</strong>的问题，有些模块报的多了以至于后来都没人关注了，前几天和开发商量准备把这个改善了，然后发现有<strong>很多</strong>都是报的<strong>内存泄露</strong>。</p>
+<a id="more"></a>
+<h2 id="单测检查内存泄露">单测检查内存泄露</h2><p>这个无需多说，浏览器这边基于Gtest写的单测框架已经做得很好了，直接上代码：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">SetUp</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="comment">// SetUP里快照下</span></span><br><span class="line">	_CrtMemCheckpoint(&amp;memStateBegin);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">TearDown</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="comment">// TearDown里进行比较</span></span><br><span class="line">	_CrtMemState memStateEnd;</span><br><span class="line">	_CrtMemState memStateDiff;</span><br><span class="line">	_CrtMemCheckpoint(&amp;memStateEnd);</span><br><span class="line">	ASSERT_EQ(_CrtMemDifference(&amp;memStateDiff, &amp;memStateBegin, &amp;memStateEnd), <span class="number">0</span>) &lt;&lt; <span class="string">"memory leak"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="出现内存泄露的常见原因">出现内存泄露的常见原因</h2><h3 id="产品代码的确会有内存泄露">产品代码的确会有内存泄露</h3><p>这里比如有<strong>申请了内存没有释放</strong>的，或者<strong>释放不对</strong>的，就像下面这种：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// vector直接clear后就不管的</span></span><br><span class="line">m_vec.clear();</span><br><span class="line"></span><br><span class="line"><span class="comment">// memset操作string</span></span><br><span class="line"><span class="built_in">memset</span>(pInfo, <span class="number">0</span>, <span class="keyword">sizeof</span>(*pInfo));</span><br></pre></td></tr></table></figure></p>
+<p>这种发现了就直接去找开发吧，理直气壮地找他们改。</p>
+<h3 id="产品代码再第一次使用会增加内存的使用">产品代码再第一次使用会增加内存的使用</h3><p>这种也是常用到的，而且这不是问题，还不能找开发去改，例如下面这样的：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::wstring Universal::URLMisc::HtmlEscape(<span class="keyword">const</span> <span class="built_in">std</span>::wstring &amp;szText)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">std</span>::wstring rs = szText;</span><br><span class="line">	<span class="keyword">const</span> <span class="keyword">static</span> <span class="keyword">struct</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">wchar_t</span> match;</span><br><span class="line">		<span class="built_in">std</span>::wstring replace;</span><br><span class="line">	&#125; codes[] = &#123; &#123; <span class="string">'&amp;'</span>, <span class="string">L"&amp;amp;"</span> &#125;, &#123; <span class="string">'&lt;'</span>, <span class="string">L"&amp;lt;"</span> &#125;, &#123; <span class="string">'&gt;'</span>, <span class="string">L"&amp;gt;"</span> &#125;, &#123; <span class="string">'\''</span>, <span class="string">L"&amp;apos;"</span> &#125;,</span><br><span class="line">				  &#123; <span class="string">'\"'</span>, <span class="string">L"&amp;quot;"</span> &#125;, &#123; <span class="string">'—'</span>, <span class="string">L"&amp;mdash;"</span> &#125;, &#123; <span class="string">'–'</span>, <span class="string">L"&amp;ndash;"</span> &#125; &#125;;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; _countof(codes); i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">size_t</span> start = rs.find_first_of(codes[i].match);</span><br><span class="line">		<span class="keyword">while</span> (start != <span class="built_in">std</span>::wstring::npos)</span><br><span class="line">		&#123;</span><br><span class="line">			rs.replace(start, <span class="number">1</span>, codes[i].replace);</span><br><span class="line">			start = rs.find_first_of(codes[i].match, start + codes[i].replace.size());</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> rs;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>代码里有个静态局部变量，第一次执行能不增加嘛。这个要怎么办呢？</p>
+<p>其实也好说，我们在<strong>Case执行的最开始先执行下这个函数</strong>就好了，如下：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">SetUpTestCase</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">	<span class="comment">// [wufangyu] ExtractTopDomain 第一次执行会报内存泄露，先执行下，躲避后面的内存检测</span></span><br><span class="line">	Universal::URLMisc::ExtractTopDomain(<span class="string">L"http://www.sogou.com"</span>);</span><br><span class="line">	se::wstringbuf sb;</span><br><span class="line">	sb &lt;&lt; Common::SEMisc::GetSEDataPath() &lt;&lt; <span class="string">L"\\UnitTest\\FormData.db"</span>;</span><br><span class="line">	strPath = sb.str();</span><br><span class="line">	GetICmdLineParser();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="测试框架自己的问题">测试框架自己的问题</h3><p>自己的测试代码本来就有内存泄露，这个就没啥好说了，捂脸改。这里也要提醒下大家写单元测试也一定要注意代码质量，脏代码到后面就是一个大坑。</p>
+<h3 id="诡异的内存泄露">诡异的内存泄露</h3><p>有些Case，我们单独跑没问题，连起来跑有时会泄露有时又好了，或者单跑也是随机性会出现内存泄露，检查代码也确实发现不了啥问题，这改咋整呢？</p>
+<p>如果你确定了每次跑环境等一样，先检查看看这个Case是不是<strong>异步</strong>的，会不会是多<strong>线程冲突</strong>导致的。如果再不是，那就再看看有没有别的Case是异步，且没有等异步结束Case就关了，然后这些Case的内存泄露乱入到别的Case里去了（这就是之前说的测试代码写的不好，后面坑会很大的一种情况）。</p>
+<h2 id="内存泄露问题该怎么查">内存泄露问题该怎么查</h2><p><strong>1.直接读代码：</strong>对于新写的模块，重点关注下开发是不是有什么地方内存完了释放了，对于稳定的老模块一般这种情况较少，这时重点关注是不只是第一次使用有内存泄露（使用了静态局部变量等等）；</p>
+<p><strong>2.注释法：</strong>如果内存泄露的代码不好定位，且涉及代码较多复杂不好查。这时我一般就是通过合理注释部分代码，二分法逐步定位内存泄露的位置。</p>
+<h2 id="总结">总结</h2><p>以上是最近在重构浏览器部分不稳定单测代码的一些心得，对于这些问题大家要是有更好解决方法欢迎赐教。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/内存泄露/">内存泄露</a><a href="/tags/单元测试/">单元测试</a><a href="/tags/白盒测试/">白盒测试</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://wufangyu.cn/2016/02/29/单测内存泄露的那些事/" data-title="单测内存泄露的那些事 | Fangyu Blog" data-tsina="1393602611" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2016/03/01/单测代码设计常见的问题/" title="单测代码设计常见的问题">
+  <strong>上一篇：</strong><br/>
+  <span>
+  单测代码设计常见的问题</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2016/02/08/C++11新特性之Lambda/"  title="c++11 新特性之Lambda">
+ <strong>下一篇：</strong><br/> 
+ <span>c++11 新特性之Lambda
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2016/02/29/单测内存泄露的那些事/" data-title="单测内存泄露的那些事" data-url="http://wufangyu.cn/2016/02/29/单测内存泄露的那些事/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#单测检查内存泄露"><span class="toc-number">1.</span> <span class="toc-text">单测检查内存泄露</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#出现内存泄露的常见原因"><span class="toc-number">2.</span> <span class="toc-text">出现内存泄露的常见原因</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#产品代码的确会有内存泄露"><span class="toc-number">2.1.</span> <span class="toc-text">产品代码的确会有内存泄露</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#产品代码再第一次使用会增加内存的使用"><span class="toc-number">2.2.</span> <span class="toc-text">产品代码再第一次使用会增加内存的使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#测试框架自己的问题"><span class="toc-number">2.3.</span> <span class="toc-text">测试框架自己的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#诡异的内存泄露"><span class="toc-number">2.4.</span> <span class="toc-text">诡异的内存泄露</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#内存泄露问题该怎么查"><span class="toc-number">3.</span> <span class="toc-text">内存泄露问题该怎么查</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github 名片</p>
+<div class="github-card" data-github="wufy1992" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/C/" title="C++">C++<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/白盒测试/" title="白盒测试">白盒测试<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/人工智能/" title="人工智能">人工智能<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/C-11/" title="C++11">C++11<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/单元测试/" title="单元测试">单元测试<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/自动化/" title="自动化">自动化<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/数据结构/" title="数据结构">数据结构<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ACM/" title="ACM">ACM<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Windows开发/" title="Windows开发">Windows开发<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/内存泄露/" title="内存泄露">内存泄露<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/架构设计/" title="架构设计">架构设计<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  
+  <div class="tagcloudlist">
+    <p class="asidetitle">标签云</p>
+    <div class="tagcloudlist clearfix">
+       <a href="/tags/ACM/" style="font-size: 10px;">ACM</a> <a href="/tags/C/" style="font-size: 20px;">C++</a> <a href="/tags/C-11/" style="font-size: 13.33px;">C++11</a> <a href="/tags/Windows开发/" style="font-size: 10px;">Windows开发</a> <a href="/tags/人工智能/" style="font-size: 13.33px;">人工智能</a> <a href="/tags/内存泄露/" style="font-size: 10px;">内存泄露</a> <a href="/tags/单元测试/" style="font-size: 13.33px;">单元测试</a> <a href="/tags/数据结构/" style="font-size: 10px;">数据结构</a> <a href="/tags/架构设计/" style="font-size: 10px;">架构设计</a> <a href="/tags/白盒测试/" style="font-size: 16.67px;">白盒测试</a> <a href="/tags/算法/" style="font-size: 20px;">算法</a> <a href="/tags/自动化/" style="font-size: 10px;">自动化</a>
+    </div>
+  </div>
+
+
+  
+  <div class="archiveslist">
+    <p class="asidetitle"><a href="/archives">归档</a></p>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">二月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">六月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">一月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">八月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">十月 2013</a><span class="archive-list-count">1</span></li></ul>
+  </div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://www.sogouqa.com/" target="_blank" title="搜狗测试博客">搜狗测试博客</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://fszxwfy.blog.163.com/" target="_blank" title="旧博客地址">旧博客地址</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+     <iframe width="100%" height="350" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=350&fansRow=1&ptype=1&speed=0&skin=2&isTitle=1&noborder=1&isWeibo=1&isFans=1&uid=1393602611&verifier=1c853142&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Fangyu form Sogou. <br/>
+			This is my blog, believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/fangyuwu" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/wufy1992" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="http://www.zhihu.com/people/fy-wu" target="_blank" class="icon-zhihu" title="知乎"></a>
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		
+		<a href="/about" target="_blank" title="Fangyu Wu">Fangyu Wu</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"fangyu"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script type="text/javascript">
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?686983c6240d0e8c15795b48bc1ce62a";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

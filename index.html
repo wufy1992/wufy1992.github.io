@@ -79,25 +79,27 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/11/24/我与林大——ACM不说再见/" title="我与林大——ACM不说再见" itemprop="url">我与林大——ACM不说再见</a>
+      <a href="/2016/03/01/巧解std function引用传递与值传递/" title="巧解std::function引用传递与值传递" itemprop="url">巧解std::function引用传递与值传递</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Fangyu Wu" target="_blank" itemprop="author">Fangyu Wu</a>
 		
   <p class="article-time">
-    <time datetime="2015-11-24T03:43:26.000Z" itemprop="datePublished"> 发表于 2015-11-24</time>
+    <time datetime="2016-03-01T06:10:06.000Z" itemprop="datePublished"> 发表于 2016-03-01</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>走过，才知道<br>失去，才珍惜</p>
+        <p>最近看代码发现，发现好多地方用到c++中新特性<code>std::function</code>的，就像下面这些：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">template&lt;typename ReturnType&gt;</span><br><span class="line">bool PostTaskAndReplyWithResultImpl(BrowserThread toWhere, const CCodeLocation&amp; fromWhere,</span><br><span class="line">const std::function&lt;ReturnType()&gt;&amp; task, const std::function&lt;void(ReturnType)&gt;&amp; reply)</span><br><span class="line">&#123;</span><br><span class="line">	Threading::BrowserThread originalThread = CBrowserThread::Current()-&gt;ThreadType();</span><br><span class="line">	auto taskAndReplyWrapper = [originalThread, task, reply]() &#123;</span><br><span class="line">		auto result = task();</span><br><span class="line">		Threading::PostTask(originalThread, FROM_HERE, std::bind(reply, result));</span><br><span class="line">	&#125;;</span><br><span class="line"></span><br><span class="line">	return Threading::PostTask(toWhere, fromWhere, taskAndReplyWrapper);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>里面这样的<code>const std::function&lt;ReturnType()&gt;&amp; task</code>使用，让我不由好奇到<code>std::function</code>作为入参时，<strong>引用传递与值传递有什么区别</strong>，是不是像正常的<code>int</code>那样保存一个副本？</p>
+<p><strong>PS：</strong>不知道<code>std::function</code>的同学，你可以理解<strong>这个其他类型变量没啥区别</strong>，只是<strong>作用的对象是函数</strong>。比如上面的<code>const std::function&lt;ReturnType()&gt;&amp; task</code>，在函数里执行下<code>task();</code>就相当于执行了<code>task</code>对应的函数。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2015/11/24/我与林大——ACM不说再见/#more">Read More</a>
+            <a href="/2016/03/01/巧解std function引用传递与值传递/#more">Read More</a>
           
        </p>
     </div>
@@ -107,7 +109,7 @@
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/ACM/">ACM</a>
+  <span></span> <a href="/tags/C/">C++</a><a href="/tags/C-11/">C++11</a>
   </div>
 
 </div>
@@ -118,7 +120,7 @@
 <div class="comments-count">
 	
 	  	<span></span>
-		<a href="/2015/11/24/我与林大——ACM不说再见/#comments" class="ds-thread-count comments-count-link" data-thread-key="2015/11/24/我与林大——ACM不说再见/" data-count-type="comments">&nbsp;</a>
+		<a href="/2016/03/01/巧解std function引用传递与值传递/#comments" class="ds-thread-count comments-count-link" data-thread-key="2016/03/01/巧解std function引用传递与值传递/" data-count-type="comments">&nbsp;</a>
 	
 </div>
 
@@ -138,27 +140,26 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/06/10/通过测试替代提高单测效率/" title="通过测试替代提高单测效率" itemprop="url">通过测试替代提高单测效率</a>
+      <a href="/2016/03/01/单测代码设计常见的问题/" title="单测代码设计常见的问题" itemprop="url">单测代码设计常见的问题</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Fangyu Wu" target="_blank" itemprop="author">Fangyu Wu</a>
 		
   <p class="article-time">
-    <time datetime="2015-06-10T04:12:18.000Z" itemprop="datePublished"> 发表于 2015-06-10</time>
+    <time datetime="2016-03-01T04:10:06.000Z" itemprop="datePublished"> 发表于 2016-03-01</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <blockquote>
-<p>测试技术在现代软件工程中变得愈来愈重要，<strong>单元测试</strong>是软件质量的第一关。开发者通过单元测试可以快速反思自己的设计，提高软件质量，降低开发成本。编写单元测试代码要求<code>高效、快速、隔离</code>等。本文主要探讨了使用<code>测试替代技术</code>隔离单元测试中对<code>网络系统、数据库系统和文件系统</code>的访问以提高<code>单元测试效率</code>。</p>
-</blockquote>
+        <p>说到单测，我们对做单测的<strong>基本目的</strong>是及时<strong>发现产品代码的问题</strong>。所以说，最基本的<strong>要求</strong>就是 <strong>一旦开发代码有问题或者接口有变动</strong>，单测这边能够<strong>立即发现</strong>，我给这个起个名字叫做<code>灵敏性</code>（感觉不是很到位，大家有更好的名字可以和我说）。</p>
+<p>除此之外，我希望我们的代码也要一定<code>健壮性</code>，虽然单测一般参数环境等都是固定的，不用像产品代码一样做太多的健壮性处理，但是也<strong>不能说换台机器</strong>，或者是开发<strong>改点无关的代码</strong>，<strong>甚至于自己跑着跑着就挂了</strong>。而且<strong>单测报Fail没关系，但是不能动不动就崩溃</strong>。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2015/06/10/通过测试替代提高单测效率/#more">Read More</a>
+            <a href="/2016/03/01/单测代码设计常见的问题/#more">Read More</a>
           
        </p>
     </div>
@@ -168,7 +169,7 @@
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/白盒测试/">白盒测试</a>
+  <span></span> <a href="/tags/单元测试/">单元测试</a><a href="/tags/架构设计/">架构设计</a><a href="/tags/白盒测试/">白盒测试</a>
   </div>
 
 </div>
@@ -179,7 +180,7 @@
 <div class="comments-count">
 	
 	  	<span></span>
-		<a href="/2015/06/10/通过测试替代提高单测效率/#comments" class="ds-thread-count comments-count-link" data-thread-key="2015/06/10/通过测试替代提高单测效率/" data-count-type="comments">&nbsp;</a>
+		<a href="/2016/03/01/单测代码设计常见的问题/#comments" class="ds-thread-count comments-count-link" data-thread-key="2016/03/01/单测代码设计常见的问题/" data-count-type="comments">&nbsp;</a>
 	
 </div>
 
@@ -199,27 +200,25 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/03/29/Hash算法简介/" title="Hash算法简介" itemprop="url">Hash算法简介</a>
+      <a href="/2016/02/29/单测内存泄露的那些事/" title="单测内存泄露的那些事" itemprop="url">单测内存泄露的那些事</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Fangyu Wu" target="_blank" itemprop="author">Fangyu Wu</a>
 		
   <p class="article-time">
-    <time datetime="2015-03-29T02:56:18.000Z" itemprop="datePublished"> 发表于 2015-03-29</time>
+    <time datetime="2016-02-29T08:10:00.000Z" itemprop="datePublished"> 发表于 2016-02-29</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <blockquote>
-<p>Hash，一般翻译做“散列”，也有直接音译为“哈希”的，就是把任意长度的输入（又叫做预映射， pre-image），通过散列算法，变换成固定长度的输出，该输出就是散列值。这种转换是一种压缩映射，也就是，散列值的空间通常远小于输入的空间，不同的输入可能会散列成相同的输出，而不可能从散列值来唯一的确定输入值。简单的说就是一种将任意长度的消息压缩到某一固定长度的消息摘要的函数。<br>HASH主要用于信息安全领域中加密算法，它把一些不同长度的信息转化成杂乱的128位的编码,这些编码值叫做HASH值. 也可以说，hash就是找到一种数据内容和数据存放地址之间的映射关系</p>
-</blockquote>
+        <p>浏览器代码里单测的<code>Bad Case</code>有不少都是<strong>测试框架</strong>的问题，有些模块报的多了以至于后来都没人关注了，前几天和开发商量准备把这个改善了，然后发现有<strong>很多</strong>都是报的<strong>内存泄露</strong>。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2015/03/29/Hash算法简介/#more">Read More</a>
+            <a href="/2016/02/29/单测内存泄露的那些事/#more">Read More</a>
           
        </p>
     </div>
@@ -229,7 +228,7 @@
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/算法/">算法</a>
+  <span></span> <a href="/tags/内存泄露/">内存泄露</a><a href="/tags/单元测试/">单元测试</a><a href="/tags/白盒测试/">白盒测试</a>
   </div>
 
 </div>
@@ -240,7 +239,7 @@
 <div class="comments-count">
 	
 	  	<span></span>
-		<a href="/2015/03/29/Hash算法简介/#comments" class="ds-thread-count comments-count-link" data-thread-key="2015/03/29/Hash算法简介/" data-count-type="comments">&nbsp;</a>
+		<a href="/2016/02/29/单测内存泄露的那些事/#comments" class="ds-thread-count comments-count-link" data-thread-key="2016/02/29/单测内存泄露的那些事/" data-count-type="comments">&nbsp;</a>
 	
 </div>
 
@@ -260,25 +259,26 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/03/11/爬山算法和模拟退火算法简介/" title="爬山算法和模拟退火算法简介" itemprop="url">爬山算法和模拟退火算法简介</a>
+      <a href="/2016/02/08/C++11新特性之Lambda/" title="c++11 新特性之Lambda" itemprop="url">c++11 新特性之Lambda</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Fangyu Wu" target="_blank" itemprop="author">Fangyu Wu</a>
 		
   <p class="article-time">
-    <time datetime="2015-03-11T04:56:18.000Z" itemprop="datePublished"> 发表于 2015-03-11</time>
+    <time datetime="2016-02-08T12:17:26.000Z" itemprop="datePublished"> 发表于 2016-02-08</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>本文将简单介绍爬山算法和模拟退火算法实现原理以及优缺点。<br>
+        <p>浏览器这边这重构代码，武爷要我这边做下单测，先给大家看一段代码<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Closure Threading::CBrowserThread::UIThreadProc()</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">auto</span> thread_proc_wrapper = [<span class="keyword">this</span>]() &#123;</span><br><span class="line">		tls_thread_ptr.Set(<span class="keyword">this</span>);</span><br><span class="line">		m_pNotifier-&gt;UIProc()();</span><br><span class="line">		tls_thread_ptr.Set(<span class="literal">NULL</span>);</span><br><span class="line">	&#125;;</span><br><span class="line">	<span class="keyword">return</span> thread_proc_wrapper;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>要是能轻松读懂那下面可以不看了。我当时第一眼看到这这个心理是崩溃的，auto作为函数指针还能理解，但是<code>[]</code>又是什么鬼，后来武爷告诉我这用的c++11的一个新特性，叫做<code>Lambda</code>。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2015/03/11/爬山算法和模拟退火算法简介/#more">Read More</a>
+            <a href="/2016/02/08/C++11新特性之Lambda/#more">Read More</a>
           
        </p>
     </div>
@@ -288,7 +288,7 @@
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/人工智能/">人工智能</a><a href="/tags/算法/">算法</a>
+  <span></span> <a href="/tags/C/">C++</a><a href="/tags/C-11/">C++11</a>
   </div>
 
 </div>
@@ -299,7 +299,7 @@
 <div class="comments-count">
 	
 	  	<span></span>
-		<a href="/2015/03/11/爬山算法和模拟退火算法简介/#comments" class="ds-thread-count comments-count-link" data-thread-key="2015/03/11/爬山算法和模拟退火算法简介/" data-count-type="comments">&nbsp;</a>
+		<a href="/2016/02/08/C++11新特性之Lambda/#comments" class="ds-thread-count comments-count-link" data-thread-key="2016/02/08/C++11新特性之Lambda/" data-count-type="comments">&nbsp;</a>
 	
 </div>
 
@@ -319,27 +319,26 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/03/11/遗传算法简介/" title="遗传算法简介" itemprop="url">遗传算法简介</a>
+      <a href="/2016/02/02/C++内联函数inline简介/" title="C++内联函数inline简介" itemprop="url">C++内联函数inline简介</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Fangyu Wu" target="_blank" itemprop="author">Fangyu Wu</a>
 		
   <p class="article-time">
-    <time datetime="2015-03-11T03:56:18.000Z" itemprop="datePublished"> 发表于 2015-03-11</time>
+    <time datetime="2016-02-02T12:17:26.000Z" itemprop="datePublished"> 发表于 2016-02-02</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <blockquote>
-<p>遗传算法是计算机科学人工智能领域中用于解决最优化的一种<strong>搜索启发式算法</strong>，是<strong>进化算法</strong>的一种。这种启发式通常用来生成有用的解决方案来优化和搜索问题。进化算法最初是借鉴了进化生物学中的一些现象而发展起来的，这些现象包括<strong>遗传、突变、自然选择以及杂交等</strong>——维基百科</p>
-</blockquote>
+        <p><code>inline</code>关键字，咋一看意思应该是限制作用域，和<code>static</code>限制在当前文件类似。其实不然，我们只要在一个头文件里定义了内联函数，包了这个头的<code>cpp</code>都能用这个函数。</p>
+<p>那么<code>inline</code>关键字到底有什么作用呢？其实这个和宏定义<code>define</code>类似。内联函数<strong>不是在调用时发生控制转移</strong>，而是在<strong>编译时</strong>将函数体<strong>嵌入</strong>在每一个调用处。类似宏替换，使用函数体替换调用处的函数名。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2015/03/11/遗传算法简介/#more">Read More</a>
+            <a href="/2016/02/02/C++内联函数inline简介/#more">Read More</a>
           
        </p>
     </div>
@@ -349,7 +348,7 @@
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/人工智能/">人工智能</a><a href="/tags/算法/">算法</a>
+  <span></span> <a href="/tags/C/">C++</a>
   </div>
 
 </div>
@@ -360,7 +359,7 @@
 <div class="comments-count">
 	
 	  	<span></span>
-		<a href="/2015/03/11/遗传算法简介/#comments" class="ds-thread-count comments-count-link" data-thread-key="2015/03/11/遗传算法简介/" data-count-type="comments">&nbsp;</a>
+		<a href="/2016/02/02/C++内联函数inline简介/#comments" class="ds-thread-count comments-count-link" data-thread-key="2016/02/02/C++内联函数inline简介/" data-count-type="comments">&nbsp;</a>
 	
 </div>
 
@@ -376,7 +375,7 @@
 
 
   <nav id="page-nav" class="clearfix">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next<span></span></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next<span></span></a>
   </nav>
 
 </div>
@@ -404,7 +403,15 @@
 		<ul class="clearfix">
 		
 			
+				<li><a href="/tags/C/" title="C++">C++<sup>4</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/算法/" title="算法">算法<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/白盒测试/" title="白盒测试">白盒测试<sup>3</sup></a></li>
 			
 		
 			
@@ -412,7 +419,11 @@
 			
 		
 			
-				<li><a href="/tags/白盒测试/" title="白盒测试">白盒测试<sup>1</sup></a></li>
+				<li><a href="/tags/C-11/" title="C++11">C++11<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/单元测试/" title="单元测试">单元测试<sup>2</sup></a></li>
 			
 		
 			
@@ -431,6 +442,14 @@
 				<li><a href="/tags/Windows开发/" title="Windows开发">Windows开发<sup>1</sup></a></li>
 			
 		
+			
+				<li><a href="/tags/内存泄露/" title="内存泄露">内存泄露<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/架构设计/" title="架构设计">架构设计<sup>1</sup></a></li>
+			
+		
 		</ul>
 </div>
 
@@ -439,7 +458,7 @@
   <div class="tagcloudlist">
     <p class="asidetitle">标签云</p>
     <div class="tagcloudlist clearfix">
-       <a href="/tags/ACM/" style="font-size: 10px;">ACM</a> <a href="/tags/Windows开发/" style="font-size: 10px;">Windows开发</a> <a href="/tags/人工智能/" style="font-size: 15px;">人工智能</a> <a href="/tags/数据结构/" style="font-size: 10px;">数据结构</a> <a href="/tags/白盒测试/" style="font-size: 10px;">白盒测试</a> <a href="/tags/算法/" style="font-size: 20px;">算法</a> <a href="/tags/自动化/" style="font-size: 10px;">自动化</a>
+       <a href="/tags/ACM/" style="font-size: 10px;">ACM</a> <a href="/tags/C/" style="font-size: 20px;">C++</a> <a href="/tags/C-11/" style="font-size: 13.33px;">C++11</a> <a href="/tags/Windows开发/" style="font-size: 10px;">Windows开发</a> <a href="/tags/人工智能/" style="font-size: 13.33px;">人工智能</a> <a href="/tags/内存泄露/" style="font-size: 10px;">内存泄露</a> <a href="/tags/单元测试/" style="font-size: 13.33px;">单元测试</a> <a href="/tags/数据结构/" style="font-size: 10px;">数据结构</a> <a href="/tags/架构设计/" style="font-size: 10px;">架构设计</a> <a href="/tags/白盒测试/" style="font-size: 16.67px;">白盒测试</a> <a href="/tags/算法/" style="font-size: 20px;">算法</a> <a href="/tags/自动化/" style="font-size: 10px;">自动化</a>
     </div>
   </div>
 
@@ -447,7 +466,7 @@
   
   <div class="archiveslist">
     <p class="asidetitle"><a href="/archives">归档</a></p>
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">六月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">一月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">八月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">十月 2013</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">二月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">六月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">一月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">八月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">十月 2013</a><span class="archive-list-count">1</span></li></ul>
   </div>
 
 
@@ -517,7 +536,7 @@
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2015 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
 		
 		<a href="/about" target="_blank" title="Fangyu Wu">Fangyu Wu</a>
 		
