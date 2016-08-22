@@ -253,41 +253,41 @@
 			}
 
 			function setDefaultVaule() {
-				document.getElementById("id_l").value = 8.00;
+				document.getElementById("id_l").value = localStorage.id_l ? localStorage.id_l : 8.00;
 				
-				document.getElementById("id_a").value = 0.75
-				document.getElementById("id_b").value= 1.00;
+				document.getElementById("id_a").value = localStorage.id_a ? localStorage.id_a : 0.75
+				document.getElementById("id_b").value= localStorage.id_b ? localStorage.id_b : 1.00;
 				
-				document.getElementById("id_p1").value = 422.00;
-				document.getElementById("id_p2").value = 167.00;
+				document.getElementById("id_p1").value = localStorage.id_p1 ? localStorage.id_p1 : 422.00;
+				document.getElementById("id_p2").value = localStorage.id_p2 ? localStorage.id_p2 : 167.00;
 				
-				document.getElementById("id_N_0").value = 1640.00;
-				document.getElementById("id_r1").value = 0.95;
-				document.getElementById("id_r2").value = 1.87;
-				document.getElementById("id_r3").value = 0.80;
-				document.getElementById("id_r4").value = 1.00;
+				document.getElementById("id_N_0").value = localStorage.id_N_0 ? localStorage.id_N_0 : 1640.00;
+				document.getElementById("id_r1").value = localStorage.id_r1 ? localStorage.id_r1 : 0.95;
+				document.getElementById("id_r2").value = localStorage.id_r2 ? localStorage.id_r2 : 1.87;
+				document.getElementById("id_r3").value = localStorage.id_r3 ? localStorage.id_r3 : 0.80;
+				document.getElementById("id_r4").value = localStorage.id_r4 ? localStorage.id_r4 : 1.00;
 				
-				document.getElementById("id_s1").value = 2.00;
-				document.getElementById("id_s2").value = 1.40;
-				document.getElementById("id_s3").value = 5.90;
-				document.getElementById("id_s4").value = 2.00;
+				document.getElementById("id_s1").value = localStorage.id_s1 ? localStorage.id_s1 : 2.00;
+				document.getElementById("id_s2").value = localStorage.id_s2 ? localStorage.id_s2 : 1.40;
+				document.getElementById("id_s3").value = localStorage.id_s3 ? localStorage.id_s3 : 5.90;
+				document.getElementById("id_s4").value = localStorage.id_s4 ? localStorage.id_s4 : 2.00;
 				
-				document.getElementById("id_n").value = 2.00;
-				document.getElementById("id_c").value = 634.00;
-				document.getElementById("id_pn").value = 2.80;
+				document.getElementById("id_n").value = localStorage.id_n ? localStorage.id_n : 2.00;
+				document.getElementById("id_c").value = localStorage.id_c ? localStorage.id_c : 634.00;
+				document.getElementById("id_pn").value = localStorage.id_pn ? localStorage.id_pn : 2.80;
 
-				document.getElementById("id_S_P").value = 760.00;
-				document.getElementById("id_vp").value = 1.67;
-				document.getElementById("id_vc").value = 5.56;
-				document.getElementById("id_sp_").value = 1.20;
-				document.getElementById("id_dp").value = 1.06;
-				document.getElementById("id_S0P").value = 0.93;
+				document.getElementById("id_S_P").value = localStorage.id_S_P ? localStorage.id_S_P : 760.00;
+				document.getElementById("id_vp").value = localStorage.id_vp ? localStorage.id_vp : 1.67;
+				document.getElementById("id_vc").value = localStorage.id_vc ? localStorage.id_vc : 5.56;
+				document.getElementById("id_sp_").value = localStorage.id_sp_ ? localStorage.id_sp_ : 1.20;
+				document.getElementById("id_dp").value = localStorage.id_dp ? localStorage.id_dp : 1.06;
+				document.getElementById("id_S0P").value = localStorage.id_S0P ? localStorage.id_S0P : 0.93;
 
-				document.getElementById("id_T").value = 3600.00;
-				document.getElementById("id_lc_").value = 20.00;
-				document.getElementById("id_l0c").value = 5.35;
-				document.getElementById("id_Lr").value = 634.00;
-				document.getElementById("id_h").value = 4.00;
+				document.getElementById("id_T").value = localStorage.id_T ? localStorage.id_T : 3600.00;
+				document.getElementById("id_lc_").value = localStorage.id_lc_ ? localStorage.id_lc_ : 20.00;
+				document.getElementById("id_l0c").value = localStorage.id_l0c ? localStorage.id_l0c : 5.35;
+				document.getElementById("id_Lr").value = localStorage.id_Lr ? localStorage.id_Lr : 634.00;
+				document.getElementById("id_h").value = localStorage.id_h ? localStorage.id_h : 4.00;
 				
 			}
 			
@@ -302,29 +302,48 @@
 				var a, b;
 				
 				g_l = parseFloat(document.getElementById("id_l").value);
+				localStorage.id_l = g_l;
 				
 				a = parseFloat(document.getElementById("id_a").value);
 				b = parseFloat(document.getElementById("id_b").value);
+				localStorage.id_a = a;
+				localStorage.id_b = b;
 				
 				
 				g_p1 = parseFloat(document.getElementById("id_p1").value);
 				g_p2 = parseFloat(document.getElementById("id_p2").value);
+				localStorage.id_p1 = g_p1;
+				localStorage.id_p2 = g_p2;
 				
 				g_N0 = parseFloat(document.getElementById("id_N_0").value);
 				g_r1 = parseFloat(document.getElementById("id_r1").value);
 				g_r2 = parseFloat(document.getElementById("id_r2").value);
 				g_r3 = parseFloat(document.getElementById("id_r3").value);
 				g_r4 = parseFloat(document.getElementById("id_r4").value);
+				localStorage.id_N_0 = g_N0;
+				localStorage.id_r1 = g_r1;
+				localStorage.id_r2 = g_r2;
+				localStorage.id_r3 = g_r3;
+				localStorage.id_r4 = g_r4;
+				
 				
 				g_s1 = parseFloat(document.getElementById("id_s1").value);
 				g_s2 = parseFloat(document.getElementById("id_s2").value);
 				g_s3 = parseFloat(document.getElementById("id_s3").value);
 				g_s4 = parseFloat(document.getElementById("id_s4").value);
+				localStorage.id_s1 = g_s1;
+				localStorage.id_s2 = g_s2;
+				localStorage.id_s3 = g_s3;
+				localStorage.id_s4 = g_s4;
 				
 				n = parseFloat(document.getElementById("id_n").value);
 				c = parseFloat(document.getElementById("id_c").value);
 				Pn = parseFloat(document.getElementById("id_pn").value);
 				ci = c;
+				localStorage.id_n = n;
+				localStorage.id_c = c;
+				localStorage.id_pn = Pn;
+	
 				
 				Sp = parseFloat(document.getElementById("id_S_P").value);
 				vp = parseFloat(document.getElementById("id_vp").value);
@@ -338,6 +357,17 @@
 				l0c = parseFloat(document.getElementById("id_l0c").value);
 				Lr = parseFloat(document.getElementById("id_Lr").value);
 				h = parseFloat(document.getElementById("id_h").value);
+				localStorage.id_S_P = Sp;
+				localStorage.id_vp = vp;
+				localStorage.id_vc = vc;
+				localStorage.id_sp_ = sp_;
+				localStorage.id_dp = dp;
+				localStorage.id_S0P = S0p;
+				localStorage.id_T = T;
+				localStorage.id_lc_ = lc_;
+				localStorage.id_l0c = l0c;
+				localStorage.id_Lr = Lr;
+				localStorage.id_h = h;
 				
 				Qp = 1.00;
 				Qc = 1.00;
