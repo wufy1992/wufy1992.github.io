@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<title>Wang Hang</title><meta charset="UTF-8" />
+<meta name="viewport" />
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+<link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
+<link rel="stylesheet" href="css/fullcalendar.css" />
+<link rel="stylesheet" href="css/maruti-style.css" />
+<link rel="stylesheet" href="css/maruti-media.css" class="skin-color" />
+</head>
+<body>
+
+<!--Header-part-->
+<div id="header">
+  <h1><a href="http://www.mafiashare.net">Shared on www.MafiaShare.net</a></h1>
+</div>
+<!--close-Header-part--> 
+
+
+<div id="myContent">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="span12"> 
+        <div class="widget-box">
+          <div class="widget-title"><span class="icon"><i class="icon-signal"></i></span>
+            <h5>曲线图</h5>
+          </div>
+          <div class="widget-content">
+            <div class="row-fluid">
+              <div id = "myChartSpan" class="span12">
+                <canvas id="myChart" width="1800" height="300"></canvas>
+              </div>
+            </div></div></div>
+      </div>
+    </div>
+	
+	<div class="row-fluid">
+					<div class="span12">
+						<div class="widget-box">
+							<div class="widget-title">
+								<span class="icon">
+									<i class="icon-align-justify"></i>									
+								</span>
+								<h5>参数</h5>
+							</div>
+							<div class="widget-content nopadding">
+								<form action="#" method="get" class="form-horizontal">
+									
+									<div class="control-group">
+									<div class="control-group">
+										<label class="control-label">时间 :</label>
+										<div class="controls"><input id= "id_T" type="text" class="span3" placeholder="研究时段内的有效运行时间" title="研究时段内的有效运行时间"/></div>
+									</div>
+									
+										<label class="control-label">权重 :</label>
+										<div class="controls"><input id= "id_a" type="text" class="span3" placeholder="交通链路权重" title="交通链路权重"/> <input id= "id_b" type="text" class="span3" placeholder="城市空间权重" title="城市空间权重" /></div>
+									</div>
+									
+									<div class="control-group">
+										<label class="control-label">需求人数 :</label>
+										<div class="controls"><input type="text" id= "id_p1" class="span3" placeholder="行动类活动空间需求的人数" title="行动类活动空间需求的人数" /> <input type="text" id= "id_p2"  class="span3" placeholder="停留类活动空间需求的人数" title="停留类活动空间需求的人数" /></div>
+									</div>
+									
+									<div class="control-group">
+										<label class="control-label">车道信息 :</label>
+										<div class="controls"><input id= "id_N_0" type="text" class="span3" placeholder="一条标准车道的基本通行能力" title="一条标准车道的基本通行能力" /> <input type="text" id= "id_n" class="span3" placeholder="双向车道数" title="双向车道数" /> <input type="text" id= "id_h" class="span3" placeholder="单向车道数" title="单向车道数" /></div>
+									</div>
+									
+									
+									<div class="control-group">
+										<label class="control-label">街道参数 :</label>
+										<div class="controls"><input type="text" id= "id_l" class="span3" placeholder="可利用的街道截面宽度" title="可利用的街道截面宽度" /> <input type="text" id= "id_c" class="span3" placeholder="街道长度" title="街道长度" /> <input type="text" id= "id_S_P" class="span3" placeholder="空间街道的面积" title="空间街道的面积" /> <input type="text" id= "id_Lr" class="span3" placeholder="交通街道可利用的总长度" title="交通街道可利用的总长度" /></div>
+									</div>
+									
+									<div class="control-group">
+										<label class="control-label">需求面积 :</label>
+										<div class="controls"> <input type="text" id= "id_s1" class="span3" placeholder="行动类活动人均需求面积" title="行动类活动人均需求面积" /> <input type="text" id= "id_s2" class="span3" placeholder="停留类活动人均需求面积" title="停留类活动人均需求面积" />  <input type="text" id= "id_s3" class="span3" placeholder="机动车停车位所需的横截面宽度是" title="机动车停车位所需的横截面宽度是" /> <input type="text" id= "id_s4" class="span3" placeholder="非机动车停车位所需的截面宽度是" title="非机动车停车位所需的截面宽度是" /></div>
+									</div>
+									
+									<div class="control-group">
+										<label class="control-label">步行参数 :</label>
+										<div class="controls"> <input type="text" id= "id_sp_" class="span3" placeholder="步行安全行走面积" title="步行安全行走面积" /> <input type="text" id= "id_dp" class="span3" placeholder="步行行走宽度" title="步行行走宽度" />  <input type="text" id= "id_S0P" class="span3" placeholder="步行静态占用面积" title="步行静态占用面积" /> <input type="text" id= "id_vp" class="span3" placeholder="步行速度" title="步行速度"/></div>
+									</div>
+									
+									<div class="control-group">
+										<label class="control-label">修正系数 :</label>
+										<div class="controls"><input type="text" id= "id_r1" class="span3" placeholder="车道宽度修正系数" title="车道宽度修正系数" /> <input type="text" id= "id_r2"class="span3" placeholder="车道数修正系数" title="车道数修正系数" /> <input type="text" id= "id_r3"class="span3" placeholder="交叉口影响修正系数" title="交叉口影响修正系数" /> <input type="text" id= "id_r4"class="span3" placeholder="自行车影响修正系数" title="自行车影响修正系数" /></div>
+									</div>
+                                    
+									<div class="control-group">
+										<label class="control-label">小汽车信息 :</label>
+										<div class="controls"><input type="text" id= "id_pn" class="span3" placeholder="平均载客数" title="平均载客数" /> <input type="text" id= "id_vc" class="span3" placeholder="行驶速度" title="行驶速度" /> <input type="text" id= "id_lc_" class="span3" placeholder="安全车头间距" title="安全车头间距" /> <input type="text" id= "id_l0c" class="span3" placeholder="车身长度" title="车身长度" /></div>
+									</div>
+									
+									<div class="control-group">
+										<label class="control-label">是否开启限制函数</label>
+										<div class="controls">
+											<label><input type="radio" name="radios" /> 开启</label>
+											<label><input type="radio" name="radios" /> 不开启</label>
+										</div>
+									</div>
+									
+									<div class="form-actions">
+										<button type="submit" class="btn btn-success" onclick = "drawTable()">确定</button>
+										<button type="submit" class="btn btn-success" onclick = "setDefaultVaule()">设置默认</button>
+									</div>
+								</form>
+							</div>
+						</div>						
+					</div>
+				</div>
+    
+    
+  </div>
+</div>
+
+<script src="js/Chart.js"></script>
+<script type="text/javascript">
+			var g_data = {
+				labels : [],
+				datasets : [
+					{
+						lineItemName : "交通量",
+						fillColor : "rgba(205,38,38,0.5)",
+						strokeColor : "rgba(205,38,38,1)",
+						pointColor : "rgba(205,38,38,1)",
+						pointStrokeColor : "#FFFAFA",
+						data : []
+					},
+					{
+						lineItemName : "交通量",
+						fillColor : "rgba(151,187,205,0.5)",
+						strokeColor : "rgba(151,187,205,1)",
+						pointColor : "rgba(151,187,205,1)",
+						pointStrokeColor : "#fff",
+						data : []
+					}
+				]
+			};
+			
+			
+			var chartLine = null;
+			
+			// data
+			var g_s1, g_s2, g_s3, g_s4;
+			var g_p1, g_p2;
+			var g_p3 = 6.0;
+			var g_p4 = 1.8;
+
+			var g_p, g_l;
+
+			var g_pl_3;
+
+			var g_N0,  g_r2, g_r3, g_r4;
+			var g_r1 ;
+
+			var g_funcFi;
+			var g_funcTi;
+			var g_Np_;
+
+			var g_lc, g_lb;
+			
+			
+			function FuncU( a,  b,  t,  f)
+			{
+				return a * t * g_p * g_l  + b * f * (1 - g_p) * g_l;
+			}
+
+			function FuncCp( n,  c,  Pn, state)
+			{
+				var pl = parseInt(g_p * g_l);
+				var r1_ = pl / 20 + g_r1;
+
+				var Np = g_N0 * g_r1 * g_r2 * g_r3 * g_r4;
+				var Np_ = g_N0 * r1_ * g_r2 * g_r3 * g_r4;
+				g_Np_ = Np_;
+
+				if (state == 1)
+				{
+					return (Np_ - Np) * Pn ;
+				}
+				else if(state == 2)
+				{
+					 r1_ = 0.10 + g_r1;
+					 Np_ = g_N0 * r1_ * g_r2 * g_r3 * g_r4;
+					 return (Np_ - Np) * Pn ;
+				}
+				else
+				{
+					var Cp_1 = ((Np_ - Np) * Pn) * (n + g_pl_3 / g_l);
+
+					var temp = g_p * g_l - g_pl_3 * 3.25;
+					if (temp < 2.00)
+					{
+						return Cp_1 * g_pl_3 + FuncCp(n, c, Pn,  1);
+					}
+					else
+					{
+						return Cp_1 * g_pl_3 + FuncCp(n, c,  Pn, 2);
+					}
+				}
+			}
+
+
+			function FuncT( Cp, state)
+			{
+				if (state == 1)
+				{
+					return Cp * g_p * g_l;
+				}
+
+				else
+				{
+					return Cp * 2;
+				}
+
+			}
+
+
+
+			function FuncFi(c,  state )
+			{
+				g_lc = 6;
+				g_lb = 1.8;
+				var fi_ = (g_p1 + g_p2 + c / g_lc + c / g_lb) / ( (g_s1 * g_p1 + g_s2 * g_p2 ) / c + g_s3 + g_s4) / 8;
+				// var fi_ = ((c * c / g_s1 / g_p1) + (c * c / g_s2 / g_p2) + (1/ g_s3 ) + (1 / g_s4 )) * (1 - g_p) * g_l / 4 ;//* (g_p1 + g_p2 + g_p3 + g_p4 ) / 4 ;
+
+				if (state == 1)
+				{
+					return fi_ * (g_l - parseInt(g_p * g_l));
+				}
+				else
+				{
+					return fi_ * (g_l - 2.00);
+				}
+
+			}
+
+			function FuncJudge(Sp,  ci,  Qp,  Qc,  vp,  sp_,  dp,  S0p,  t,  T,  lc_,  vc,  l0c,  Lr,  h)
+			{
+				// return true;
+				var Cp = (1.00 - g_p) * g_l * T;
+				var sp = sp_ + dp * vp * t / 3.6  + S0p;
+				var Ep = (1.00 - g_p) * g_l * g_funcFi * sp * Qp / vp  ;
+
+				var CR = Lr * T;
+				var lc = lc_ + vc * t / 3.6 + l0c;
+				var Ec= g_funcTi * lc * Qc * ci / vc;
+
+				return Ep < Cp && Ec < CR;
+			}
+
+			function setDefaultVaule() {
+				document.getElementById("id_l").value = 8.00;
+				
+				document.getElementById("id_a").value = 0.75
+				document.getElementById("id_b").value= 1.00;
+				
+				document.getElementById("id_p1").value = 422.00;
+				document.getElementById("id_p2").value = 167.00;
+				
+				document.getElementById("id_N_0").value = 1640.00;
+				document.getElementById("id_r1").value = 0.95;
+				document.getElementById("id_r2").value = 1.87;
+				document.getElementById("id_r3").value = 0.80;
+				document.getElementById("id_r4").value = 1.00;
+				
+				document.getElementById("id_s1").value = 2.00;
+				document.getElementById("id_s2").value = 1.40;
+				document.getElementById("id_s3").value = 5.90;
+				document.getElementById("id_s4").value = 2.00;
+				
+				document.getElementById("id_n").value = 2.00;
+				document.getElementById("id_c").value = 634.00;
+				document.getElementById("id_pn").value = 2.80;
+
+				document.getElementById("id_S_P").value = 760.00;
+				document.getElementById("id_vp").value = 1.67;
+				document.getElementById("id_vc").value = 5.56;
+				document.getElementById("id_sp_").value = 1.20;
+				document.getElementById("id_dp").value = 1.06;
+				document.getElementById("id_S0P").value = 0.93;
+
+				document.getElementById("id_T").value = 3600.00;
+				document.getElementById("id_lc_").value = 20.00;
+				document.getElementById("id_l0c").value = 5.35;
+				document.getElementById("id_Lr").value = 634.00;
+				document.getElementById("id_h").value = 4.00;
+				
+			}
+			
+			function getData() {
+			
+				g_data.labels.length = 0;
+				g_data.datasets[0].data.length = 0;
+				g_data.datasets[1].data.length = 0;
+					
+				var n, c, Pn;
+				var Sp, ci, Qp, Qc, vp, sp_, dp, S0p, t, T, lc_, vc, l0c, Lr, h;
+				var a, b;
+				
+				g_l = parseFloat(document.getElementById("id_l").value);
+				
+				a = parseFloat(document.getElementById("id_a").value);
+				b = parseFloat(document.getElementById("id_b").value);
+				
+				
+				g_p1 = parseFloat(document.getElementById("id_p1").value);
+				g_p2 = parseFloat(document.getElementById("id_p2").value);
+				
+				g_N0 = parseFloat(document.getElementById("id_N_0").value);
+				g_r1 = parseFloat(document.getElementById("id_r1").value);
+				g_r2 = parseFloat(document.getElementById("id_r2").value);
+				g_r3 = parseFloat(document.getElementById("id_r3").value);
+				g_r4 = parseFloat(document.getElementById("id_r4").value);
+				
+				g_s1 = parseFloat(document.getElementById("id_s1").value);
+				g_s2 = parseFloat(document.getElementById("id_s2").value);
+				g_s3 = parseFloat(document.getElementById("id_s3").value);
+				g_s4 = parseFloat(document.getElementById("id_s4").value);
+				
+				n = parseFloat(document.getElementById("id_n").value);
+				c = parseFloat(document.getElementById("id_c").value);
+				Pn = parseFloat(document.getElementById("id_pn").value);
+				ci = c;
+				
+				Sp = parseFloat(document.getElementById("id_S_P").value);
+				vp = parseFloat(document.getElementById("id_vp").value);
+				vc = parseFloat(document.getElementById("id_vc").value);
+				sp_ = parseFloat(document.getElementById("id_sp_").value);
+				dp = parseFloat(document.getElementById("id_dp").value);
+				S0p = parseFloat(document.getElementById("id_S0P").value);
+				t = 2.00;
+				T = parseFloat(document.getElementById("id_T").value);
+				lc_ = parseFloat(document.getElementById("id_lc_").value);
+				l0c = parseFloat(document.getElementById("id_l0c").value);
+				Lr = parseFloat(document.getElementById("id_Lr").value);
+				h = parseFloat(document.getElementById("id_h").value);
+				
+				Qp = 1.00;
+				Qc = 1.00;
+				
+				g_p = 0.00;
+				var u = -1.00;
+				var ans = 0.00;
+
+				for (var i = 0 ; g_p <= 0.50; i++ )
+				{
+					// cout << "p = " << g_p;
+					if (g_p * g_l < 2.00)
+					{
+						state = 1;
+					}
+					else if (g_p * g_l < 3.25)
+					{
+						state = 2;
+					}
+					else
+					{
+						state = 3;
+						g_pl_3 = parseInt((g_p * g_l) / 3.25);
+					}
+
+					// cout << "  state = " << state << "  ";
+
+					g_funcFi = FuncFi(c, state);
+					g_funcTi = FuncT(FuncCp(n , c , Pn, state) , state);
+
+					// cout <<  g_funcTi << " " <<  g_funcFi <<endl;
+
+					// cout << a * g_funcTi * g_p * g_l << " " << b * g_funcFi * (1 - g_p) * g_l ;
+
+					if (!FuncJudge(Sp, ci, Qp, Qc, vp, sp_, dp, S0p, t, T, lc_, vc, l0c, Lr, h))
+					{
+						g_p += 0.01;
+						// cout << " NO " << endl;
+						if (!document.getElementsByName("radios")[0].checked) {
+							var temp = FuncU(a, b, g_funcTi, g_funcFi);
+							g_data.labels.push(g_p.toFixed(2));
+							g_data.datasets[1].data.push(temp);
+						}
+						continue;
+					}
+
+
+
+					var temp = FuncU(a, b, g_funcTi, g_funcFi);
+					// cout << "  U = " << temp << endl;
+
+					// cout << "U = " << temp << "  " << "P = " << g_p <<endl;
+					
+					g_data.labels.push(g_p.toFixed(2));
+					g_data.datasets[0].data.push(temp);
+					g_data.datasets[1].data.push(temp);
+
+					if (temp > u)
+					{
+						u = temp;
+						ans = g_p;
+					}
+					
+					
+					g_p += 0.01;
+
+				}
+
+				// cout << "U = " << u << "  " << "P = " << ans;
+				
+			}
+			
+			
+			window.onload = function(){	
+				document.getElementsByName("radios")[0].checked = true;
+				setDefaultVaule();
+				drawTable();
+			}
+			
+			function drawTable() {
+				getData();
+				var ctx = document.getElementById("myChart").getContext("2d");
+				chartLine = new Chart(ctx).Line(g_data);
+				
+				document.getElementById("myChart").style.height = document.getElementById("myChartSpan").offsetHeight + "px";
+				document.getElementById("myChart").style.width = document.getElementById("myChartSpan").offsetWidth + "px";
+
+			}
+			
+</script>
+</body>
+
+</html>
