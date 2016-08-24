@@ -27,7 +27,7 @@
 若右子树不空，则右子树上所有结点的值均大于它的根结点的值；
 左、右子树也分别为二叉排序树；
 没有键值相等的结点。">
-<meta property="og:updated_time" content="2016-08-23T17:13:29.395Z">
+<meta property="og:updated_time" content="2016-08-24T17:33:56.745Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="二叉排序树">
 <meta name="twitter:description" content="二叉排序树又称二叉查找树 二叉搜索树，是指一棵空树或者具有下列性质的二叉树：
@@ -147,7 +147,7 @@
 </ul>
 <p>PS：这部分有点繁琐，就不贴伪码了，有兴趣直接去看git上的源码。</p>
 <h2 id="效率">效率</h2><p>每个结点的<code>Ci</code>为该结点的层次数。<strong>最好</strong>的情况是<strong>二叉排序树的形态和折半查找的判定树相同</strong>，其平均查找长度和<code>logn</code>成正比<code>O(log2(n))</code>。<strong>最坏</strong>情况下，当先后插入的关键字有序时，构成的二叉排序树为一棵斜树，树的深度为n，其平均查找长度为<code>(n + 1) / 2</code>。也就是时间复杂度为<code>O(n)</code>，等同于<strong>顺序查找</strong>。因此，如果希望对一个集合按二叉排序树查找，最好是把它构建成一棵平衡的二叉排序树（平衡二叉树）。</p>
-<h2 id="DEMO">DEMO</h2><p>见GitHub，今天时间有限，回头给大家贴上链接。</p>
+<h2 id="DEMO">DEMO</h2><p>拿HDU 3791这道题试了下，<a href="https://github.com/wufy1992/DataStructure/blob/master/BinarySortTree/BinarySortTree.cpp" target="_blank" rel="external">GitHub源码</a>。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
