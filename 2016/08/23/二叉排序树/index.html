@@ -4,26 +4,38 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>C++内联函数inline简介 | Fangyu Blog</title>
+    <title>二叉排序树 | Fangyu Blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="Fangyu Wu">
     
 
     
-    <meta name="description" content="inline关键字，咋一看意思应该是限制作用域，和static限制在当前文件类似。其实不然，我们只要在一个头文件里定义了内联函数，包了这个头的cpp都能用这个函数。
-那么inline关键字到底有什么作用呢？其实这个和宏定义define类似。内联函数不是在调用时发生控制转移，而是在编译时将函数体嵌入在每一个调用处。类似宏替换，使用函数体替换调用处的函数名。">
+    <meta name="description" content="二叉排序树又称二叉查找树 二叉搜索树，是指一棵空树或者具有下列性质的二叉树：
+
+若左子树不空，则左子树上所有结点的值均小于它的根结点的值；
+若右子树不空，则右子树上所有结点的值均大于它的根结点的值；
+左、右子树也分别为二叉排序树；
+没有键值相等的结点。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="C++内联函数inline简介">
-<meta property="og:url" content="http://fangyu.me/2016/02/02/C++内联函数inline简介/index.html">
+<meta property="og:title" content="二叉排序树">
+<meta property="og:url" content="http://fangyu.me/2016/08/23/二叉排序树/index.html">
 <meta property="og:site_name" content="Fangyu Blog">
-<meta property="og:description" content="inline关键字，咋一看意思应该是限制作用域，和static限制在当前文件类似。其实不然，我们只要在一个头文件里定义了内联函数，包了这个头的cpp都能用这个函数。
-那么inline关键字到底有什么作用呢？其实这个和宏定义define类似。内联函数不是在调用时发生控制转移，而是在编译时将函数体嵌入在每一个调用处。类似宏替换，使用函数体替换调用处的函数名。">
-<meta property="og:updated_time" content="2016-03-01T08:12:37.228Z">
+<meta property="og:description" content="二叉排序树又称二叉查找树 二叉搜索树，是指一棵空树或者具有下列性质的二叉树：
+
+若左子树不空，则左子树上所有结点的值均小于它的根结点的值；
+若右子树不空，则右子树上所有结点的值均大于它的根结点的值；
+左、右子树也分别为二叉排序树；
+没有键值相等的结点。">
+<meta property="og:updated_time" content="2016-08-23T17:13:29.395Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="C++内联函数inline简介">
-<meta name="twitter:description" content="inline关键字，咋一看意思应该是限制作用域，和static限制在当前文件类似。其实不然，我们只要在一个头文件里定义了内联函数，包了这个头的cpp都能用这个函数。
-那么inline关键字到底有什么作用呢？其实这个和宏定义define类似。内联函数不是在调用时发生控制转移，而是在编译时将函数体嵌入在每一个调用处。类似宏替换，使用函数体替换调用处的函数名。">
+<meta name="twitter:title" content="二叉排序树">
+<meta name="twitter:description" content="二叉排序树又称二叉查找树 二叉搜索树，是指一棵空树或者具有下列性质的二叉树：
+
+若左子树不空，则左子树上所有结点的值均小于它的根结点的值；
+若右子树不空，则右子树上所有结点的值均大于它的根结点的值；
+左、右子树也分别为二叉排序树；
+没有键值相等的结点。">
 
     
     
@@ -83,14 +95,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2016/02/02/C++内联函数inline简介/" title="C++内联函数inline简介" itemprop="url">C++内联函数inline简介</a>
+      <a href="/2016/08/23/二叉排序树/" title="二叉排序树" itemprop="url">二叉排序树</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Fangyu Wu" target="_blank" itemprop="author">Fangyu Wu</a>
 		
   <p class="article-time">
-    <time datetime="2016-02-02T12:17:26.000Z" itemprop="datePublished"> 发表于 2016-02-02</time>
+    <time datetime="2016-08-23T15:56:18.000Z" itemprop="datePublished"> 发表于 2016-08-23</time>
     
   </p>
 </header>
@@ -99,24 +111,43 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#使用"><span class="toc-number">1.</span> <span class="toc-text">使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#类中使用inline"><span class="toc-number">2.</span> <span class="toc-text">类中使用inline</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#查找算法"><span class="toc-number">1.</span> <span class="toc-text">查找算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#插入算法"><span class="toc-number">2.</span> <span class="toc-text">插入算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#删除算法"><span class="toc-number">3.</span> <span class="toc-text">删除算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#效率"><span class="toc-number">4.</span> <span class="toc-text">效率</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DEMO"><span class="toc-number">5.</span> <span class="toc-text">DEMO</span></a></li></ol>
 		
 		</div>
 		
-		<p><code>inline</code>关键字，咋一看意思应该是限制作用域，和<code>static</code>限制在当前文件类似。其实不然，我们只要在一个头文件里定义了内联函数，包了这个头的<code>cpp</code>都能用这个函数。</p>
-<p>那么<code>inline</code>关键字到底有什么作用呢？其实这个和宏定义<code>define</code>类似。内联函数<strong>不是在调用时发生控制转移</strong>，而是在<strong>编译时</strong>将函数体<strong>嵌入</strong>在每一个调用处。类似宏替换，使用函数体替换调用处的函数名。</p>
+		<p><strong>二叉排序树</strong>又称<code>二叉查找树</code> <code>二叉搜索树</code>，是指一棵空树或者具有下列性质的二叉树：</p>
+<ul>
+<li>若左子树不空，则左子树上所有结点的值均小于它的根结点的值；</li>
+<li>若右子树不空，则右子树上所有结点的值均大于它的根结点的值；</li>
+<li>左、右子树也分别为二叉排序树；</li>
+<li>没有键值相等的结点。</li>
+</ul>
 <a id="more"></a>
-<h2 id="使用">使用</h2><p><code>inline</code> 函数对<strong>编译器</strong>而言必须是<strong>可见</strong>的，以便它能够在调用点内展开该函数。与<code>非Inline</code>函数不同的是，<code>inline</code>函数必须在调用该函数的每个文本文件中定义。当然，对于同一程序的不同文件，如果<code>inline</code>函数出现的话，其<strong>定义必须相同</strong>。对于由两个文件compute.C和draw.C构成的程序来说，程序员不能定义这样的min()函数，它在compute.C中指一件事情，而在draw.C中指另外一件事情。如果两个定义不相同，程序将会有未定义的行为：</p>
-<p>为保证不会发生这样的事情，<strong>建议把inline函数的定义放到头文件中</strong>。在每个调用该inline函数的文件中包含该头文件。这种方法<strong>保证对每个inline函数只有一个定义</strong>，且程序员无需复制代码，并且不可能在程序的生命期中引起无意的不匹配的事情。</p>
-<p>PS：以上是primer里说的，不过我实际试了下，多处同时定义，并且实现不同，结果发现所有地方用的都是某个头文件里定义的内联函数。</p>
-<p>另外，要注意关键字<code>inline</code> 必须与函数定义体放在一起才能使函数成为内联，仅将inline 放在函数声明前面不起任何作用。</p>
-<p>如下风格的函数Foo 不能成为内联函数：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">Foo</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span></span>; <span class="comment">// inline 仅与函数声明放在一起</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Foo</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span></span>&#123;&#125;</span><br></pre></td></tr></table></figure></p>
-<p>而如下风格的函数Foo 则成为内联函数：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Foo</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">Foo</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> <span class="comment">// inline 与函数定义体放在一起&#123;&#125;</span></span></span><br></pre></td></tr></table></figure></p>
-<p>所以说，<code>inline</code> 是一种<strong>“用于实现的关键字</strong>”，而<strong>不是一种“用于声明的关键字”</strong>。一般地，用户可以阅读函数的声明，但是看不到函数的定义。尽管在大多数教科书中内联函数的声明、定义体前面都加了inline 关键字，但我认为inline 不应该出现在函数的声明中。这个细节虽然不会影响函数的功能，但是体现了高质量C++/C 程序设计风格的一个基本原则：声明与定义不可混为一谈，用户没有必要、也不应该知道函数是否需要内联。</p>
-<p>PS：这个也是primer里说的，但是我在VS2013里试了下，通过看汇编源码始终没有找到这两种用法的实质性区别，哪位C++大神要是能详细解释下着部分还请赐教。</p>
-<h2 id="类中使用inline">类中使用inline</h2><p>首先，定义在<strong>类声明之中的成员函数</strong>将<strong>自动地成为内联</strong>函数。</p>
-<p><strong>例如</strong><br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">A</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span>:<span class="function"><span class="keyword">void</span> <span class="title">Foo</span>(<span class="params"><span class="keyword">int</span> x, <span class="keyword">int</span> y</span>) </span>&#123;  &#125; <span class="comment">// 自动地成为内联函数</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>将成员函数的定义体放在类声明之中虽然能带来书写上的方便，但不是一种良好的编程风格，上例应该改成：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 头文件</span></span><br><span class="line"><span class="keyword">class</span> A</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Foo</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span></span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 定义文件</span></span><br><span class="line"><span class="keyword">inline</span> <span class="keyword">void</span> A::Foo(<span class="keyword">int</span> x, <span class="keyword">int</span> y)&#123;&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="查找算法">查找算法</h2><p>在二叉排序树<code>b</code>中查找<code>x</code>的过程为：</p>
+<ul>
+<li>若<code>b</code>是空树，则搜索失败，否则下一步;</li>
+<li>若<code>x</code>等于<code>b</code>的根节点的数据域之值，则查找成功；否则下一步;</li>
+<li>若<code>x</code>小于<code>b</code>的根节点的数据域之值，则搜索左子树；否则下一步;</li>
+<li>查找右子树。</li>
+</ul>
+<p><strong>伪码：</strong><br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 实际代码要注意回溯，详见github</span></span><br><span class="line">SearchBST(T, key)</span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">if</span>(!T)  <span class="comment">//查找不成功</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">if</span> (key == T-&gt;data.key)  <span class="comment">//查找成功</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">if</span> (key &lt; T-&gt;data.key) <span class="comment">// 在左子树中继续查找</span></span><br><span class="line">    <span class="keyword">return</span> SearchBST(T-&gt;lchild);</span><br><span class="line">  <span class="keyword">else</span> <span class="comment">// 在右子树中继续查找</span></span><br><span class="line">    <span class="keyword">return</span> SearchBST(T-&gt;rchild, key);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="插入算法">插入算法</h2><p>向一个二叉搜索树<code>b</code>中插入一个节点<code>s</code>的算法，过程为：</p>
+<ul>
+<li>若<code>b</code>是空树，则将<code>s</code>所指结点作为根节点插入，否则下一步;</li>
+<li>若<code>s-&gt;data</code>等于<code>b</code>的根节点的数据域之值，则返回，否则下一步;</li>
+<li>若<code>s-&gt;data</code>小于<code>b</code>的根节点的数据域之值，则把<code>s</code>所指节点插入到左子树中，否则下一步;</li>
+<li>把<code>s</code>所指节点插入到右子树中（新插入节点总是叶子节点）。</li>
+</ul>
+<p><strong>伪码：</strong><br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 实际代码详见github</span></span><br><span class="line">InsertBST(T, e)</span><br><span class="line">&#123;  </span><br><span class="line">    <span class="keyword">if</span>(!T)  </span><br><span class="line">    &#123;	    </span><br><span class="line">        s = <span class="keyword">new</span> BiTNode;</span><br><span class="line">        s-&gt;data = e; </span><br><span class="line">        s-&gt;lchild = s-&gt;rchild = <span class="literal">NULL</span>;</span><br><span class="line">        T = s;	<span class="comment">//s为新的根结点</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(e.key == p-&gt;data.key)</span><br><span class="line">        <span class="keyword">return</span> ;<span class="comment">//关键字等于e.key的数据元素</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (e.key &lt; p-&gt;data.key)</span><br><span class="line">		InsertBST(p-&gt;lchild, e);	<span class="comment">//将e插入左子树</span></span><br><span class="line">    <span class="keyword">else</span> </span><br><span class="line">		InsertBST(p-&gt;rchild, e);	<span class="comment">//将e插入右子树</span></span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="删除算法">删除算法</h2><p>在二叉排序树中删去一个结点，分三种情况讨论：</p>
+<ul>
+<li>若<code>*p</code>结点为叶子结点，即<code>PL(左子树)</code>和<code>PR(右子树)</code>均为空树。由于删去叶子结点不破坏整棵树的结构，则只需修改其双亲结点的指针即可。</li>
+<li>若<code>*p</code>结点只有<code>左子树PL</code>或<code>右子树PR</code>，此时只要令<code>PL</code>或<code>PR</code>直接成为其双亲结点<code>*f</code>的左子树（当<code>*p</code>是左子树）或右子树（当<code>*p</code>是右子树）即可，作此修改也不破坏二叉排序树的特性。</li>
+<li>若<code>*p</code>结点的左子树和右子树均不空。在删去<code>*p</code>之后，为保持其它元素之间的相对位置不变，可按中序遍历保持有序进行调整。比较好的做法是，找到<code>*p</code>的直接前驱（或直接后继）<code>*s</code>，用<code>*s</code>来替换结点<code>*p</code>，然后再删除结点<code>*s</code>。</li>
+</ul>
+<p>PS：这部分有点繁琐，就不贴伪码了，有兴趣直接去看git上的源码。</p>
+<h2 id="效率">效率</h2><p>每个结点的<code>Ci</code>为该结点的层次数。<strong>最好</strong>的情况是<strong>二叉排序树的形态和折半查找的判定树相同</strong>，其平均查找长度和<code>logn</code>成正比<code>O(log2(n))</code>。<strong>最坏</strong>情况下，当先后插入的关键字有序时，构成的二叉排序树为一棵斜树，树的深度为n，其平均查找长度为<code>(n + 1) / 2</code>。也就是时间复杂度为<code>O(n)</code>，等同于<strong>顺序查找</strong>。因此，如果希望对一个集合按二叉排序树查找，最好是把它构建成一棵平衡的二叉排序树（平衡二叉树）。</p>
+<h2 id="DEMO">DEMO</h2><p>见GitHub，今天时间有限，回头给大家贴上链接。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -125,7 +156,7 @@
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/C/">C++</a>
+  <span></span> <a href="/tags/数据结构/">数据结构</a><a href="/tags/算法/">算法</a>
   </div>
 
 </div>
@@ -134,7 +165,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://fangyu.me/2016/02/02/C++内联函数inline简介/" data-title="C++内联函数inline简介 | Fangyu Blog" data-tsina="1393602611" class="share clearfix">
+	  <div data-url="http://fangyu.me/2016/08/23/二叉排序树/" data-title="二叉排序树 | Fangyu Blog" data-tsina="1393602611" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -147,19 +178,11 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2016/02/08/C++11新特性之Lambda/" title="c++11 新特性之Lambda">
-  <strong>上一篇：</strong><br/>
-  <span>
-  c++11 新特性之Lambda</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2016/02/02/大话C++指针与引用/"  title="大话C++指针与引用">
+<a href="/2016/03/01/巧解std function引用传递与值传递/"  title="巧解std::function引用传递与值传递">
  <strong>下一篇：</strong><br/> 
- <span>大话C++指针与引用
+ <span>巧解std::function引用传递与值传递
 </span>
 </a>
 </div>
@@ -168,7 +191,7 @@
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2016/02/02/C++内联函数inline简介/" data-title="C++内联函数inline简介" data-url="http://fangyu.me/2016/02/02/C++内联函数inline简介/"></div>
+	<div class="ds-thread" data-thread-key="2016/08/23/二叉排序树/" data-title="二叉排序树" data-url="http://fangyu.me/2016/08/23/二叉排序树/"></div>
 </section>
 
 
@@ -178,7 +201,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#使用"><span class="toc-number">1.</span> <span class="toc-text">使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#类中使用inline"><span class="toc-number">2.</span> <span class="toc-text">类中使用inline</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#查找算法"><span class="toc-number">1.</span> <span class="toc-text">查找算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#插入算法"><span class="toc-number">2.</span> <span class="toc-text">插入算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#删除算法"><span class="toc-number">3.</span> <span class="toc-text">删除算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#效率"><span class="toc-number">4.</span> <span class="toc-text">效率</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DEMO"><span class="toc-number">5.</span> <span class="toc-text">DEMO</span></a></li></ol>
  
   </div>
 
