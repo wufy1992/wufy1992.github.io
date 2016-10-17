@@ -4,24 +4,23 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>c++11 新特性之Lambda | Fangyu Blog</title>
+    <title>VS中的编码问题 | Fangyu Blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="Fangyu Wu">
     
 
     
-    <meta name="description" content="浏览器这边这重构代码，武爷要我这边做下单测，先给大家看一段代码123456789Closure Threading::CBrowserThread::UIThreadProc()&amp;#123;	auto thread_proc_wrapper = [this]() &amp;#123;		tls_thread_ptr.Set(this);		m_pNotifier-&amp;gt;UIProc()();		tls_">
+    <meta name="description" content="最近忙着项目上的事，遇到的很多问题都没来得及总结，趁最近有个空隙赶紧总结下。本文主要讲的是使用VS写C++代码中遇到的一些编码问题。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="c++11 新特性之Lambda">
-<meta property="og:url" content="http://fangyu.me/2016/02/08/C++11新特性之Lambda/index.html">
+<meta property="og:title" content="VS中的编码问题">
+<meta property="og:url" content="http://fangyu.me/2016/10/17/VS中的编码问题/index.html">
 <meta property="og:site_name" content="Fangyu Blog">
-<meta property="og:description" content="浏览器这边这重构代码，武爷要我这边做下单测，先给大家看一段代码123456789Closure Threading::CBrowserThread::UIThreadProc()&amp;#123;	auto thread_proc_wrapper = [this]() &amp;#123;		tls_thread_ptr.Set(this);		m_pNotifier-&amp;gt;UIProc()();		tls_">
-<meta property="og:image" content="http://i.msdn.microsoft.com/dynimg/IC251606.png">
-<meta property="og:updated_time" content="2016-03-01T08:19:47.775Z">
+<meta property="og:description" content="最近忙着项目上的事，遇到的很多问题都没来得及总结，趁最近有个空隙赶紧总结下。本文主要讲的是使用VS写C++代码中遇到的一些编码问题。">
+<meta property="og:updated_time" content="2016-10-17T13:13:21.898Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="c++11 新特性之Lambda">
-<meta name="twitter:description" content="浏览器这边这重构代码，武爷要我这边做下单测，先给大家看一段代码123456789Closure Threading::CBrowserThread::UIThreadProc()&amp;#123;	auto thread_proc_wrapper = [this]() &amp;#123;		tls_thread_ptr.Set(this);		m_pNotifier-&amp;gt;UIProc()();		tls_">
+<meta name="twitter:title" content="VS中的编码问题">
+<meta name="twitter:description" content="最近忙着项目上的事，遇到的很多问题都没来得及总结，趁最近有个空隙赶紧总结下。本文主要讲的是使用VS写C++代码中遇到的一些编码问题。">
 
     
     
@@ -81,14 +80,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2016/02/08/C++11新特性之Lambda/" title="c++11 新特性之Lambda" itemprop="url">c++11 新特性之Lambda</a>
+      <a href="/2016/10/17/VS中的编码问题/" title="VS中的编码问题" itemprop="url">VS中的编码问题</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Fangyu Wu" target="_blank" itemprop="author">Fangyu Wu</a>
 		
   <p class="article-time">
-    <time datetime="2016-02-08T12:17:26.000Z" itemprop="datePublished"> 发表于 2016-02-08</time>
+    <time datetime="2016-10-17T13:11:18.000Z" itemprop="datePublished"> 发表于 2016-10-17</time>
     
   </p>
 </header>
@@ -97,38 +96,26 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Lambda简介"><span class="toc-number">1.</span> <span class="toc-text">Lambda简介</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#文件编码"><span class="toc-number">1.</span> <span class="toc-text">文件编码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工程编码"><span class="toc-number">2.</span> <span class="toc-text">工程编码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#文件编码与工程编码一致"><span class="toc-number">3.</span> <span class="toc-text">文件编码与工程编码一致</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一般怎么用"><span class="toc-number">4.</span> <span class="toc-text">一般怎么用</span></a></li></ol>
 		
 		</div>
 		
-		<p>浏览器这边这重构代码，武爷要我这边做下单测，先给大家看一段代码<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Closure Threading::CBrowserThread::UIThreadProc()</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">auto</span> thread_proc_wrapper = [<span class="keyword">this</span>]() &#123;</span><br><span class="line">		tls_thread_ptr.Set(<span class="keyword">this</span>);</span><br><span class="line">		m_pNotifier-&gt;UIProc()();</span><br><span class="line">		tls_thread_ptr.Set(<span class="literal">NULL</span>);</span><br><span class="line">	&#125;;</span><br><span class="line">	<span class="keyword">return</span> thread_proc_wrapper;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>要是能轻松读懂那下面可以不看了。我当时第一眼看到这这个心理是崩溃的，auto作为函数指针还能理解，但是<code>[]</code>又是什么鬼，后来武爷告诉我这用的c++11的一个新特性，叫做<code>Lambda</code>。</p>
+		<p>最近忙着项目上的事，遇到的很多问题都没来得及总结，趁最近有个空隙赶紧总结下。本文主要讲的是使用<code>VS写C++代码</code>中遇到的一些编码问题。</p>
 <a id="more"></a>
-<h2 id="Lambda简介">Lambda简介</h2><p>C++ 11中的<code>Lambda</code>表达式用于定义并创建匿名的函数对象，以简化编程工作。<code>Lambda</code>的语法形式如下：<br><img src="http://i.msdn.microsoft.com/dynimg/IC251606.png" alt="Lambda结构"></p>
-<p>如上图所示Lambda分为以下几个部分：<br>1、<code>[函数对象参数]</code><br>2、<code>(操作符重载函数参数)</code><br>3、<code>mutable</code><br>4、<code>exception声明</code><br>5、<code>-&gt;返回值类型</code><br>6、<code>{函数体}</code></p>
-<p>当然也可以认为Lambda主要分为五个部分：<code>[函数对象参数]</code>、<code>(操作符重载函数参数)</code>、<code>mutable</code>或<code>exception</code>声明、<code>-&gt;返回值类型</code>、<code>{函数体}</code>。</p>
-<p><strong>下面分别进行介绍：</strong></p>
-<p>1、<code>[函数对象参数]</code>：标识一个<code>Lambda</code>的开始，这部分必须存在，不能省略。函数对象参数是传递给编译器自动生成的函数对象类的构造函数的。函数对象参数只能使用那些到定义<code>Lambda</code>为止时<code>Lambda</code>所在作用范围内可见的局部变量（包括<code>Lambda</code>所在类的<code>this</code>）。函数对象参数有以下形式：</p>
+<h2 id="文件编码">文件编码</h2><p>有时候我们在别人的工程里加个文件，结果发现别人的文件都是<code>Unicode</code>，而我们加的是<code>GBK</code>编码，用别的工具打开，重新保存为<code>Unicode</code>的也不行。当然，因为<code>VS</code>有自己设置编码格式的地方。</p>
+<blockquote>
+<p><code>打开</code>需要调整编码的文件 –&gt; <code>FILE</code> –&gt;<code>Advanced Save Options...</code>–&gt; 选择你需要的<code>编码方式</code>（搞定）</p>
+</blockquote>
+<h2 id="工程编码">工程编码</h2><p>这个经常用VS的同学都知道，在<code>General</code>的<code>Character Set</code>里有下面几种编码：</p>
 <ul>
-<li>空。没有使用任何函数对象参数。</li>
-<li>=。函数体内可以使用Lambda所在作用范围内所有可见的局部变量（包括Lambda所在类的this），并且是值传递方式（相当于编译器自动为我们按值传递了所有局部变量）。</li>
-<li>&amp;。函数体内可以使用Lambda所在作用范围内所有可见的局部变量（包括Lambda所在类的this），并且是引用传递方式（相当于编译器自动为我们按引用传递了所有局部变量）。</li>
-<li>this。函数体内可以使用Lambda所在类中的成员变量。</li>
-<li>a。将a按值进行传递。按值进行传递时，函数体内不能修改传递进来的a的拷贝，因为默认情况下函数是const的。要修改传递进来的a的拷贝，可以添加mutable修饰符。</li>
-<li>&amp;a。将a按引用进行传递。</li>
-<li>a, &amp;b。将a按值进行传递，b按引用进行传递。</li>
-<li>=，&amp;a, &amp;b。除a和b按引用进行传递外，其他参数都按值进行传递。</li>
-<li>&amp;, a, b。除a和b按值进行传递外，其他参数都按引用进行传递。</li>
+<li>Use Unicode Character Set</li>
+<li>Use Multi-Byte Character Set</li>
+<li>No Set</li>
 </ul>
-<p>2、<code>(操作符重载函数参数)</code>：标识重载的<code>()</code>操作符的参数，没有参数时，这部分可以省略。参数可以通过<strong>按值</strong><code>（如：(a,b)）</code>和按<strong>引用</strong><code>（如：(&amp;a,&amp;b)）</code>两种方式进行传递。</p>
-<p>3、<code>mutable</code>或<code>exception</code>声明，这部分可以省略。按值传递函数对象参数时，加上<code>mutable</code>修饰符后，可以<strong>修改按值传递进来的拷贝</strong>（注意是能修改拷贝，而不是值本身）。<code>exception</code>声明用于指定函数<strong>抛出的异常</strong>，如抛出整数类型的异常，可以使用throw(int)。</p>
-<p>4、<code>-&gt;返回值类型</code>：标识函数返回值的类型，当返回值为void，或者函数体中只有一处return的地方（此时编译器可以自动推断出返回值类型）时，这部分可以省略。<br>5、<code>{函数体}</code>：标识函数的实现，这部分不能省略，但函数体可以为空。</p>
-<p>其实学习Lambda最好的资料还是MSDN，传送门：Lambda 表达式语法<a href="http://msdn.microsoft.com/zh-cn/library/dd293603.aspx" target="_blank" rel="external">http://msdn.microsoft.com/zh-cn/library/dd293603.aspx</a></p>
-<p><strong>注意文中有一句：</strong><br><code>Visual Studio</code> 通过添加以下特性来增添<code>C++11 lambda</code>功能：</p>
-<ul>
-<li>无状态 <code>lambda</code>可通过任意调用约定完全转换为函数指针。</li>
-<li>只要所有返回语句具有相同的类型，会自动推导比<code>{ return expression; }</code>更复杂的<code>lambda</code>主体的返回类型。（这一特性现包含在<code>拟建的 C++14</code>标准中。）</li>
-</ul>
+<p>这个设置主要就是<code>系统API</code>的区别，比如一个创建文件夹的函数<code>CreateDirectory</code>，在<code>Unicode</code>下默认就是<code>CreateDirectoryW</code>，<code>Multi-Byte</code>下默认就是<code>CreateDirectoryA</code>。</p>
+<p>至于<code>No Set</code>和<code>Multi-Byte Character Set</code>作用几乎一样，不同的是<code>Multi-Byte Character Set</code>定义了宏<code>_MBCS</code>，但据说这是历史遗留问题，目前没有发现这二者有什么明显的区别。</p>
+<h2 id="文件编码与工程编码一致">文件编码与工程编码一致</h2><p>这个不一定，当然一致是最好的，不过二者没有明显关系，浏览器工程就是文件<code>GBK存储</code>而<code>Character Set</code>是<code>Unicode Character Set</code>。这里需要注意的是，你在文件里定义的一些变量，比如：<br><code>std::string str = &quot;编码&quot;</code><br>这个<code>str</code>在工程里直接使用是没有问题，但是如果你想把<code>str</code>转成宽字符串（或者其他与代码页相关的操作），这时就要注意了，如果直接在代码里定义的变量，要根据文件的存储方式选择<code>code page</code>，比如文件是<code>GBK</code>的我们就需要使用<code>CP_Ansi</code>（这里默认中文系统，ansi即gbk）。</p>
+<h2 id="一般怎么用">一般怎么用</h2><p>理论上，如果没有特殊字符的要求，文件就用系统默认的编码，<code>Character Set</code>用<code>Multi-Byte Character Set</code>即可。但是<code>Character Set</code>还是<strong>建议</strong>大家都用<strong><code>Unicode</code></strong>，这样更通用，要不可能会在一些特殊环境（比如你用的GBK，用户是日文环境）出现乱码。至于文件编码，能满足你的需求就好。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -137,7 +124,7 @@
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/C/">C++</a><a href="/tags/C-11/">C++11</a>
+  <span></span> <a href="/tags/C/">C++</a><a href="/tags/VS/">VS</a><a href="/tags/编码/">编码</a>
   </div>
 
 </div>
@@ -146,7 +133,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://fangyu.me/2016/02/08/C++11新特性之Lambda/" data-title="c++11 新特性之Lambda | Fangyu Blog" data-tsina="1393602611" class="share clearfix">
+	  <div data-url="http://fangyu.me/2016/10/17/VS中的编码问题/" data-title="VS中的编码问题 | Fangyu Blog" data-tsina="1393602611" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -159,19 +146,11 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2016/02/29/单测内存泄露的那些事/" title="单测内存泄露的那些事">
-  <strong>上一篇：</strong><br/>
-  <span>
-  单测内存泄露的那些事</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2016/02/02/C++内联函数inline简介/"  title="C++内联函数inline简介">
+<a href="/2016/08/23/二叉排序树/"  title="二叉排序树">
  <strong>下一篇：</strong><br/> 
- <span>C++内联函数inline简介
+ <span>二叉排序树
 </span>
 </a>
 </div>
@@ -180,7 +159,7 @@
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2016/02/08/C++11新特性之Lambda/" data-title="c++11 新特性之Lambda" data-url="http://fangyu.me/2016/02/08/C++11新特性之Lambda/"></div>
+	<div class="ds-thread" data-thread-key="2016/10/17/VS中的编码问题/" data-title="VS中的编码问题" data-url="http://fangyu.me/2016/10/17/VS中的编码问题/"></div>
 </section>
 
 
@@ -190,7 +169,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Lambda简介"><span class="toc-number">1.</span> <span class="toc-text">Lambda简介</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#文件编码"><span class="toc-number">1.</span> <span class="toc-text">文件编码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工程编码"><span class="toc-number">2.</span> <span class="toc-text">工程编码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#文件编码与工程编码一致"><span class="toc-number">3.</span> <span class="toc-text">文件编码与工程编码一致</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一般怎么用"><span class="toc-number">4.</span> <span class="toc-text">一般怎么用</span></a></li></ol>
  
   </div>
 
