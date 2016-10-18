@@ -4,23 +4,23 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>巧解std::function引用传递与值传递 | Fangyu Blog</title>
+    <title>DuiLib入门（XML版） | Fangyu Blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="Fangyu Wu">
     
 
     
-    <meta name="description" content="最近看代码发现，发现好多地方用到c++中新特性std::function的，就像下面这些：123456789101112template&amp;lt;typename ReturnType&amp;gt;bool PostTaskAndReplyWithResultImpl(BrowserThread toWhere, const CCodeLocation&amp;amp; fromWhere,const std::">
+    <meta name="description" content="最近用DuiLib在做个表情工具，虽然以前浏览器也是用的DuiLib，但由于UI相关没怎么接触过，这里给大家留点入门资料。至于为什么先将xml的，这样的和Android等等常用项目的布局文件有点类似，大家理解起来很更好点。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="巧解std::function引用传递与值传递">
-<meta property="og:url" content="http://fangyu.me/2016/03/01/巧解std function引用传递与值传递/index.html">
+<meta property="og:title" content="DuiLib入门（XML版）">
+<meta property="og:url" content="http://fangyu.me/2016/10/18/DuiLib入门（XML版）/index.html">
 <meta property="og:site_name" content="Fangyu Blog">
-<meta property="og:description" content="最近看代码发现，发现好多地方用到c++中新特性std::function的，就像下面这些：123456789101112template&amp;lt;typename ReturnType&amp;gt;bool PostTaskAndReplyWithResultImpl(BrowserThread toWhere, const CCodeLocation&amp;amp; fromWhere,const std::">
-<meta property="og:updated_time" content="2016-03-01T08:49:59.238Z">
+<meta property="og:description" content="最近用DuiLib在做个表情工具，虽然以前浏览器也是用的DuiLib，但由于UI相关没怎么接触过，这里给大家留点入门资料。至于为什么先将xml的，这样的和Android等等常用项目的布局文件有点类似，大家理解起来很更好点。">
+<meta property="og:updated_time" content="2016-10-18T06:27:41.336Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="巧解std::function引用传递与值传递">
-<meta name="twitter:description" content="最近看代码发现，发现好多地方用到c++中新特性std::function的，就像下面这些：123456789101112template&amp;lt;typename ReturnType&amp;gt;bool PostTaskAndReplyWithResultImpl(BrowserThread toWhere, const CCodeLocation&amp;amp; fromWhere,const std::">
+<meta name="twitter:title" content="DuiLib入门（XML版）">
+<meta name="twitter:description" content="最近用DuiLib在做个表情工具，虽然以前浏览器也是用的DuiLib，但由于UI相关没怎么接触过，这里给大家留点入门资料。至于为什么先将xml的，这样的和Android等等常用项目的布局文件有点类似，大家理解起来很更好点。">
 
     
     
@@ -80,14 +80,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2016/03/01/巧解std function引用传递与值传递/" title="巧解std::function引用传递与值传递" itemprop="url">巧解std::function引用传递与值传递</a>
+      <a href="/2016/10/18/DuiLib入门（XML版）/" title="DuiLib入门（XML版）" itemprop="url">DuiLib入门（XML版）</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Fangyu Wu" target="_blank" itemprop="author">Fangyu Wu</a>
 		
   <p class="article-time">
-    <time datetime="2016-03-01T06:10:06.000Z" itemprop="datePublished"> 发表于 2016-03-01</time>
+    <time datetime="2016-10-18T06:26:18.000Z" itemprop="datePublished"> 发表于 2016-10-18</time>
     
   </p>
 </header>
@@ -96,21 +96,22 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#巧解区别"><span class="toc-number">1.</span> <span class="toc-text">巧解区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">2.</span> <span class="toc-text">总结</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#工程创建"><span class="toc-number">1.</span> <span class="toc-text">工程创建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#加载DUiLib"><span class="toc-number">2.</span> <span class="toc-text">加载DUiLib</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#加载XML"><span class="toc-number">3.</span> <span class="toc-text">加载XML</span></a></li></ol>
 		
 		</div>
 		
-		<p>最近看代码发现，发现好多地方用到c++中新特性<code>std::function</code>的，就像下面这些：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">template&lt;typename ReturnType&gt;</span><br><span class="line">bool PostTaskAndReplyWithResultImpl(BrowserThread toWhere, const CCodeLocation&amp; fromWhere,</span><br><span class="line">const std::function&lt;ReturnType()&gt;&amp; task, const std::function&lt;void(ReturnType)&gt;&amp; reply)</span><br><span class="line">&#123;</span><br><span class="line">	Threading::BrowserThread originalThread = CBrowserThread::Current()-&gt;ThreadType();</span><br><span class="line">	auto taskAndReplyWrapper = [originalThread, task, reply]() &#123;</span><br><span class="line">		auto result = task();</span><br><span class="line">		Threading::PostTask(originalThread, FROM_HERE, std::bind(reply, result));</span><br><span class="line">	&#125;;</span><br><span class="line"></span><br><span class="line">	return Threading::PostTask(toWhere, fromWhere, taskAndReplyWrapper);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>里面这样的<code>const std::function&lt;ReturnType()&gt;&amp; task</code>使用，让我不由好奇到<code>std::function</code>作为入参时，<strong>引用传递与值传递有什么区别</strong>，是不是像正常的<code>int</code>那样保存一个副本？</p>
-<p><strong>PS：</strong>不知道<code>std::function</code>的同学，你可以理解<strong>这个其他类型变量没啥区别</strong>，只是<strong>作用的对象是函数</strong>。比如上面的<code>const std::function&lt;ReturnType()&gt;&amp; task</code>，在函数里执行下<code>task();</code>就相当于执行了<code>task</code>对应的函数。</p>
+		<p>最近用<code>DuiLib</code>在做个表情工具，虽然以前浏览器也是用的<code>DuiLib</code>，但由于<code>UI</code>相关没怎么接触过，这里给大家留点入门资料。至于为什么先将<code>xml</code>的，这样的和<code>Android</code>等等常用项目的布局文件有点类似，大家理解起来很更好点。</p>
 <a id="more"></a>
-<h2 id="巧解区别">巧解区别</h2><p>首先，为了<strong>验证是不是保存了一个副本</strong>，我们分别使用引用传递和值传递，再在被执行的函数打个<strong>断点</strong>，看看是否都能进来，如下：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">hello</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">string</span> str)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="comment">// 这儿打断点</span></span><br><span class="line"> 	<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Hello from thread "</span>  + str &lt;&lt; <span class="built_in">std</span>::endl;</span><br><span class="line">	system(<span class="string">"pause"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 值传递</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">runFunction_1</span><span class="params">(Closure test)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">	test();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 引用传递</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">runFunction_2</span><span class="params">(Closure &amp;test)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">	test();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> _tmain(<span class="keyword">int</span> argc, _TCHAR* argv[])</span><br><span class="line">&#123;</span><br><span class="line">	Closure test = <span class="built_in">std</span>::bind(hello, <span class="string">"haha"</span>);</span><br><span class="line">	runFunction_1(test);</span><br><span class="line">	runFunction_2(test);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>结果意料之外，情理之中，<strong>两种使用都进断点了</strong>。这么咋一看这两种使用方式没啥区别。</p>
-<p>不过这时突然想到，之前看primer里提到过，说<code>std::function</code>就相当于是<strong>函数指针</strong>，若其本身就是指针，那么就说的通了，不管是引用传递还是值传递，我们操作的对象都是一个指针，就算复制一份，这个指针还是指向之前的位置。</p>
-<p>那怎么验证呢？这个也好说，如果真是这样，<strong>值传递</strong>时，函数里对这个<strong>指针的指向做些修改</strong>，函数执行完<strong>原先的指针指针指向应该不变</strong>，反之引用传递时应该会改变。空说不好理解，上<strong>Demo</strong>：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">hello</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">string</span> str)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Hello from thread "</span>  + str &lt;&lt; <span class="built_in">std</span>::endl;</span><br><span class="line">	system(<span class="string">"pause"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 值传递</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">runFunction_1</span><span class="params">(Closure test)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">	test();</span><br><span class="line">	<span class="comment">// 修改下指针指向</span></span><br><span class="line">	test = <span class="built_in">std</span>::bind(hello, <span class="string">"hehe"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 引用传递</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">runFunction_2</span><span class="params">(Closure &amp;test)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">	test();</span><br><span class="line">	<span class="comment">// 修改下指针指向</span></span><br><span class="line">	test = <span class="built_in">std</span>::bind(hello, <span class="string">"hehe"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> _tmain(<span class="keyword">int</span> argc, _TCHAR* argv[])</span><br><span class="line">&#123;</span><br><span class="line">	Closure test = <span class="built_in">std</span>::bind(hello, <span class="string">"haha"</span>);</span><br><span class="line">	runFunction_1(test);</span><br><span class="line">	runFunction_1(test);</span><br><span class="line"></span><br><span class="line">    runFunction_2(test);</span><br><span class="line">	runFunction_2(test);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>控制台输出：<br><figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Hello <span class="keyword">from</span> thread haha</span><br><span class="line">请按任意键继续. . .</span><br><span class="line">Hello <span class="keyword">from</span> thread haha</span><br><span class="line">请按任意键继续. . .</span><br><span class="line">Hello <span class="keyword">from</span> thread haha</span><br><span class="line">请按任意键继续. . .</span><br><span class="line">Hello <span class="keyword">from</span> thread hehe</span><br><span class="line">请按任意键继续. . .</span><br></pre></td></tr></table></figure></p>
-<p>果然，我们发现<strong>最后一个的指针指向变了</strong>，也就是说我们在使用引用传递时，函数里修改<code>std::function</code>变量对应的指向，原来变量的指向也会随着更改。</p>
-<h2 id="总结">总结</h2><p>其实想想，一般指针类型的数据结构大体上都应该如此，后面有空再去看看其他的。上面的内容都是我自己推测验证的，要是说的不对欢迎大家指出，不胜感激。</p>
+<h2 id="工程创建">工程创建</h2><p><code>DuiLib</code>需要创建什么样的工程呢，首先我们要知道<code>Duilib</code>仅仅是一个基于<code>Win32</code>的<code>UI</code>库而已,，所以直接创建<code>Win32</code>工程就好。</p>
+<p>但是，要注意系统自己生成的那些代码都不要，我们在保留<code>main</code>函数就行，如下：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;windows.h&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;tchar.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, <span class="keyword">int</span> nCmdShow)</span><br><span class="line">&#123;</span><br><span class="line">    ::MessageBox(<span class="literal">NULL</span>, _T(<span class="string">"Hello World !"</span>), <span class="literal">NULL</span>, <span class="literal">NULL</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="加载DUiLib">加载DUiLib</h2><p>这里需要先生成一个<code>MainUI</code>的类，并且这个类需要继承<code>DuiLib::CWindowWnd</code>这个基类，如果想处理一些其他消息，比如<code>Notify</code>，还需要继承<code>DuiLib::INotifyUI</code>，这些大家后面自己慢慢探索吧。</p>
+<p>然后我们在<code>GetWindowClassName</code>中定义下框架的<code>ClassName</code>，并在<code>HandleMessage</code>中处理下<code>WM_CREATE</code>消息，一个简单的<code>DuiLib</code>程序就出来了。</p>
+<p>最后在<code>main</code>函数里，调用下<code>MainUI</code>，<code>Create</code>后再<code>Show</code>下就好了。</p>
+<p><strong>示例：</strong><br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> CDuiFrameWnd : <span class="keyword">public</span> CWindowWnd, <span class="keyword">public</span> INotifyUI</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> LPCTSTR <span class="title">GetWindowClassName</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> _T(<span class="string">"DUIMainFrame"</span>); &#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span>    <span class="title">Notify</span><span class="params">(TNotifyUI&amp; msg)</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> LRESULT <span class="title">HandleMessage</span><span class="params">(UINT uMsg, WPARAM wParam, LPARAM lParam)</span></span><br><span class="line">    </span>&#123;</span><br><span class="line">        LRESULT lRes = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>( uMsg == WM_CREATE ) </span><br><span class="line">        &#123;</span><br><span class="line">            CControlUI *pWnd = <span class="keyword">new</span> CButtonUI;</span><br><span class="line">            pWnd-&gt;SetText(_T(<span class="string">"Hello World"</span>));   <span class="comment">// 设置文字</span></span><br><span class="line">            pWnd-&gt;SetBkColor(<span class="number">0xFF00FF00</span>);       <span class="comment">// 设置背景色</span></span><br><span class="line"></span><br><span class="line">            m_PaintManager.Init(m_hWnd);</span><br><span class="line">            m_PaintManager.AttachDialog(pWnd);</span><br><span class="line">            <span class="keyword">return</span> lRes;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>( m_PaintManager.MessageHandler(uMsg, wParam, lParam, lRes) ) </span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> lRes;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> __super::HandleMessage(uMsg, wParam, lParam);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">    CPaintManagerUI m_PaintManager;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, <span class="keyword">int</span> nCmdShow)</span><br><span class="line">&#123;</span><br><span class="line">    CPaintManagerUI::SetInstance(hInstance);</span><br><span class="line"></span><br><span class="line">    CDuiFrameWnd duiFrame;</span><br><span class="line">    duiFrame.Create(<span class="literal">NULL</span>, _T(<span class="string">"DUIWnd"</span>), UI_WNDSTYLE_FRAME, WS_EX_WINDOWEDGE);</span><br><span class="line">    duiFrame.ShowModal();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="加载XML">加载XML</h2><p>这个也简单，我们在处理 <code>WM_CREATE</code>消息时，把<code>XML</code>加载进去就好。</p>
+<p>示例：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">if</span>( uMsg == WM_CREATE ) </span><br><span class="line"> &#123;</span><br><span class="line">       m_PaintManager.Init(m_hWnd);</span><br><span class="line"></span><br><span class="line">       CDialogBuilder builder;</span><br><span class="line">       CControlUI* pRoot = builder.Create(_T(<span class="string">"duilib.xml"</span>), (UINT)<span class="number">0</span>, <span class="literal">NULL</span>, &amp;m_PaintManager);   <span class="comment">// duilib.xml需要放到exe目录下</span></span><br><span class="line">       ASSERT(pRoot &amp;&amp; <span class="string">"Failed to parse XML"</span>);</span><br><span class="line"></span><br><span class="line">       m_PaintManager.AttachDialog(pRoot);</span><br><span class="line">       m_PaintManager.AddNotifier(<span class="keyword">this</span>);   <span class="comment">// 添加控件等消息响应，这样消息就会传达到duilib的消息循环，我们可以在Notify函数里做消息处理</span></span><br><span class="line">       <span class="keyword">return</span> lRes;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>至于<code>XML规范</code>，下下来的<code>DuiLid源码</code>里会有个说明文档，大家自己看就好。</p>
+<p><strong>PS：</strong>代码直接从一些网上的教程扒的，就是给大家参考下，规范性还是按照自己的习惯来。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -119,7 +120,7 @@
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/C/">C++</a><a href="/tags/C-11/">C++11</a>
+  <span></span> <a href="/tags/C/">C++</a><a href="/tags/DUI/">DUI</a><a href="/tags/winodws/">winodws</a>
   </div>
 
 </div>
@@ -128,7 +129,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://fangyu.me/2016/03/01/巧解std function引用传递与值传递/" data-title="巧解std::function引用传递与值传递 | Fangyu Blog" data-tsina="1393602611" class="share clearfix">
+	  <div data-url="http://fangyu.me/2016/10/18/DuiLib入门（XML版）/" data-title="DuiLib入门（XML版） | Fangyu Blog" data-tsina="1393602611" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -141,19 +142,11 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2016/08/23/二叉排序树/" title="二叉排序树">
-  <strong>上一篇：</strong><br/>
-  <span>
-  二叉排序树</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2016/03/01/单测代码设计常见的问题/"  title="单测代码设计常见的问题">
+<a href="/2016/10/17/VS中的编码问题/"  title="VS中的编码问题">
  <strong>下一篇：</strong><br/> 
- <span>单测代码设计常见的问题
+ <span>VS中的编码问题
 </span>
 </a>
 </div>
@@ -162,7 +155,7 @@
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2016/03/01/巧解std function引用传递与值传递/" data-title="巧解std::function引用传递与值传递" data-url="http://fangyu.me/2016/03/01/巧解std function引用传递与值传递/"></div>
+	<div class="ds-thread" data-thread-key="2016/10/18/DuiLib入门（XML版）/" data-title="DuiLib入门（XML版）" data-url="http://fangyu.me/2016/10/18/DuiLib入门（XML版）/"></div>
 </section>
 
 
@@ -172,7 +165,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#巧解区别"><span class="toc-number">1.</span> <span class="toc-text">巧解区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">2.</span> <span class="toc-text">总结</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#工程创建"><span class="toc-number">1.</span> <span class="toc-text">工程创建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#加载DUiLib"><span class="toc-number">2.</span> <span class="toc-text">加载DUiLib</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#加载XML"><span class="toc-number">3.</span> <span class="toc-text">加载XML</span></a></li></ol>
  
   </div>
 
