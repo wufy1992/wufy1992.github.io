@@ -4,23 +4,23 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>DuiLib入门（XML版） | Fangyu Blog</title>
+    <title>DuiLib入门（代码版） | Fangyu Blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="Fangyu Wu">
     
 
     
-    <meta name="description" content="最近用DuiLib在做个表情工具，虽然以前浏览器也是用的DuiLib，但由于UI相关没怎么接触过，这里给大家留点入门资料。至于为什么先将xml的，这样的和Android等等常用项目的布局文件有点类似，大家理解起来很更好点。">
+    <meta name="description" content="其实网上的教程大都是XML控制布局的，不过之前看我们浏览器代码时直接使用代码控制，而且本人也比较倾向于用代码直接搞，有什么问题好查，能对DuiLib理解的更深刻些。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="DuiLib入门（XML版）">
-<meta property="og:url" content="http://fangyu.me/2016/10/18/DuiLib入门（XML版）/index.html">
+<meta property="og:title" content="DuiLib入门（代码版）">
+<meta property="og:url" content="http://fangyu.me/2016/10/18/DuiLib入门（代码版）/index.html">
 <meta property="og:site_name" content="Fangyu Blog">
-<meta property="og:description" content="最近用DuiLib在做个表情工具，虽然以前浏览器也是用的DuiLib，但由于UI相关没怎么接触过，这里给大家留点入门资料。至于为什么先将xml的，这样的和Android等等常用项目的布局文件有点类似，大家理解起来很更好点。">
-<meta property="og:updated_time" content="2016-10-18T06:27:41.336Z">
+<meta property="og:description" content="其实网上的教程大都是XML控制布局的，不过之前看我们浏览器代码时直接使用代码控制，而且本人也比较倾向于用代码直接搞，有什么问题好查，能对DuiLib理解的更深刻些。">
+<meta property="og:updated_time" content="2016-10-18T07:19:19.786Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="DuiLib入门（XML版）">
-<meta name="twitter:description" content="最近用DuiLib在做个表情工具，虽然以前浏览器也是用的DuiLib，但由于UI相关没怎么接触过，这里给大家留点入门资料。至于为什么先将xml的，这样的和Android等等常用项目的布局文件有点类似，大家理解起来很更好点。">
+<meta name="twitter:title" content="DuiLib入门（代码版）">
+<meta name="twitter:description" content="其实网上的教程大都是XML控制布局的，不过之前看我们浏览器代码时直接使用代码控制，而且本人也比较倾向于用代码直接搞，有什么问题好查，能对DuiLib理解的更深刻些。">
 
     
     
@@ -80,14 +80,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2016/10/18/DuiLib入门（XML版）/" title="DuiLib入门（XML版）" itemprop="url">DuiLib入门（XML版）</a>
+      <a href="/2016/10/18/DuiLib入门（代码版）/" title="DuiLib入门（代码版）" itemprop="url">DuiLib入门（代码版）</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Fangyu Wu" target="_blank" itemprop="author">Fangyu Wu</a>
 		
   <p class="article-time">
-    <time datetime="2016-10-18T06:26:18.000Z" itemprop="datePublished"> 发表于 2016-10-18</time>
+    <time datetime="2016-10-18T07:18:18.000Z" itemprop="datePublished"> 发表于 2016-10-18</time>
     
   </p>
 </header>
@@ -96,22 +96,21 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#工程创建"><span class="toc-number">1.</span> <span class="toc-text">工程创建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#加载DUiLib"><span class="toc-number">2.</span> <span class="toc-text">加载DUiLib</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#加载XML"><span class="toc-number">3.</span> <span class="toc-text">加载XML</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#工程创建"><span class="toc-number">1.</span> <span class="toc-text">工程创建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#加载控件"><span class="toc-number">2.</span> <span class="toc-text">加载控件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#为什么要用代码布局"><span class="toc-number">3.</span> <span class="toc-text">为什么要用代码布局</span></a></li></ol>
 		
 		</div>
 		
-		<p>最近用<code>DuiLib</code>在做个表情工具，虽然以前浏览器也是用的<code>DuiLib</code>，但由于<code>UI</code>相关没怎么接触过，这里给大家留点入门资料。至于为什么先将<code>xml</code>的，这样的和<code>Android</code>等等常用项目的布局文件有点类似，大家理解起来很更好点。</p>
+		<p>其实网上的教程大都是XML控制布局的，不过之前看我们浏览器代码时直接使用代码控制，而且本人也比较倾向于用代码直接搞，有什么问题好查，能对DuiLib理解的更深刻些。</p>
 <a id="more"></a>
-<h2 id="工程创建">工程创建</h2><p><code>DuiLib</code>需要创建什么样的工程呢，首先我们要知道<code>Duilib</code>仅仅是一个基于<code>Win32</code>的<code>UI</code>库而已,，所以直接创建<code>Win32</code>工程就好。</p>
-<p>但是，要注意系统自己生成的那些代码都不要，我们在保留<code>main</code>函数就行，如下：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;windows.h&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;tchar.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, <span class="keyword">int</span> nCmdShow)</span><br><span class="line">&#123;</span><br><span class="line">    ::MessageBox(<span class="literal">NULL</span>, _T(<span class="string">"Hello World !"</span>), <span class="literal">NULL</span>, <span class="literal">NULL</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h2 id="加载DUiLib">加载DUiLib</h2><p>这里需要先生成一个<code>MainUI</code>的类，并且这个类需要继承<code>DuiLib::CWindowWnd</code>这个基类，如果想处理一些其他消息，比如<code>Notify</code>，还需要继承<code>DuiLib::INotifyUI</code>，这些大家后面自己慢慢探索吧。</p>
-<p>然后我们在<code>GetWindowClassName</code>中定义下框架的<code>ClassName</code>，并在<code>HandleMessage</code>中处理下<code>WM_CREATE</code>消息，一个简单的<code>DuiLib</code>程序就出来了。</p>
-<p>最后在<code>main</code>函数里，调用下<code>MainUI</code>，<code>Create</code>后再<code>Show</code>下就好了。</p>
-<p><strong>示例：</strong><br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> CDuiFrameWnd : <span class="keyword">public</span> CWindowWnd, <span class="keyword">public</span> INotifyUI</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> LPCTSTR <span class="title">GetWindowClassName</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> _T(<span class="string">"DUIMainFrame"</span>); &#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span>    <span class="title">Notify</span><span class="params">(TNotifyUI&amp; msg)</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> LRESULT <span class="title">HandleMessage</span><span class="params">(UINT uMsg, WPARAM wParam, LPARAM lParam)</span></span><br><span class="line">    </span>&#123;</span><br><span class="line">        LRESULT lRes = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>( uMsg == WM_CREATE ) </span><br><span class="line">        &#123;</span><br><span class="line">            CControlUI *pWnd = <span class="keyword">new</span> CButtonUI;</span><br><span class="line">            pWnd-&gt;SetText(_T(<span class="string">"Hello World"</span>));   <span class="comment">// 设置文字</span></span><br><span class="line">            pWnd-&gt;SetBkColor(<span class="number">0xFF00FF00</span>);       <span class="comment">// 设置背景色</span></span><br><span class="line"></span><br><span class="line">            m_PaintManager.Init(m_hWnd);</span><br><span class="line">            m_PaintManager.AttachDialog(pWnd);</span><br><span class="line">            <span class="keyword">return</span> lRes;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>( m_PaintManager.MessageHandler(uMsg, wParam, lParam, lRes) ) </span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> lRes;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> __super::HandleMessage(uMsg, wParam, lParam);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">    CPaintManagerUI m_PaintManager;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, <span class="keyword">int</span> nCmdShow)</span><br><span class="line">&#123;</span><br><span class="line">    CPaintManagerUI::SetInstance(hInstance);</span><br><span class="line"></span><br><span class="line">    CDuiFrameWnd duiFrame;</span><br><span class="line">    duiFrame.Create(<span class="literal">NULL</span>, _T(<span class="string">"DUIWnd"</span>), UI_WNDSTYLE_FRAME, WS_EX_WINDOWEDGE);</span><br><span class="line">    duiFrame.ShowModal();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h2 id="加载XML">加载XML</h2><p>这个也简单，我们在处理 <code>WM_CREATE</code>消息时，把<code>XML</code>加载进去就好。</p>
-<p>示例：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">if</span>( uMsg == WM_CREATE ) </span><br><span class="line"> &#123;</span><br><span class="line">       m_PaintManager.Init(m_hWnd);</span><br><span class="line"></span><br><span class="line">       CDialogBuilder builder;</span><br><span class="line">       CControlUI* pRoot = builder.Create(_T(<span class="string">"duilib.xml"</span>), (UINT)<span class="number">0</span>, <span class="literal">NULL</span>, &amp;m_PaintManager);   <span class="comment">// duilib.xml需要放到exe目录下</span></span><br><span class="line">       ASSERT(pRoot &amp;&amp; <span class="string">"Failed to parse XML"</span>);</span><br><span class="line"></span><br><span class="line">       m_PaintManager.AttachDialog(pRoot);</span><br><span class="line">       m_PaintManager.AddNotifier(<span class="keyword">this</span>);   <span class="comment">// 添加控件等消息响应，这样消息就会传达到duilib的消息循环，我们可以在Notify函数里做消息处理</span></span><br><span class="line">       <span class="keyword">return</span> lRes;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>至于<code>XML规范</code>，下下来的<code>DuiLid源码</code>里会有个说明文档，大家自己看就好。</p>
-<p><strong>PS：</strong>代码直接从一些网上的教程扒的，就是给大家参考下，规范性还是按照自己的习惯来。</p>
+<h2 id="工程创建">工程创建</h2><p>其实这个和<code>XML</code>的入门基本一样，只是在处理<code>WM_CREATE</code>时，略作修改。<br>示例放上我的<code>OnCreate</code>函数：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">LRESULT CMainUI::OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL&amp; bHandled)</span><br><span class="line">&#123;</span><br><span class="line">	m_pm.Init(m_hWnd);</span><br><span class="line">	m_pm.SetInitSize(MAIN_UI_WIDTH, MAIN_UI_HEIGHT);</span><br><span class="line"></span><br><span class="line">	m_pm.AddFont(FONT_SONG_TI_INDEX, FONT_SONG_TI_NAME, 12, false, false, false, false);</span><br><span class="line">	m_pm.AddFont(FONT_HEI_TI_INDEX, FONT_HEI_TI_NAME, 14, false, false, false, false);</span><br><span class="line">	m_pm.AddFont(FONT_SONG_TI_INDEX_BIG, FONT_SONG_TI_NAME, 14, false, false, false, false); </span><br><span class="line">	m_pm.AddFont(FONT_SONG_TI_INDEX_SMALL, FONT_SONG_TI_NAME, 12, false, false, false, false);</span><br><span class="line"></span><br><span class="line">	RECT rect = MAIN_UI_CAPTION;</span><br><span class="line">	m_pm.SetCaptionRect(rect);</span><br><span class="line"></span><br><span class="line">	m_pm.AttachDialog(m_pMainLayout);</span><br><span class="line">	m_pm.AddNotifier(this);</span><br><span class="line"></span><br><span class="line">	std::thread getCategoryInfoThread(&amp;NetMisc::GetCategoryContent, std::ref(m_strCategoryInfoJson));</span><br><span class="line">	getCategoryInfoThread.detach();</span><br><span class="line"></span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>如果不用<code>xml</code>，我们首先需要在代码把<code>xml</code>里<code>windows</code>字段的信息用代码添加。例如：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">Window</span> <span class="attribute">size</span>=<span class="value">"250,330"</span> <span class="attribute">caption</span>=<span class="value">"0,0,0,0"</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>我们就需要在代码<code>SetInitSize(250, 330)</code>，然后再<code>SetCaptionRect({0, 0, 0, 0})</code>。至于怎么把字段和函数对应上，你自己根据名字猜测也好，去代码里搜索字段名也行。不过要注意到是，有些字段与其名字差不多的函数并不完全一样。比如<code>pos</code>字段和<code>SetPos</code>函数的效果就不一样，具体的大家可以慢慢体会。</p>
+<p>至于各种控件，我们先声明一个容器<code>m_pMainLayout</code>，然后把把各种控制初始化好加到这个容器里，最后再<code>m_pm.AttachDialog(m_pMainLayout)</code>就行了。</p>
+<p>这里<code>m_pMainLayout</code>是个指针，也可以先加载个空容器，然后根据需要慢慢添加控件。</p>
+<h2 id="加载控件">加载控件</h2><p>使用<code>xml</code>时我们直接在文本里定义控件的各种样式就好了。但用代码就需要我们去声明各种控件了，比如声明一个<code>Button</code>就可以下面这么写：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> CSearchContainerUI::InitSearchBtn()</span><br><span class="line">&#123;</span><br><span class="line">	m_pSearchBtn = <span class="keyword">new</span> DuiLib::CButtonUI();</span><br><span class="line">	m_pSearchBtn-&gt;SetName(SEARCH_BTN_NAME);</span><br><span class="line">	m_pSearchBtn-&gt;SetMyPos(SEARCH_BTN_POS);</span><br><span class="line">	m_pSearchBtn-&gt;SetNormalImage(SEARCH_BTN_NORMAL_IMAGE);</span><br><span class="line">	m_pSearchBtn-&gt;SetHotImage(SEARCH_BTN_HOT_IMAGE);</span><br><span class="line">	m_pSearchBtn-&gt;SetPushedImage(SEARCH_BTN_CLICK_IMAGE);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 定义响应事件</span></span><br><span class="line">	m_pSearchBtn-&gt;OnNotify += MakeDelegate(<span class="keyword">this</span>, &amp;CSearchContainerUI::SearchBtnOnClick);</span><br><span class="line">	<span class="comment">// 加到父类容器里</span></span><br><span class="line">	Add(m_pSearchBtn);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>如果是直接是在<code>m_pMainLayout</code>上的控件，用<code>m_pMainLayout-&gt;Add()</code>添加就好。</p>
+<h2 id="为什么要用代码布局">为什么要用代码布局</h2><p>如果是一个很简单的小程序，可以使用<code>xml</code>。但是如果稍微复杂点，我们需要针对各个控件设计不同的响应效果，这时<code>xml</code>就有点繁琐了；或者是根据服务端返回的数目在一个容器里放上几十个<code>Button</code>，<code>xml</code>就很难搞定了。</p>
+<p>总之，大家选择最适合的方式就好。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -129,7 +128,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://fangyu.me/2016/10/18/DuiLib入门（XML版）/" data-title="DuiLib入门（XML版） | Fangyu Blog" data-tsina="1393602611" class="share clearfix">
+	  <div data-url="http://fangyu.me/2016/10/18/DuiLib入门（代码版）/" data-title="DuiLib入门（代码版） | Fangyu Blog" data-tsina="1393602611" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -142,19 +141,11 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2016/10/18/DuiLib入门（代码版）/" title="DuiLib入门（代码版）">
-  <strong>上一篇：</strong><br/>
-  <span>
-  DuiLib入门（代码版）</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2016/10/17/VS中的编码问题/"  title="VS中的编码问题">
+<a href="/2016/10/18/DuiLib入门（XML版）/"  title="DuiLib入门（XML版）">
  <strong>下一篇：</strong><br/> 
- <span>VS中的编码问题
+ <span>DuiLib入门（XML版）
 </span>
 </a>
 </div>
@@ -163,7 +154,7 @@
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2016/10/18/DuiLib入门（XML版）/" data-title="DuiLib入门（XML版）" data-url="http://fangyu.me/2016/10/18/DuiLib入门（XML版）/"></div>
+	<div class="ds-thread" data-thread-key="2016/10/18/DuiLib入门（代码版）/" data-title="DuiLib入门（代码版）" data-url="http://fangyu.me/2016/10/18/DuiLib入门（代码版）/"></div>
 </section>
 
 
@@ -173,7 +164,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#工程创建"><span class="toc-number">1.</span> <span class="toc-text">工程创建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#加载DUiLib"><span class="toc-number">2.</span> <span class="toc-text">加载DUiLib</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#加载XML"><span class="toc-number">3.</span> <span class="toc-text">加载XML</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#工程创建"><span class="toc-number">1.</span> <span class="toc-text">工程创建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#加载控件"><span class="toc-number">2.</span> <span class="toc-text">加载控件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#为什么要用代码布局"><span class="toc-number">3.</span> <span class="toc-text">为什么要用代码布局</span></a></li></ol>
  
   </div>
 
