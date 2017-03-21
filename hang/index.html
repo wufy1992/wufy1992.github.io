@@ -161,6 +161,8 @@
 			var g_Np_;
 
 			var g_lc, g_lb;
+	                // 车道宽度
+			var g_lp = 3.25
 			
 			
 			function FuncU( a,  b,  t,  f)
@@ -170,54 +172,19 @@
 
 			function FuncCp( n,  c,  Pn, state)
 			{
-				var pl = parseInt(g_p * g_l);
-				var r1_ = pl / 20 + g_r1;
-
 				var Np = g_N0 * g_r1 * g_r2 * g_r3 * g_r4;
 				var Np_ = g_N0 * r1_ * g_r2 * g_r3 * g_r4;
 				g_Np_ = Np_;
 
-				if (state == 1)
-				{
-					return (Np_ - Np) * Pn ;
-				}
-				else if(state == 2)
-				{
-					 r1_ = 0.10 + g_r1;
-					 Np_ = g_N0 * r1_ * g_r2 * g_r3 * g_r4;
-					 return (Np_ - Np) * Pn ;
-				}
-				else
-				{
-					var Cp_1 = ((Np_ - Np) * Pn) * (n + g_pl_3 / g_l);
+				return (Np_ - Np) * Pn / (n * g_lp) ;
 
-					var temp = g_p * g_l - g_pl_3 * 3.25;
-					if (temp < 2.00)
-					{
-						return Cp_1 * g_pl_3 + FuncCp(n, c, Pn,  1);
-					}
-					else
-					{
-						return Cp_1 * g_pl_3 + FuncCp(n, c,  Pn, 2);
-					}
-				}
 			}
 
 
 			function FuncT( Cp, state)
 			{
-				if (state == 1)
-				{
-					return Cp * g_p * g_l;
-				}
-
-				else
-				{
-					return Cp * 2;
-				}
-
+				return Cp;
 			}
-
 
 
 			function FuncFi(c,  state )
