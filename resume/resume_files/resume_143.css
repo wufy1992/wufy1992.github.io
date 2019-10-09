@@ -1,0 +1,47 @@
+/*模板结构*/  
+.baseditBar .mobanBar .editBox .otherList li:nth-child(4){display:none;}     
+.baseditBar .mobanBar .editBox .otherList li:nth-child(5){display:none;}
+.baseStyle{padding-top:0px;background:#fff;} 
+.baseStyle .divLeft{padding: 0 30px;height:auto;background: url(../images/um0065/j1_head_bg.png) no-repeat 400px 118px;}
+.baseStyle .divRight{position: relative;height:auto;margin: 80px 30px 0;z-index: 2;}
+.baseStyle .baseItem {margin-top: 20px;}
+.baseStyle .baseItem dl {min-height: 122px; }
+.msgDiv .icon.resume_focus:after{width:28px;height: 28px;top: 1px;left: -7px;}
+.hobbyicon .icon.resume_focus:after{width: 40px;height:40px;top:15px;left: 20px;}
+.baseItem .icon.resume_focus:after{width: 41px;height: 41px;top: 14px;left: 2px;}
+
+/*editBtn*/
+.baseStyle .baseItem .editBtn{left:-31px;}
+.custDel .cust_delete{top: 10px;left:-1px;}
+
+/*头像模块*/
+.baseStyle .headDiv{width:150px;height:200px;border: 6px solid #ccc;position: absolute;overflow: hidden;z-index: 2;float: right;top: 30px;right: 30px;}
+.baseStyle .headDiv img{display: block;cursor:pointer;}
+.baseStyle .headDiv .headNotice{position: absolute;cursor:pointer;width: 100%;height: 100%;background-color: rgba(0,0,0,.3);text-align: center;padding-top: 164px;color: rgba(255,255,255,.5); opacity: 0;}
+.baseStyle .headDiv:hover .headNotice{opacity:1;} 
+
+/*基本信息模块*/
+.baseStyle .msgDiv{width: 100%;float: left;margin: 0;padding: 0;border: none !important;border-bottom: 18px solid #162c65 !important;}
+.baseStyle .msgDiv .baseMsg{line-height:40px;color: #162c65;margin-bottom:4px;float: left;}
+.baseStyle .msgDiv .baseMsg a{float: left;color: #162c65;margin-right: 6px;line-height: 30px;}
+.baseStyle .msgDiv .baseDel .delete{top:6px;left:-21px;font-size: 16px;padding-left:11px;}
+.baseStyle .msgDiv input{height:31px;float: left;width: 230px;} 
+
+/*姓名、求职意向*/
+.baseStyle .nameDiv{margin: 60px 0 79px;padding: 0;color: #162c65;float: left;}
+.baseStyle .nameDiv h2{font-weight: lighter;}
+
+/*通用信息*/
+.baseStyle .baseItem dl dt{padding:0px;display: inline-block;position: relative;height: auto;}
+.baseStyle .baseItem dl dd {margin: -110px 0 0 110px; }
+.baseStyle .baseItem dl dt a{color: #0789d4;line-height: 65px;height: 65px;font-size:40px;}
+.baseStyle .baseItem dl dt span{line-height: 50px; padding: 25px; color: #fff;background: #6d7694;}
+.baseStyle .baseItem dl dt span div:first-of-type {width: 52px; height: auto; line-height: 36px; } 
+.baseStyle .baseItem dl dt span div.Border {border: none; }
+.baseStyle .baseItem .baseContent{margin: 0 10px 10px 0;padding: 0;}
+.baseStyle .baseItem .baseContent .conTitle {padding: 5px;}
+.baseDel_ {border-bottom: 1px solid #ccc; padding-bottom: 10px;}
+.baseStyle .baseItem .baseContent .conTitle span.conTitle_company{width: 300px;}
+.baseStyle .baseItem .baseContent .conTitle span.conTitle_post{width: 370px;}
+.baseStyle .baseItem .baseContent .conDisc p { color: #585858;padding-left: 20px;position: relative;}
+.baseStyle .baseItem .baseContent .conDisc p:before {content: ""; width: 12px; height: 12px; background: #6D7694; position: absolute; left: 0; margin-top: 6px; border-radius: 50%;}
